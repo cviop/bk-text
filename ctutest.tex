@@ -126,7 +126,7 @@ A dělal jsem to takhlehehe.
 
 a
 \chapter{Návrh experimentu}
-a
+
 
 \section{Šíření vln ve troposféře}
 a
@@ -138,20 +138,25 @@ a
 a
 
 \chapter{Návrh systému}
-a
 \section{Požadavky}
-a
+520 g, telemetrie, teplota, tlak vlhkost, gps, fungování do -40 - baterky, kompaktnost
 \section{Hardware}
-a
+senzory do -40, nízký tlak, dosah 30+ km
 \section{Software}
-a
+čtení ze senzorů, parsování dat, posílání na zem a na sd kartu, odolnost, měření náklonu
 
+\section{Možné způsoby řešení elektroniky}
+\subsection{Samostatná deska plošných spojů}
+\subsection{Vývojové moduly}
 
 
 \chapter{Realizace}
-a
-\section{Hardware}
-a
+\section{Elektronika}
+...bylo využito vývojových modulů - desek plošných spojů s již osazenými senzory a měřícími čipy. Tyto desky byly osazeny také minimem potřebných součástek, zajišťujících správné fungování čipů, například blokovacích kondenzátorů umístěných v bezprostřední blízkosti čipů. 
+
+Elektronika sondy byla stavěna kolem vývojového kitu Nucleo od firmy \textit{ST Microelectronics}. Jedná se o PCB s mikroprocesorem a minimem součástek, nutných pro správné fungování procesoru. Součástí desky je také zdroj pro napájení čipu a programátor. Jednotlivé piny mikroprocesoru jsou vyvedeny na pinové lišty na kraji desky a slouží k propojení s moduly, používanými v sondě. Výhodou tohoto řešení ve fázi vývoje je snadná záměna zapojení modulů a rychlé odstranění chyb způsobené při výběru komunikačních pinů. Po odladění elektronického propojení mikroprocesoru s moduly senzorů
+
+
 \section{Firmware}
 a
 \section{Software}
@@ -194,42 +199,8 @@ a
 \section{Možná vylepšení}
 a
 
-\begin{table}
-\begin{ctucolortab}
-\begin{tabular}{cc}
-\bfseries Foo & \bfseries Bar \\\Midrule
-foo1 & bar1 \\
-foo2 & bar2
-\end{tabular}
-\end{ctucolortab}
-\caption{Foobar.}
-\label{tab:foobar}
-\end{table}
-
-\begin{figure}
-\includegraphics[width=0.4\textwidth]{ctu_logo_black}
-\caption{Black logo of the CTU in Pragueueue.}
-\end{figure}
-
-\begin{figure}[!t]
-\includegraphics[width=0.4\textwidth]{ctu_logo_blue}
-\caption{Blue logo of the CTU in Pragueueue.}
-\end{figure}
-
-\chapter{Conclusions}
-
-\section{Test --- this is just a little test of something in the table of contents}
-
-\subsection{Yes, table of contents}
-
-\begin{theorem}\begin{enumerate} \item Bla \item Blo \end{enumerate} \end{theorem}
 
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis interdum facilisis urna, at tincidunt leo consectetur non. Maecenas bibendum mi vitae libero pharetra, ac ullamcorper nulla pellentesque. Sed sit amet massa nunc. Aenean placerat a est sodales sagittis. Quisque purus nibh, auctor ut consectetur at, suscipit non erat. Donec condimentum porttitor risus, vitae fringilla lectus tincidunt nec. Nulla leo quam, commodo eu ornare non, iaculis sed nulla. Duis gravida lacus quis purus sodales, vitae malesuada justo ultricies. Vestibulum nisl nulla, commodo non pellentesque a, fringilla a risus. Ut quis magna nulla. Mauris vitae ultricies ante, in consectetur justo. 
-
-\medskip
-
-\begin{proof}\begin{enumerate} \item[8] Bla \item Blo \end{enumerate} \end{proof}
 
 \appendix
 
