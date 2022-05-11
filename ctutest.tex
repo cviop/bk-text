@@ -116,17 +116,17 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 \chapter{Úvod}
 tato práce ze zabývá...
 
-\chapter{Šíření vln ve troposféře}
-jak to funguje, na čem to závisí (přečíst literaturu)
 
 
 \chapter{Cíl práce}
 %výroba sondy schopná měřit podmínky ve tropo a posílat je na zem, měření příchozího signálu na zemi, vyrobit model šíření, změřit refrakci paprsku
 
+	\section{Šíření vln ve troposféře}
+	jak to funguje, na čem to závisí (přečíst literaturu)
 
 	\section{Způsob řešení / návrh experimentu}
 	výroba sondy, vypuštění spolu s čhmú, naměření dat z tropo a naměření dat na zemi a kombinace do modelu šíření vlny, anténa na trackeru, zjištění směrové charakteristiky, napočítat výkonovou bilanci -> výkon pro vysílání.
-		\subsection{Měřená data}
+		\subsection{Měřená data}	
 		jaká data budou měřena - podle literatury
 
 	\section{Součásti experimentu}
@@ -136,17 +136,17 @@ jak to funguje, na čem to závisí (přečíst literaturu)
 \chapter{Návrh systému}
 
 	\section{Požadavky}
-	Z důvodu dlouhé čekací doby na povolení vypuštění balónu, které vydává Úřad pro civilní letectví, bylo využito povolení, které má dlouhodobě sjednané ČHMÚ. Toto povolení se vztahuje na vypouštění volných balónů s užitečným zatížením do celkové hmotnosti 600~g. Denní sonda Vaisala RS41, kterou ČHMÚ posílá 3$\times$ denně, váží 84~g. Sonda vyvíjená v rámci této práce tedy musela splňovat požadavek na hmotnost do 516~g.
+	Z důvodu dlouhé čekací doby na povolení vypuštění balónu, které vydává Úřad pro civilní letectví, je využito povolení, které má dlouhodobě sjednané ČHMÚ. Toto povolení se vztahuje na vypouštění volných balónů s užitečným zatížením do celkové hmotnosti 600~g. Denní sonda Vaisala RS41, kterou ČHMÚ posílá 3$\times$ denně, váží 84~g. Sonda vyvíjená v rámci této práce tedy musí splňovat požadavek na hmotnost do 516~g.
 
-	Dalším požadavkem bylo posílání telemetrických údajů o poloze a ukládání zbylých dat na SD kartu umístěnou na palubě sondy. S ohledem na panující podmínky ve vyšších vrstvách zemské atmosféry musela být sonda schopna operovat za nízkého tlaku a teploty, které panují ve vyšších vrstvách atmosféry. Toto se vztahuje jak na mikročipy a senzory, tak na baterie, používané k napájení sondy. Další podmínkou bylo spolehlivé fungování v oblasti vysoké vlhkosti - oblačnosti a za deště. 
+	Dalším požadavkem je posílání telemetrických údajů o poloze a ukládání zbylých naměřených dat na SD kartu umístěnou na palubě sondy. S ohledem na panující podmínky ve vyšších vrstvách zemské atmosféry musela být sonda schopna operovat za nízkého tlaku a teploty, které panují ve vyšších vrstvách atmosféry. Toto se vztahuje jak na mikročipy a senzory, tak na baterie, používané k napájení sondy. Další podmínkou bylo spolehlivé fungování v oblasti vysoké vlhkosti - oblačnosti a za deště. 
 
 	Značná část GPS přijímačů je od výrobce zablokována pro použití ve výškách větších jak 10 km n. m. a bylo nutné zvolit přijímač, který dovoluje tzv. \textit{airborne mode}, ve kterém není omezena pracovní výška.
 
-	Mechanická zástavba celé sondy musela splňovat požadavky pracovníků ČHMÚ, aby nedošlo k poničeni balónu a způsobení škod při dopadu na zem. Jelikož byla sonda Vaisala RS41 pověšena pod sondu vznikající v rámci této práce, bylo nutné zajistit robustnost a zamezit odpojení sondy Vaisala, nebo rozpadu vyvíjené sondy.
+	Mechanická zástavba celé sondy musí splňovat požadavky pracovníků ČHMÚ, aby nedošlo k poničeni balónu a způsobení škod při dopadu na zem. Jelikož je sonda Vaisala RS41 pověšena pod sondu vznikající v rámci této práce, je nutné zajistit robustnost a zamezit odpojení sondy Vaisala, nebo rozpadu vyvíjené sondy.
 
 
 	
-	\section{Hardware sondy}
+	\section{Elektronika sondy}
 	%součástky do -40, nízký tlak (bez elektrolytických kond.), dosah 40+ km
 	V samotném návrhu elektroniky sondy bylo možné zvolit jednu ze dvou cest. Níže práce popisuje výhody, nevýhody a možné rizika každé z nich a cestu, která byla zvolena při řešení této práce.¨
 		\subsection{Vývojové moduly}
@@ -162,7 +162,7 @@ jak to funguje, na čem to závisí (přečíst literaturu)
 		\subsection{Samostatná deska plošných spojů}
 		Druhá cesta, kterou je možná se vydat při vývoji elektroniky v sondě je samostatná deska, která obsahuje jednotlivé mikročipy bez jejich modulů a separátních PCB. Díky tomu je možné minimalizovat vzdálenost mezi mikroprocesorem a senzory a zvýšit robustnost napájení čipů. Celková velikost desky je poté dána především schopnostmi návrháře. 
 		
-		Toto řešení je ale časové náročné a v případě způsobené chyby se špatně ladí. V případě zničení, nebo nefunkčnosti nějaké elektronické součásty je nutné její odpájení z desky, což může ohrozit komponenty v okolí. V případě modulů lze vyměnit modul samotný.
+		Toto řešení je ale časové náročné a v případě způsobené chyby se špatně ladí. V případě zničení, nebo nefunkčnosti nějaké elektronické součástky je nutné její odpájení z desky, což může ohrozit komponenty v okolí. V případě modulů lze vyměnit modul samotný.
 
 		Při řešení této práce byla zvolena cesta modulů. Důvodem bylo malé množství času neumožňující případné zdlouhavé odlaďování zapojení a také nedostatek součástek samotných. V tomto případě byly dostupnější senzory ve formě modulů a mikroprocesor ve formě vývojového kitu. 
 
@@ -194,11 +194,8 @@ jak to funguje, na čem to závisí (přečíst literaturu)
 		měření odběru, energie pro poslání dat
 
 		\subsection{Realizace elektroniky}
-		Navrženy shieldy, nakresleny modely. Spínaný zdroj + LDO, ochrany vstupů, volné GPIO na rozšíření
-		%...bylo využito vývojových modulů - desek plošných spojů s již osazenými senzory a měřícími čipy. Tyto desky byly osazeny také minimem potřebných součástek, zajišťujících správné fungování čipů, například blokovacích kondenzátorů umístěných v bezprostřední blízkosti čipů. 
-
-		%Elektronika sondy byla stavěna kolem vývojového kitu Nucleo od firmy \textit{ST Microelectronics}. Jedná se o PCB s mikroprocesorem a minimem součástek, nutných pro správné fungování procesoru. Součástí desky je také zdroj pro napájení čipu a programátor. Jednotlivé piny mikroprocesoru jsou vyvedeny na pinové lišty na kraji desky a slouží k propojení s moduly, používanými v sondě. Výhodou tohoto řešení ve fázi vývoje je snadná záměna zapojení modulů a rychlé odstranění chyb způsobené při výběru komunikačních pinů. Po odladění elektronického propojení mikroprocesoru s moduly senzorů
-
+		%Navrženy shieldy, nakresleny modely. Spínaný zdroj + LDO, ochrany vstupů, volné GPIO na rozšíření
+		Ve vývojové fázi práce byly moduly zapojeny skrze nepájivé pole a propojeny propojovacími kabely s piny Nucleo desky. Moduly byly postupně přidávány s vývojem softwaru. Po odladění komunikace se všemi použitými moduly byly vytvořeny redukční PCB na propojení Nucleo kitu a modulů. Součástí jedné z desek byl také spínaný zdroj. 
 	\section{Mechanická zástavba}
 	model PCB, model sondy, iterace, odlehčování, připojení sondy čhmú, bezpečnostní závěsy
 
