@@ -115,89 +115,92 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 
 \chapter{Úvod}
 
-\section{Cíl práce}
 
-Tato práce ze zabývá vývojem a realizací pyčo.
+\chapter{Cíl práce}
+Tato práce ze zabývá...\\
+výroba sondy schopná měřit podmínky ve tropo a posílat je na zem, měření příchozího signálu na zemi, vyrobit model šíření
 
-\section{Způsob řešení}
+	\section{Šíření vln ve troposféře}
+	jak to funguje, na čem to závisí (přešíst literaturu)
 
-A dělal jsem to takhlehehe.
+	\section{Způsob řešení / návrh experimentu}
+	naměření dat z tropo a naměření dat na zemi a kombinace do modelu šíření vlny
+		\subsection{Měřená data}
+		jaká data budou měřena 
 
+	\section{Součásti experimentu}
+	co je potřeba udělat - hw, firmware, sw, mechaniku, naměření dat, naměření charakteristik antény, zpracování dat
 
-a
-\chapter{Návrh experimentu}
-
-
-\section{Šíření vln ve troposféře}
-a
-
-\section{Měřená data}
-a
-
-\section{Součásti experimentu}
-a
 
 \chapter{Návrh systému}
-\section{Požadavky}
-520 g, telemetrie, teplota, tlak vlhkost, gps, fungování do -40 - baterky, kompaktnost
-\section{Hardware}
-senzory do -40, nízký tlak, dosah 30+ km
-\section{Software}
-čtení ze senzorů, parsování dat, posílání na zem a na sd kartu, odolnost, měření náklonu
+	\section{Požadavky}
+	520 g, telemetrie, teplota, tlak vlhkost, gps, fungování do -40 - baterky, kompaktnost
 
-\section{Možné způsoby řešení elektroniky}
-\subsection{Samostatná deska plošných spojů}
-\subsection{Vývojové moduly}
+	\section{Hardware}
+	senzory do -40, nízký tlak, dosah 30+ km
+		\subsection{Samostatná deska plošných spojů}
+		kompaktní, spolehlivé, obtížné na debug, časové náročné
+		\subsection{Vývojové moduly}
+		snadné na vývoj a odladění, snadná změna zapojení pří psaní kódu
+
+	\section{Software}
+	čtení ze senzorů, parsování dat, posílání na zem a na sd kartu, odolnost, měření náklonu - jak?
+		\subsection{Měření náklonu sondy}
+		Acc, vektor mag pole, kalmanův filtr, co bylo použito
+
 
 
 \chapter{Realizace}
-\section{Elektronika}
-...bylo využito vývojových modulů - desek plošných spojů s již osazenými senzory a měřícími čipy. Tyto desky byly osazeny také minimem potřebných součástek, zajišťujících správné fungování čipů, například blokovacích kondenzátorů umístěných v bezprostřední blízkosti čipů. 
+	\section{Elektronika}
+		\subsection{Testování modulů}
+		měření odběru, energie pro poslání dat
 
-Elektronika sondy byla stavěna kolem vývojového kitu Nucleo od firmy \textit{ST Microelectronics}. Jedná se o PCB s mikroprocesorem a minimem součástek, nutných pro správné fungování procesoru. Součástí desky je také zdroj pro napájení čipu a programátor. Jednotlivé piny mikroprocesoru jsou vyvedeny na pinové lišty na kraji desky a slouží k propojení s moduly, používanými v sondě. Výhodou tohoto řešení ve fázi vývoje je snadná záměna zapojení modulů a rychlé odstranění chyb způsobené při výběru komunikačních pinů. Po odladění elektronického propojení mikroprocesoru s moduly senzorů
+		\subsection{Realizace elektroniky}
+		Navrženy shieldy, nakresleny modely. Spínaný zdroj + LDO, ochrany vstupů, volné GPIO na rozšíření
+		%...bylo využito vývojových modulů - desek plošných spojů s již osazenými senzory a měřícími čipy. Tyto desky byly osazeny také minimem potřebných součástek, zajišťujících správné fungování čipů, například blokovacích kondenzátorů umístěných v bezprostřední blízkosti čipů. 
 
+		%Elektronika sondy byla stavěna kolem vývojového kitu Nucleo od firmy \textit{ST Microelectronics}. Jedná se o PCB s mikroprocesorem a minimem součástek, nutných pro správné fungování procesoru. Součástí desky je také zdroj pro napájení čipu a programátor. Jednotlivé piny mikroprocesoru jsou vyvedeny na pinové lišty na kraji desky a slouží k propojení s moduly, používanými v sondě. Výhodou tohoto řešení ve fázi vývoje je snadná záměna zapojení modulů a rychlé odstranění chyb způsobené při výběru komunikačních pinů. Po odladění elektronického propojení mikroprocesoru s moduly senzorů
 
-\section{Firmware}
-a
-\section{Software}
-a
-\section{Mechanická zástavba}
-a
-\section{Testování}
-a
+	\section{Mechanická zástavba}
+	model PCB, model sondy, iterace, odlehčování
+
+	\section{Firmware}
+	výstřizky z driverů, sample GPS dat, parsovací funkce, změřené minimum accelerace v z-ose, sešití dat, watchdog, reset při erroru
+
+	\section{Software}
+	parsování příchozích dat, doplnění NMEA zprávy pro tracker, python - parsování a přepočítání souřadnic, zobrazení na mapě, zobrazení v terminálu
+
+	\section{Testování a měření}
+	směrová charakteristika, teplotní odolnost, proudový odběr telitu 
 
 
 
 
 \chapter{Experiment}
-a
-\section{Průběh experimentu}
-a
-\section{Naměřená data}
-a
+příjem dat, umístění antény, nastavení spektráku
+	\section{Průběh experimentu}
+	jak to probíhalo, co se stalo, proč sonda přestala vysílat, proč doletěla jen do 17 km, nalezení pomocí sondy čhmú, sundání sondy
+
+	\section{Naměřená data}
+	co bylo na SD kartě, výsledky měření - čístě změřená data
+
 
 
 \chapter{Výsledky}
-a
+	\section{Zpracování dat}
+	zkombinovat data ze země a data ze strato, vzorečky, určit refrakci, výkonnovou bilanci podle podmínek, vzít v potaz směrovou charstiku. vyrobit model šíření, grafy
 
-\section{Zpracování dat}
-a
-
-\section{Výstup z experimentu}
-a
-
-\section{Vizualizace dat}
-a
-
+	\section{Výstup z experimentu}
+	výsledky, co bylo změřeno a zjištěno
 
 
 
 \chapter{Závěr}
-a
-\section{Shrnutí experimentu}
-a
-\section{Možná vylepšení}
-a
+	\section{Shrnutí experimentu}
+	co se povedlo, co se nepovedlo. Vyrobil jsem sondu a sw, přestala vysílat - proč? 
+
+	\section{Možná vylepšení}
+	malé pcb bez modulů, optimalizace sw, nepoužívat HAL, programovat přes registry, měření náklonu sondy, častější posílání dat, nezávislost na GPS
 
 
 
