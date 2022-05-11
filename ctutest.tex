@@ -114,30 +114,31 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 \maketitle
 
 \chapter{Úvod}
+tato práce ze zabývá...
+
+\chapter{Šíření vln ve troposféře}
+jak to funguje, na čem to závisí (přečíst literaturu)
 
 
 \chapter{Cíl práce}
-Tato práce ze zabývá...\\
-výroba sondy schopná měřit podmínky ve tropo a posílat je na zem, měření příchozího signálu na zemi, vyrobit model šíření
-
-	\section{Šíření vln ve troposféře}
-	jak to funguje, na čem to závisí (přešíst literaturu)
+výroba sondy schopná měřit podmínky ve tropo a posílat je na zem, měření příchozího signálu na zemi, vyrobit model šíření, změřit refrakci paprsku
 
 	\section{Způsob řešení / návrh experimentu}
-	naměření dat z tropo a naměření dat na zemi a kombinace do modelu šíření vlny
+	výroba sondy, vypuštění spolu s čhmú, naměření dat z tropo a naměření dat na zemi a kombinace do modelu šíření vlny, anténa na trackeru, zjištění směrové charakteristiky, napočítat výkonovou bilanci -> výkon pro vysílání.
 		\subsection{Měřená data}
-		jaká data budou měřena 
+		jaká data budou měřena - podle literatury
 
 	\section{Součásti experimentu}
-	co je potřeba udělat - hw, firmware, sw, mechaniku, naměření dat, naměření charakteristik antény, zpracování dat
+	co je potřeba udělat - hw, firmware, sw, mechaniku, naměření dat, naměření charakteristik antény, zpracování dat. 
 
 
 \chapter{Návrh systému}
+
 	\section{Požadavky}
-	520 g, telemetrie, teplota, tlak vlhkost, gps, fungování do -40 - baterky, kompaktnost
+	520 g, telemetrie, teplota, tlak vlhkost, gps, fungování do -40 - baterky, kompaktnost, bezpečnost
 
 	\section{Hardware}
-	senzory do -40, nízký tlak, dosah 30+ km
+	součástky do -40, nízký tlak (bez elektrolytických kond.), dosah 40+ km
 		\subsection{Samostatná deska plošných spojů}
 		kompaktní, spolehlivé, obtížné na debug, časové náročné
 		\subsection{Vývojové moduly}
@@ -146,11 +147,12 @@ výroba sondy schopná měřit podmínky ve tropo a posílat je na zem, měřen�
 	\section{Software}
 	čtení ze senzorů, parsování dat, posílání na zem a na sd kartu, odolnost, měření náklonu - jak?
 		\subsection{Měření náklonu sondy}
-		Acc, vektor mag pole, kalmanův filtr, co bylo použito
+		Acc, vektor mag pole, kalmánův filtr, co bylo použito
 
 
 
 \chapter{Realizace}
+
 	\section{Elektronika}
 		\subsection{Testování modulů}
 		měření odběru, energie pro poslání dat
@@ -162,22 +164,22 @@ výroba sondy schopná měřit podmínky ve tropo a posílat je na zem, měřen�
 		%Elektronika sondy byla stavěna kolem vývojového kitu Nucleo od firmy \textit{ST Microelectronics}. Jedná se o PCB s mikroprocesorem a minimem součástek, nutných pro správné fungování procesoru. Součástí desky je také zdroj pro napájení čipu a programátor. Jednotlivé piny mikroprocesoru jsou vyvedeny na pinové lišty na kraji desky a slouží k propojení s moduly, používanými v sondě. Výhodou tohoto řešení ve fázi vývoje je snadná záměna zapojení modulů a rychlé odstranění chyb způsobené při výběru komunikačních pinů. Po odladění elektronického propojení mikroprocesoru s moduly senzorů
 
 	\section{Mechanická zástavba}
-	model PCB, model sondy, iterace, odlehčování
+	model PCB, model sondy, iterace, odlehčování, připojení sondy čhmú, bezpečnostní závěsy
 
 	\section{Firmware}
-	výstřizky z driverů, sample GPS dat, parsovací funkce, změřené minimum accelerace v z-ose, sešití dat, watchdog, reset při erroru
+	výstřizky kódu z driverů, sample GPS dat, vyčítání z teplota/tlak, tlak/vlhkost, gyro/acc/mag, parsovací funkce, změřené minimum accelerace v z-ose, sešití dat, watchdog, reset při erroru
 
 	\section{Software}
 	parsování příchozích dat, doplnění NMEA zprávy pro tracker, python - parsování a přepočítání souřadnic, zobrazení na mapě, zobrazení v terminálu
 
 	\section{Testování a měření}
-	směrová charakteristika, teplotní odolnost, proudový odběr telitu 
+	směrová charakteristika, teplotní odolnost v klimakomoře, proudový odběr telitu, výlet na Říp, mapa viditelnosti z bodu na mapě. 
 
 
 
 
 \chapter{Experiment}
-příjem dat, umístění antény, nastavení spektráku
+příjem dat, umístění antény na střeš e , nastavení spektráku
 	\section{Průběh experimentu}
 	jak to probíhalo, co se stalo, proč sonda přestala vysílat, proč doletěla jen do 17 km, nalezení pomocí sondy čhmú, sundání sondy
 
@@ -188,7 +190,7 @@ příjem dat, umístění antény, nastavení spektráku
 
 \chapter{Výsledky}
 	\section{Zpracování dat}
-	zkombinovat data ze země a data ze strato, vzorečky, určit refrakci, výkonnovou bilanci podle podmínek, vzít v potaz směrovou charstiku. vyrobit model šíření, grafy
+	zkombinovat data ze země a data ze strato, vzorečky, určit refrakci, výkonovou bilanci podle podmínek, vzít v potaz směrovou charstiku. vyrobit model šíření, grafy
 
 	\section{Výstup z experimentu}
 	výsledky, co bylo změřeno a zjištěno
