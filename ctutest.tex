@@ -115,7 +115,7 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 \maketitle
 
 \chapter{Úvod}
-tato práce ze zabývá...
+tato práce ze zabývá... ano zabývá se... pyčo
 
 
 
@@ -137,11 +137,11 @@ tato práce ze zabývá...
 \chapter{Návrh systému}
 
 	\section{Požadavky}
+	Hlavním požadavkem je posílání telemetrických údajů o poloze a ukládání zbylých naměřených dat na SD kartu umístěnou na palubě sondy. S ohledem na panující podmínky ve vyšších vrstvách zemské atmosféry musela být sonda schopna operovat za nízkého tlaku a teploty, které panují ve vyšších vrstvách atmosféry. Toto se vztahuje jak na mikročipy a senzory, tak na baterie, používané k napájení sondy. Další podmínkou bylo spolehlivé fungování v oblasti vysoké vlhkosti - oblačnosti a za deště. 
+
 	Z důvodu dlouhé čekací doby na povolení vypuštění balónu, které vydává Úřad pro civilní letectví, je využito povolení, které má dlouhodobě sjednané ČHMÚ. Toto povolení se vztahuje na vypouštění volných balónů s užitečným zatížením do celkové hmotnosti 600~g. Denní sonda Vaisala RS41, kterou ČHMÚ posílá 3$\times$ denně, váží 84~g. Sonda vyvíjená v rámci této práce tedy musí splňovat požadavek na hmotnost do 516~g.
 
-	Dalším požadavkem je posílání telemetrických údajů o poloze a ukládání zbylých naměřených dat na SD kartu umístěnou na palubě sondy. S ohledem na panující podmínky ve vyšších vrstvách zemské atmosféry musela být sonda schopna operovat za nízkého tlaku a teploty, které panují ve vyšších vrstvách atmosféry. Toto se vztahuje jak na mikročipy a senzory, tak na baterie, používané k napájení sondy. Další podmínkou bylo spolehlivé fungování v oblasti vysoké vlhkosti - oblačnosti a za deště. 
-
-	Značná část GPS přijímačů je od výrobce zablokována pro použití ve výškách větších jak 10 km n. m. a bylo nutné zvolit přijímač, který dovoluje tzv. \textit{airborne mode}, ve kterém není omezena pracovní výška.
+	Značná část GPS přijímačů je od výrobce zablokována pro použití ve výškách větších jak 10 km n. m. a je nutné zvolit přijímač, který dovoluje tzv. \textit{airborne mode}, ve kterém není omezena pracovní výška.
 
 	Mechanická zástavba celé sondy musí splňovat požadavky pracovníků ČHMÚ, aby nedošlo k poničeni balónu a způsobení škod při dopadu na zem. Jelikož je sonda Vaisala RS41 pověšena pod sondu vznikající v rámci této práce, je nutné zajistit robustnost a zamezit odpojení sondy Vaisala, nebo rozpadu vyvíjené sondy.
 
@@ -149,7 +149,8 @@ tato práce ze zabývá...
 	
 	\section{Elektronika sondy}
 	%součástky do -40, nízký tlak (bez elektrolytických kond.), dosah 40+ km
-	V samotném návrhu elektroniky sondy bylo možné zvolit jednu ze dvou cest. Níže práce popisuje výhody, nevýhody a možné rizika každé z nich a cestu, která byla zvolena při řešení této práce.¨
+	V samotném návrhu elektroniky sondy bylo možné zvolit jednu ze dvou cest. Níže práce popisuje výhody, nevýhody a možné rizika každé z nich a cestu, která byla zvolena při řešení této práce. Zmíněny jsou jak robustnost řešení, tak možná rizika způsobené lidským faktorem a časová náročnost.
+	
 		\subsection{Vývojové moduly}
 		%snadné na vývoj a odladění, snadná změna zapojení pří psaní kódu
 		V dnešní době existuje veliké množství mikročipů a MEMS čipů, které lze zakoupit ve formě modulů. Jedná se zpravidla o malé deky plošných spojů osazených konkrétními čipy s minimem potřebných součástek zajišťujících správné fungování. Zpravidla se jedná o blokovací kondenzátory umístěné v bezprostřední blízkosti čipů, poskytující elektrickou energii při rázovém odběru. Moduly mají vyvedené piny mikročipů na pinové lišty nacházející se na okraji PCB. 
@@ -168,15 +169,41 @@ tato práce ze zabývá...
 		Při řešení této práce byla zvolena cesta modulů. Důvodem bylo malé množství času neumožňující případné zdlouhavé odlaďování zapojení a také nedostatek součástek samotných. V tomto případě byly dostupnější senzory ve formě modulů a mikroprocesor ve formě vývojového kitu. 
 
 		\section{Použité komponenty}
-		\subsection{Tlakové čidlo}
+		Níže jsou zmíněny druhy čidel, které jsou nutné pro měření podmínek v troposféře, které ovlivňují přenos radiového signálu. Jak již bylo zmíněno, senzory musí být schopny měřit veličiny v rozsahu hodnot, které panují ve troposféře. Velký výběr modulů s mnohými senzory a dalšími elektrickými součástkami nabízí firma \textit{Microelektronika}. Jená se o produky využívané pro výuku a rychlý vývoj. Výhodou je jejich sjednocený pinout a stejné rozměry konektoru (pinové lišty).
+
+		\subsection{GPS modul}
+		GPS moduly jsou zpravidla omezeny dvěma parametry. Maximální nadmořsou výškou 18~km a maximální rychlostí 515~m/s vůči zemi https://www.ecfr.gov/current/title-22/part-121. Někteří výrobci GPS modulů berou tato omezení v konjunkci, kdy pro zablokování modulu musí platit obě podmínky, někteří výrobci uvažují  disjunkci, kdy stačí, aby nastala jedna z pomínek a modul přestane dávat validní data. Modul, který byl vybrán je u-blox SAM-M8Q. Podle dokumentace GPS modulu (\url{https://www.u-blox.com/sites/default/files/SAM-M8Q_DataSheet_%28UBX-16012619%29.pdf}) je maximální výška 50~km a maximální rychlost 500~m/s. V případě letu balónu nebude splněna ani jedna z podmínek. 
+
+		U-blox moduly nabízí široké množství módů podle použití. Pro běžné použití se využívá mód \textit{Portable}. Jedná se o kompromis mezi rozsahem a přesností určení pozice. Další módy jsou zobrazeny v tabulce 
+		\begin{table}[]
+			\centering
+			\label{tab:ublox:modes}
+			\caption{Módy GPS přijímačů u-blox}
+				\begin{tabular}{lcccc}
+				Platform &
+				Max Altitude{[}m{]} &
+				\begin{tabular}[c]{@{}c@{}}MAX Horizontal\\ Velocity {[}m/s{]}\end{tabular} &
+				\begin{tabular}[c]{@{}c@{}}MAX Vertical\\ Velocity {[}m/s{]}\end{tabular} &
+				\begin{tabular}[c]{@{}c@{}}Max Position \\ Deviation\end{tabular} \\
+				Portable               & 12000 & 310 & 50  & Medium \\
+				Stationary             & 9000  & 10  & 6   & Small  \\
+				Pedestrian             & 9000  & 30  & 20  & Small  \\
+				Automotive             & 6000  & 84  & 15  & Medium \\
+				At sea                 & 500   & 25  & 5   & Medium \\
+				Airborne \textless{}1g & 50000 & 100 & 100 & Large  \\
+				Airborne \textless{}2g & 50000 & 250 & 100 & Large  \\
+				Airborne \textless{}4g & 50000 & 500 & 100 & Large 
+				\end{tabular}
+			\end{table}
 		\subsection{Teplotní čidlo}
+		\subsection{Tlakové čidlo}
 		\subsection{Vlhkostní čidlo}
 		\subsection{Senzor orientace}
-		\subsection{GPS modul}
-		\subsubsection{Napájení}
-		Jako zdroj energie po dobu letu byly vybrány tužkové baterie \textit{Energizer ultimate lithium}. Dle technického listu (odkaz) jsou schopny operovat až do teploty -40~°C při poklesu kapacity z xxx na xxx mAh. S ohledem na teploty panující ve stratopauze, které klesají až k -60~°C, byl počet zvýšen na 10 ks, nechávající jistou rezervu. 
+		
+		\subsection{Napájení}
+		Jako zdroj energie po dobu letu byly vybrány tužkové baterie \textit{Energizer ultimate lithium}. Dle technického listu (odkaz) jsou schopny operovat až do teploty -40~°C při poklesu kapacity z xxx na xxx mAh. S ohledem na teploty panující ve stratopauze, které klesají až k -60~°C, byl počet zvýšen na 10 ks, nechávající kapacitní rezervu. 
 
-		\subsection{Zdroje}
+		\subsubsection{Zdroje}
 		Vstupní napětí se v závislosti na teplotě a momentálním odběru pohybuje od 18~V do 10~V. Pro zvýšení účinnosti byl jako hlavní regulátor využit spínaný zdroj. S ohledem na dostupnost součástek a ověřenost funkčnosti byl vybrán spínaný zdroj \textit{LMR33630} od firmy \textit{Texas Instruments}. Účinnost tohoto zdroje se pohybuje od TODO: zjistit z DSH. 
 
 		Další výhodou spínaného zdroje je minimální PSRR - \textit{Power Source Rejection Ratio}. Výstupní napětí zůstává konstantní bez ohledu na změnu napětí na vstupu, dokud není překročeno minimální napájecí napětí. TOTO: kolik pro 5V vout. 
@@ -197,7 +224,7 @@ tato práce ze zabývá...
 		\end{figure}
 
 	\section{Firmware sondy}
-	Firmware pro mikroprocesor v sondě zajišťuje správné čtení dat ze senzorů, jejich zpracování. Dále je nutné načítání data z GPS modulu a jejich rozdělení na dané zprávy a bloky informací využívaných pro určení pozice v prostoru. Všechny získané informace je poté nutno sešít do zprávy poslané telemetrií na zem a uložit na externí paměť. 
+	Firmware pro mikroprocesor v sondě zajišťuje inicializaci senzorů, správné čtení dat ze senzorů, jejich zpracování. Dále je nutné načítání data z GPS modulu a jejich rozdělení na dané zprávy a bloky informací využívaných pro určení pozice v prostoru. Všechny získané informace je poté nutno sešít do zprávy poslané telemetrií na zem a uložit na externí paměť. 
 
 	Nutnou součástí firmwaru je také ošetření chybových stavů a možných errorů, vyvolaných chybným čtením dat a nebo fyzickými podmínkami prostředí.
 	%čtení ze senzorů, parsování dat, posílání na zem a na sd kartu, odolnost, měření náklonu - jak?
