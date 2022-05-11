@@ -300,7 +300,7 @@ tato práce ze zabývá... ano zabývá se... pyčo
 			\centering
 			\includegraphics[height=.7\linewidth]{Figures/modules_assembly.png} 
 			\caption{Vymodelované moduly}
-		\label{fig:modules:assembly}
+			\label{fig:modules:assembly}
 		\end{subfigure}%
 		\begin{subfigure}{.5\textwidth}
 			\centering
@@ -313,6 +313,22 @@ tato práce ze zabývá... ano zabývá se... pyčo
 
 	
 	Díky jednotlivým modelům bylo možné vytvořit kompletní model elektronické části, kolem kterého byl poté vymodelován kryt (obr. \ref{fig:all:rez}). Kryt byl modelován s ohledem na anténu umístěnou ve spodní části. Stěny kolem antény jsou ztenčené, aby co nejméně ovlivnily ladění antény na 868~MHz. Malá mechanická odolnost stěn je kompenzována čtyřmi výztužemi vedoucí po obvodu stěny.
+
+	\begin{figure}
+		\centering
+		\begin{subfigure}{.49\textwidth}
+			\centering
+			\includegraphics[width=.8\linewidth]{Figures/ALL_rez_white.png}
+			\caption{Řez krytem elektroniky}
+			\label{fig:half:sec} 
+		\end{subfigure}
+		\begin{subfigure}{.49\textwidth}
+			\centering
+			\includegraphics[width=.8\linewidth]{Figures/ALL_rez_white.png}
+			\caption{Řez krytem elektroniky}
+			\label{fig:half:sec} 
+		\end{subfigure}
+	\end{figure}
 
 	Pro splnění hmotnostního limitu byl model krytu postupně odlehčován. Při ubírání materiálu bylo nutné brát v potaz, že hlavní původ velké hmotnosti není při 3D tisku objem tělesa, ale jeho stěny. Při tvorbě otvorů v modelu se tedy neušetřila hmotnost odpovídající objemu válce odebraného ze stěny, ale pouze dvoum jeho podstavám. Naopak více materiálu bylo potřeba na plášť odebraného válce.
 
