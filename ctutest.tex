@@ -5,7 +5,8 @@
 % The class takes all the key=value arguments that \ctusetup does,
 % and a couple more: draft and oneside
 \documentclass[twoside]{ctuthesis}
-
+\usepackage{float}
+\usepackage{subcaption}
 \ctusetup{
 	preprint = \ctuverlog,
 %	mainlanguage = english,
@@ -172,7 +173,7 @@ tato práce ze zabývá...
 	\section{Firmware sondy}
 	Firmware pro mikroprocesor v sondě zajišťuje správné čtení dat ze senzorů, jejich zpracování. Dále je nutné načítání data z GPS modulu a jejich rozdělení na dané zprávy a bloky informací využívaných pro určení pozice v prostoru. Všechny získané informace je poté nutno sešít do zprávy poslané telemetrií na zem a uložit na externí paměť. 
 
-	Nutnou součástí firmwaru je také ošetření chybových stavů a možných erorů, vyvolaných chybným čtením dat a nebo fyzickými podmínkami prostředí.
+	Nutnou součástí firmwaru je také ošetření chybových stavů a možných errorů, vyvolaných chybným čtením dat a nebo fyzickými podmínkami prostředí.
 	%čtení ze senzorů, parsování dat, posílání na zem a na sd kartu, odolnost, měření náklonu - jak?
 		\subsection{Měření náklonu sondy}
 		Acc, vektor mag pole, kalmánův filtr, co bylo použito
@@ -194,9 +195,81 @@ tato práce ze zabývá...
 		měření odběru, energie pro poslání dat
 
 		\subsection{Realizace elektroniky}
+		\subsubsection{Napájení}
+		Jako zdroj energie po dobu letu byly vybrány tužkové baterie \textit{Energizer ultimate lithium}. Dle technického listu (odkaz) jsou schopny operovat až do teploty -40~°C při poklesu kapacity z xxx na xxx mAh. S ohledem na teploty panující ve stratopauze, které klesají až k -60~°C, byl počet zvýšen na 10 ks, nechávající jistou rezervu. 
+
+		\subsubsection{Připojení modulů}
 		%Navrženy shieldy, nakresleny modely. Spínaný zdroj + LDO, ochrany vstupů, volné GPIO na rozšíření
-		Ve vývojové fázi práce byly moduly zapojeny skrze nepájivé pole a propojeny propojovacími kabely s piny Nucleo desky. Moduly byly postupně přidávány s vývojem softwaru. Po odladění komunikace se všemi použitými moduly byly vytvořeny redukční PCB na propojení Nucleo kitu a modulů. Součástí jedné z desek byl také spínaný zdroj. 
+		Ve vývojové fázi práce byly moduly zapojeny skrze nepájivé pole a propojeny propojovacími kabely s piny Nucleo desky. Moduly byly postupně přidávány s vývojem softwaru. Po odladění komunikace se všemi použitými moduly byly vytvořeny dvě redukční PCB na propojení Nucleo kitu a modulů. Moduly jsou vyobrazeny na obr. \ref{fig:shield:top} a \ref{fig:shield:bot}. 
+
+		\begin{figure}[hbtp]
+			\centering
+			\begin{subfigure}{0.3\textwidth}
+				\centering
+				\includegraphics[height=0.7\linewidth]{Figures/shield_top.png} 
+				\caption{Vrchní redukční deska}
+				\label{fig:shield:top}
+			\end{subfigure}%
+			\begin{subfigure}{.3\textwidth}
+				\centering
+				\includegraphics[height=0.7\linewidth]{Figures/shield_bot.png}
+				\caption{Vrchní redukční deska}
+				\label{fig:shield:bot}
+			\end{subfigure}
+			\begin{subfigure}{.3\textwidth}
+				\centering
+				\includegraphics[height=0.7\linewidth]{Figures/shield_assembly.png}
+				\caption{Sestava PCB}
+				\label{fig:shield:assembly}
+			\end{subfigure}
+			\caption{Redukční desky pro moduly}
+			\label{fig:shields}
+		\end{figure}
+
+		\subsubsection{Ochrana pinů}
+		Jelikož většina pinů využívaných ke komunikaci byla snadno dostupná na dotyk při manipulaci, bylo potřeba je ošetřit vůči elektrostatickému výboji (ESD), který by měl za následek zničení čipu. Příklad ošetření GPIO pinů pomocí TVS diody BAV99 je na obr. \ref{fig:osetreni:vstupu}.
+		
+		\begin{figure}
+			\centering
+			\includegraphics[width = .7\textwidth]{Figures/osetreni_vstupu.png}
+			\label{fig:osetreni:vstupu}
+			\caption{Příklad ošetření vstupů TVS diodami}
+		\end{figure}
+
+
+
+
 	\section{Mechanická zástavba}
+
+	Součástí práce je i mechanická zástavba kryt pro elektroniku. Pro přehlednost a optimální model krytu bylo potřeba vymodelovat i jednotlivé moduly. Kolem přesného 3D modelu elektroniky mohl být vymodelován kryt bez nutnosti čekat na výrobu redukčních desek.
+	\begin{figure}[hbtp]
+		\centering
+		\begin{subfigure}{.5\textwidth}
+			\centering
+			\includegraphics[height=.7\linewidth]{Figures/modules_assembly.png} 
+			\caption{Vymodelované moduly}
+		\label{fig:modules:assembly}
+		\end{subfigure}%
+		\begin{subfigure}{.5\textwidth}
+			\centering
+			\includegraphics[height=.7\linewidth]{Figures/ALL_rez_LQ.png}
+			\caption{Řez vrchní částí krytu sondy}
+			\label{fig:all:rez}
+		\end{subfigure}
+		\label{fig:shields}
+	\end{figure}
+
+	
+	Díky jednotlivým modelům bylo možné vytvořit kompletní model elektronické části, kolem kterého byl poté vymodelován kryt (obr. \ref{fig:all:rez}). Kryt byl modelován s ohledem na anténu umístěnou ve spodní části. Stěny kolem antény jsou ztenčené, aby co nejméně ovlivnily ladění antény na 868~MHz. Malá mechanická odolnost stěn je kompenzována čtyřmi výztužemi vedoucí po obvodu stěny.
+
+	Pro splnění hmotnostního limitu byl model krytu postupně odlehčován. Při ubírání materiálu bylo nutné brát v potaz, že hlavní původ velké hmotnosti není při 3D tisku objem tělesa, ale jeho stěny. Při tvorbě otvorů v modelu se tedy neušetřila hmotnost odpovídající objemu válce odebraného ze stěny, ale pouze dvoum jeho podstavám. Naopak více materiálu bylo potřeba na plášť odebraného válce.
+
+	TODO: názorný jednoduchý model s dírou a bez. 
+
+	Připojení sondy ČHMÚ bylo provedeno pomocí gumového pásu, do kterého se zastrčila skoba odvíječe. To je zařízení, které zajistí postupné odmotání 50m lanka. 50~m je vzdálenost daná výrobcem, která musí být od balónu a dalších součástí sondy, aby byla zajištěna validní měření.
+
+	V případě, že by došlo k delaminaci 3D tisku, byla jak elektronika, tak sonda ČHMÚ přivázána pojistným provázkem uchyceným k hlavnímu závěsu spolu s padákem a balónem. Díky tomu by sonda stále zůstala pohromadě i když by došlo k rozbití/rozlomení krytu.
+
 	model PCB, model sondy, iterace, odlehčování, připojení sondy čhmú, bezpečnostní závěsy
 
 	\section{Firmware}
