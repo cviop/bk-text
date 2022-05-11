@@ -121,7 +121,8 @@ jak to funguje, na čem to závisí (přečíst literaturu)
 
 
 \chapter{Cíl práce}
-výroba sondy schopná měřit podmínky ve tropo a posílat je na zem, měření příchozího signálu na zemi, vyrobit model šíření, změřit refrakci paprsku
+%výroba sondy schopná měřit podmínky ve tropo a posílat je na zem, měření příchozího signálu na zemi, vyrobit model šíření, změřit refrakci paprsku
+
 
 	\section{Způsob řešení / návrh experimentu}
 	výroba sondy, vypuštění spolu s čhmú, naměření dat z tropo a naměření dat na zemi a kombinace do modelu šíření vlny, anténa na trackeru, zjištění směrové charakteristiky, napočítat výkonovou bilanci -> výkon pro vysílání.
@@ -135,20 +136,55 @@ výroba sondy schopná měřit podmínky ve tropo a posílat je na zem, měřen�
 \chapter{Návrh systému}
 
 	\section{Požadavky}
-	520 g, telemetrie, teplota, tlak vlhkost, gps, fungování do -40 - baterky, kompaktnost, bezpečnost
+	Z důvodu dlouhé čekací doby na povolení vypuštění balónu, které vydává Úřad pro civilní letectví, bylo využito povolení, které má dlouhodobě sjednané ČHMÚ. Toto povolení se vztahuje na vypouštění volných balónů s užitečným zatížením do celkové hmotnosti 600~g. Denní sonda Vaisala RS41, kterou ČHMÚ posílá 3$\times$ denně, váží 84~g. Sonda vyvíjená v rámci této práce tedy musela splňovat požadavek na hmotnost do 516~g.
 
-	\section{Hardware}
-	součástky do -40, nízký tlak (bez elektrolytických kond.), dosah 40+ km
-		\subsection{Samostatná deska plošných spojů}
-		kompaktní, spolehlivé, obtížné na debug, časové náročné
+	Dalším požadavkem bylo posílání telemetrických údajů o poloze a ukládání zbylých dat na SD kartu umístěnou na palubě sondy. S ohledem na panující podmínky ve vyšších vrstvách zemské atmosféry musela být sonda schopna operovat za nízkého tlaku a teploty, které panují ve vyšších vrstvách atmosféry. Toto se vztahuje jak na mikročipy a senzory, tak na baterie, používané k napájení sondy. Další podmínkou bylo spolehlivé fungování v oblasti vysoké vlhkosti - oblačnosti a za deště. 
+
+	Značná část GPS přijímačů je od výrobce zablokována pro použití ve výškách větších jak 10 km n. m. a bylo nutné zvolit přijímač, který dovoluje tzv. \textit{airborne mode}, ve kterém není omezena pracovní výška.
+
+	Mechanická zástavba celé sondy musela splňovat požadavky pracovníků ČHMÚ, aby nedošlo k poničeni balónu a způsobení škod při dopadu na zem. Jelikož byla sonda Vaisala RS41 pověšena pod sondu vznikající v rámci této práce, bylo nutné zajistit robustnost a zamezit odpojení sondy Vaisala, nebo rozpadu vyvíjené sondy.
+
+
+	
+	\section{Hardware sondy}
+	%součástky do -40, nízký tlak (bez elektrolytických kond.), dosah 40+ km
+	V samotném návrhu elektroniky sondy bylo možné zvolit jednu ze dvou cest. Níže práce popisuje výhody, nevýhody a možné rizika každé z nich a cestu, která byla zvolena při řešení této práce.¨
 		\subsection{Vývojové moduly}
-		snadné na vývoj a odladění, snadná změna zapojení pří psaní kódu
+		%snadné na vývoj a odladění, snadná změna zapojení pří psaní kódu
+		V dnešní době existuje veliké množství mikročipů a MEMS čipů, které lze zakoupit ve formě modulů. Jedná se zpravidla o malé deky plošných spojů osazených konkrétními čipy s minimem potřebných součástek zajišťujících správné fungování. Zpravidla se jedná o blokovací kondenzátory umístěné v bezprostřední blízkosti čipů, poskytující elektrickou energii při rázovém odběru. Moduly mají vyvedené piny mikročipů na pinové lišty nacházející se na okraji PCB. 
+		
+		V případě mikroprocesoru se jedná o vývojový kit Nucleo od firmy \textit{ST Microelectronics}. Jedná se o PCB s mikroprocesorem a minimem součástek, nutných pro správné fungování procesoru. Součástí desky je také zdroj pro napájení čipu a programátor, kterým lze do mikroprocesou nahrát firmware. Jednotlivé piny mikroprocesoru jsou vyvedeny na pinové lišty na kraji desky a slouží ke snadnému propojení s moduly. 
+		
+		Výhodou tohoto řešení ve fázi vývoje je snadná záměna zapojení modulů a rychlé odstranění chyb způsobené chybným výběrem komunikačních pinů mikroprocesoru.
 
-	\section{Software}
-	čtení ze senzorů, parsování dat, posílání na zem a na sd kartu, odolnost, měření náklonu - jak?
+		Nevýhoda tohoto řešení je malá robustnost zapojení. Komunikační cesty mezi mikroprocesorem a senzory jsou zbytečné dlouhé, jelikož jsou podřízeny umístění pinů na pinových lištách. Další nevýhodou je nemožnost ovlivnit umístění blokovacích kondenzátorů u mikroprocesoru a nebo zvýšení jejich počtu. Vývojový kit Nucelo není tvořen s ohledem na malé rozměry a velikost PCB tohoto kitu ovlivňuje celkovou velikost elektroniky sondy.
+
+		\subsection{Samostatná deska plošných spojů}
+		Druhá cesta, kterou je možná se vydat při vývoji elektroniky v sondě je samostatná deska, která obsahuje jednotlivé mikročipy bez jejich modulů a separátních PCB. Díky tomu je možné minimalizovat vzdálenost mezi mikroprocesorem a senzory a zvýšit robustnost napájení čipů. Celková velikost desky je poté dána především schopnostmi návrháře. 
+		
+		Toto řešení je ale časové náročné a v případě způsobené chyby se špatně ladí. V případě zničení, nebo nefunkčnosti nějaké elektronické součásty je nutné její odpájení z desky, což může ohrozit komponenty v okolí. V případě modulů lze vyměnit modul samotný.
+
+		Při řešení této práce byla zvolena cesta modulů. Důvodem bylo malé množství času neumožňující případné zdlouhavé odlaďování zapojení a také nedostatek součástek samotných. V tomto případě byly dostupnější senzory ve formě modulů a mikroprocesor ve formě vývojového kitu. 
+
+		%kompaktní, spolehlivé, obtížné na debug, časové náročné
+		
+
+	\section{Firmware sondy}
+	Firmware pro mikroprocesor v sondě zajišťuje správné čtení dat ze senzorů, jejich zpracování. Dále je nutné načítání data z GPS modulu a jejich rozdělení na dané zprávy a bloky informací využívaných pro určení pozice v prostoru. Všechny získané informace je poté nutno sešít do zprávy poslané telemetrií na zem a uložit na externí paměť. 
+
+	Nutnou součástí firmwaru je také ošetření chybových stavů a možných erorů, vyvolaných chybným čtením dat a nebo fyzickými podmínkami prostředí.
+	%čtení ze senzorů, parsování dat, posílání na zem a na sd kartu, odolnost, měření náklonu - jak?
 		\subsection{Měření náklonu sondy}
 		Acc, vektor mag pole, kalmánův filtr, co bylo použito
 
+	
+	\section{Pozemní stanice}
+	Firmware pro mikroprocesor v pozemní stanici zodpovídá za správné dekódování přijatých telemetrických údajů. Firmware musí určit, která data jsou validní. Přijatá data je poté nutno zformátovat do zprávy určené pro anténní tracker, umístěný na střeše budovy FEL. Firmware musí být odolný vůči náhodným chybám způsobených přenosem na velkou vzdálenost. Příjem i posílání dat probíhá přes sériovou linku. 
+
+	Elektronika pozemní stanice není vystavena extrémním podmínkám a není nutné řešit její odolnost vůči vnějším vlivům. 
+
+	\section{Software pro zobrazení telemetrických údajů}
+	Software určený pro příjem dat na počítači umístěném v automobilu jedoucí ve směru dopadu sondy. Software musí určit validní data a vyznačit GPS pozici sondy na mapě. Další funkcí softwaru je výpis souřadnic, výšky a rychlosti sondy a teploty okolí sondy. Data jdoucí do programu jsou posílána přes sériovou linkou z přijímače signálu vysílaného sondou. 
 
 
 \chapter{Realizace}
@@ -219,3 +255,5 @@ příjem dat, umístění antény na střeš e , nastavení spektráku
 \ctutemplate{specification.as.chapter}
 
 \end{document}
+
+%vaisala datasheet https://www.vaisala.com/sites/default/files/documents/WEA-MET-RS41SGP-Datasheet-B211444EN.pdf
