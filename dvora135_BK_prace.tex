@@ -198,8 +198,8 @@ tato práce ze zabývá... ano zabývá se...
 				\end{tabular}
 			\end{table}
 		
-		\subsection{Teplotní a tlakové čidlo}
-		S ohledem na očekávané rozsahy měřeného tlaku a teploty byl vybrán senzor MS5607 od firmy \textit{TE Connectivity}. Rozsahy měřitelných hodnot jsou zaneseny v tabulce \ref{tab:ms:range}.
+		\subsection{Teplotní a tlakový senzor}
+		Podle (\url{https://www.sensorsone.com/altitude-pressure-units-conversion/}) se tlak ve výšce 30~km pohybuje kolem hodnoty 10~mbar. S ohledem na očekávané rozsahy měřeného tlaku a teploty byl vybrán senzor MS5607 od firmy \textit{TE Connectivity}. Rozsahy měřitelných hodnot jsou zaneseny v tabulce \ref{tab:ms:range}. Teplotní a tlakový senzor je součástí modulu od firmy \textit{Parallax}. Výrobce na stránkách produktu \url{https://www.parallax.com/product/altimeter-module-ms5607/} uvádí, že senzor byl úspěšně testován ve výšce 36~km.
 		
 		\begin{table}[]
 			\begin{tabular}{|l|lll|l|}
@@ -215,13 +215,15 @@ tato práce ze zabývá... ano zabývá se...
 		\end{table}
 
 		
-		\subsection{Vlhkostní čidlo}
+		\subsection{Vlhkostní senzor}
+		Vlhkostní senzor byl zvolen CM2322, který je součástí modulu DHT22 Click od firmy \textit{Microelektronika}. Senzor je schopen měřit v rozsahu od -40 do 80~°C a 0 až 100~\% relativní vlhkosti (\url{https://www.farnell.com/datasheets/2618831.pdf}). 
+
 		\subsection{Senzor orientace}
-		
+		Pro zjištění orientace bylo použito senzoru MPU9250, který je součástí modulu 9DOF Click. Jedná se o gyroskop Senzor resp. modul byl vybrán, jelikož byl již dříve používán na jiných projektech a byl ihned dostupný. Díky tomu bylo ihned možné přejít ke psaní ovladače pro vyčítání dat a jeho implementaci do systému. Senzor také splňuje rozsah pracovních teplot a lze tedy využít v podmínkách, které při letu nastanou (\url{https://invensense.tdk.com/wp-content/uploads/2015/02/PS-MPU-9250A-01-v1.1.pdf}).  
 		
 		
 		\subsection{Napájení}
-		Jako zdroj energie po dobu letu byly vybrány tužkové baterie \textit{Energizer ultimate lithium}. Dle technického listu (https://data.energizer.com/pdfs/l91.pdf) jsou schopny operovat až do teploty -40~°C při poklesu kapacity z xxx na xxx mAh. S ohledem na teploty panující ve stratopauze, které klesají až k -60~°C, byl počet zvýšen na 10 ks, nechávající kapacitní rezervu. 
+		Jako zdroj energie po dobu letu byly vybrány tužkové baterie \textit{Energizer ultimate lithium}. Dle technického listu (\url{https://data.energizer.com/pdfs/l91.pdf}) jsou schopny operovat až do teploty -40~°C při poklesu kapacity z xxx na xxx mAh. S ohledem na teploty panující ve stratopauze, které klesají až k -60~°C, byl počet zvýšen na 10 ks, nechávající kapacitní rezervu. 
 
 		\subsubsection{Zdroje}
 		Vstupní napětí se v závislosti na teplotě a momentálním odběru pohybuje od 18~V do 10~V. Pro zvýšení účinnosti byl jako hlavní regulátor využit spínaný zdroj. S ohledem na dostupnost součástek a ověřenost funkčnosti byl vybrán spínaný zdroj \textit{LMR33630} od firmy \textit{Texas Instruments}. Účinnost tohoto zdroje se pohybuje od TODO: zjistit z DSH. 
@@ -233,14 +235,14 @@ tato práce ze zabývá... ano zabývá se...
 		\begin{figure}
 			\centering
 			\includegraphics[width = \textwidth]{Figures/psu_bot.png}
-			\label{fig:psu:bot}
 			\caption{Schéma spínaného zdroje umístěného na spodní redukční desce}
+			\label{fig:psu:bot}
 		\end{figure}
 		\begin{figure}
 			\centering
 			\includegraphics[width = \textwidth]{Figures/psu_top.png}
-			\label{fig:psu:bot}
 			\caption{Schéma lineárních regulátorů umístěných na horní redukční desce}
+			\label{fig:psu:top}
 		\end{figure}
 
 	\section{Firmware sondy}
@@ -285,7 +287,7 @@ tato práce ze zabývá... ano zabývá se...
 			\begin{subfigure}{.3\textwidth}
 				\centering
 				\includegraphics[height=0.7\linewidth]{Figures/shield_bot.png}
-				\caption{Vrchní redukční deska}
+				\caption{Spodní redukční deska}
 				\label{fig:shield:bot}
 			\end{subfigure}
 			\begin{subfigure}{.3\textwidth}
@@ -295,7 +297,7 @@ tato práce ze zabývá... ano zabývá se...
 				\label{fig:shield:assembly}
 			\end{subfigure}
 			\caption{Redukční desky pro moduly}
-			\label{fig:shields}
+			\label{fig:shields:pcb}
 		\end{figure}
 
 		\subsubsection{Ochrana pinů}
@@ -304,8 +306,8 @@ tato práce ze zabývá... ano zabývá se...
 		\begin{figure}
 			\centering
 			\includegraphics[width = .7\textwidth]{Figures/osetreni_vstupu.png}
-			\label{fig:osetreni:vstupu}
 			\caption{Příklad ošetření vstupů TVS diodami}
+			\label{fig:osetreni:vstupu}
 		\end{figure}
 
 
@@ -324,7 +326,7 @@ tato práce ze zabývá... ano zabývá se...
 		\end{subfigure}%
 		\begin{subfigure}{.5\textwidth}
 			\centering
-			\includegraphics[height=.7\linewidth]{Figures/ALL_rez_LQ.png}
+			\includegraphics[height=.7\linewidth]{Figures/ALL_rez_white.png}
 			\caption{Řez vrchní částí krytu sondy}
 			\label{fig:all:rez}
 		\end{subfigure}
@@ -334,27 +336,13 @@ tato práce ze zabývá... ano zabývá se...
 	
 	Díky jednotlivým modelům bylo možné vytvořit kompletní model elektronické části, kolem kterého byl poté vymodelován kryt (obr. \ref{fig:all:rez}). Kryt byl modelován s ohledem na anténu umístěnou ve spodní části. Stěny kolem antény jsou ztenčené, aby co nejméně ovlivnily ladění antény na 868~MHz. Malá mechanická odolnost stěn je kompenzována čtyřmi výztužemi vedoucí po obvodu stěny.
 
-	\begin{figure}
-		\centering
-		\begin{subfigure}{.49\textwidth}
-			\centering
-			\includegraphics[width=.8\linewidth]{Figures/ALL_rez_white.png}
-			\caption{Řez krytem elektroniky}
-			\label{fig:half:sec} 
-		\end{subfigure}
-		\begin{subfigure}{.49\textwidth}
-			\centering
-			\includegraphics[width=.8\linewidth]{Figures/ALL_rez_white.png}
-			\caption{Řez krytem elektroniky}
-			\label{fig:half:sec} 
-		\end{subfigure}
-	\end{figure}
+	Pro splnění hmotnostního limitu byl model krytu postupně odlehčován. Při ubírání materiálu bylo nutné brát v potaz, že hlavní původ velké hmotnosti není při 3D tisku objem tělesa, ale jeho stěny. Při tvorbě otvorů v modelu se tedy neušetřila hmotnost odpovídající objemu válce odebraného ze stěny, ale pouze dvěma jeho podstavám. Naopak materiál byl potřeba na plášť odebraného válce.
 
-	Pro splnění hmotnostního limitu byl model krytu postupně odlehčován. Při ubírání materiálu bylo nutné brát v potaz, že hlavní původ velké hmotnosti není při 3D tisku objem tělesa, ale jeho stěny. Při tvorbě otvorů v modelu se tedy neušetřila hmotnost odpovídající objemu válce odebraného ze stěny, ale pouze dvoum jeho podstavám. Naopak více materiálu bylo potřeba na plášť odebraného válce.
-
-	TODO: názorný jednoduchý model s dírou a bez. 
+	TODO: názorný jednoduchý model s dírou a bez, iterace 
 
 	Připojení sondy ČHMÚ bylo provedeno pomocí gumového pásu, do kterého se zastrčila skoba odvíječe. To je zařízení, které zajistí postupné odmotání 50m lanka. 50~m je vzdálenost daná výrobcem, která musí být od balónu a dalších součástí sondy, aby byla zajištěna validní měření.
+
+	TODO: obrázek připojení sondy
 
 	V případě, že by došlo k delaminaci 3D tisku, byla jak elektronika, tak sonda ČHMÚ přivázána pojistným provázkem uchyceným k hlavnímu závěsu spolu s padákem a balónem. Díky tomu by sonda stále zůstala pohromadě i když by došlo k rozbití/rozlomení krytu.
 
@@ -367,6 +355,15 @@ tato práce ze zabývá... ano zabývá se...
 	parsování příchozích dat, doplnění NMEA zprávy pro tracker, python - parsování a přepočítání souřadnic, zobrazení na mapě, zobrazení v terminálu
 
 	\section{Testování a měření}
+	Měření směrové charakteristiky proběhlo na katedře elektromagnetického pole v bezodrazné komoře. Sonda připevněna na pohyblivou osu byla otáčena motorem a byl měřen přijatý výkon anténou umístěné naproti sondě. Díky tomu byla změřena vyzařovací charakteristika antény v rozsahu 360~°C. Celkem byly měřeny 4 směrové charakteristiky a to pro různá natočení sondy kolem své osy. Směrové charakteristiky jsou zaneseny na (obr)
+
+	TODO - graf směrových charstik.
+
+	Dále byla měřena polarizace antény. V tomto případě byla sonda pevně umístěna na podstavci a otáčeno bylo přijímací anténou v její ose. Pro ideální kruhově polarizovanou anténu by nezáleželo na natočení přijímací antény. V případně antény umístěné v sondě je přenos znárorněn na obr. xxx.
+
+	TODO - graf polarizace
+
+
 	směrová charakteristika, teplotní odolnost v klimakomoře, proudový odběr telitu, výlet na Říp, mapa viditelnosti z bodu na mapě. 
 
 
