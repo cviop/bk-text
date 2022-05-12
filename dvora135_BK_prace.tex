@@ -280,29 +280,14 @@ tato práce ze zabývá... ano zabývá se...
 		Pro vyčítání dat ze senzorů bylo potřeba napsání driveru. Ten má za úkol jak vyčtení dat ze senzoru, tak jeho samotnou inicializaci a nastavení. 
 
 		Výčet dat ze senzoru AM2320 probíhá příkazem
-		\begin{lstlisting}[language=C]
-	uint8_t registers[3] = { 0x03, 0x00, 0x04 };
-	HAL_I2C_Master_Transmit(am2320->i2c_handle, am2320->device_address,registers, 3, HAL_MAX_DELAY);
-		\end{lstlisting}
+		\lstinputlisting[language=C]{Code/am2320_write.txt}
 
 		Senzor následně vyšle data obsahující informace o vlhkosti a teplotě. Jejich příjem zajišťuje funkce
-		\begin{lstlisting}[language=C]
-	HAL_I2C_Master_Receive(am2320->i2c_handle, am2320->device_address,am2320->data, 8, HAL_MAX_DELAY;
-		\end{lstlisting}
+		\lstinputlisting[language=C]{Code/am2320_read.txt}
 
 		Způsob přepočtu získaných dat na hodnoty teploty a tlaku je popsán v dokumentaci senzoru. Kód pro přepočet je následující:
-		\begin{lstlisting}[language=C]
-	int16_t temp_temperature = (am2320->data[5] | am2320->data[4] << 8);
-	if (temp_temperature & 0x8000) {
-		temp_temperature = -(int16_t) (temp_temperature & 0x7fff);
-	} else {
-		temp_temperature = (int16_t) temp_temperature;
-	}
-	*temperature = (float) temp_temperature / 10.0;
-	*humidity = (float) (am2320->data[3] | am2320->data[2] << 8) / 10.0;
-		\end{lstlisting}
+		\lstinputlisting[language=C]{Code/am2320_get_values.txt}
 
-		
 	
 		\subsection{Měření náklonu sondy}
 		Acc, vektor mag pole, kalmánův filtr, co bylo použito

@@ -1,0 +1,2 @@
+    SPITransmitData = CONVERT_D1_COMMAND | Pressure_OSR;
+    HAL_SPI_Transmit(hspi, &SPITransmitData, 1, 10);

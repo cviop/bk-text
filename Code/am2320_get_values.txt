@@ -1,0 +1,8 @@
+	int16_t temp_temperature = (am2320->data[5] | am2320->data[4] << 8);
+	if (temp_temperature & 0x8000) {
+		temp_temperature = -(int16_t) (temp_temperature & 0x7fff);
+	} else {
+		temp_temperature = (int16_t) temp_temperature;
+	}
+	*temperature = (float) temp_temperature / 10.0;
+	*humidity = (float) (am2320->data[3] | am2320->data[2] << 8) / 10.0;

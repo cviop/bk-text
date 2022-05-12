@@ -1,0 +1,5 @@
+    SPITransmitData = READ_ADC_COMMAND;
+    HAL_SPI_Transmit(hspi, &SPITransmitData, 1, 10);
+    HAL_SPI_Receive(hspi, reply, 3, HAL_MAX_DELAY);
+
+    uncompValues->pressure = ((uint32_t) reply[0] << 16) | ((uint32_t) reply[1] << 8) | (uint32_t) reply[2];

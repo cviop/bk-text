@@ -1,0 +1,2 @@
+    SPITransmitData = CONVERT_D2_COMMAND | Temperature_OSR;
+    HAL_SPI_Transmit(hspi, &SPITransmitData, 1, 10);

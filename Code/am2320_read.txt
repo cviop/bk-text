@@ -1,0 +1,1 @@
+    HAL_I2C_Master_Receive(am2320->i2c_handle, am2320->device_address,am2320->data, 8, HAL_MAX_DELAY;
