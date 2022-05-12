@@ -172,36 +172,54 @@ tato práce ze zabývá... ano zabývá se... pyčo
 		Níže jsou zmíněny druhy čidel, které jsou nutné pro měření podmínek v troposféře, které ovlivňují přenos radiového signálu. Jak již bylo zmíněno, senzory musí být schopny měřit veličiny v rozsahu hodnot, které panují ve troposféře. Velký výběr modulů s mnohými senzory a dalšími elektrickými součástkami nabízí firma \textit{Microelektronika}. Jená se o produky využívané pro výuku a rychlý vývoj. Výhodou je jejich sjednocený pinout a stejné rozměry konektoru (pinové lišty).
 
 		\subsection{GPS modul}
-		GPS moduly jsou zpravidla omezeny dvěma parametry. Maximální nadmořsou výškou 18~km a maximální rychlostí 515~m/s vůči zemi https://www.ecfr.gov/current/title-22/part-121. Někteří výrobci GPS modulů berou tato omezení v konjunkci, kdy pro zablokování modulu musí platit obě podmínky, někteří výrobci uvažují  disjunkci, kdy stačí, aby nastala jedna z pomínek a modul přestane dávat validní data. Modul, který byl vybrán je u-blox SAM-M8Q. Podle dokumentace GPS modulu (\url{https://www.u-blox.com/sites/default/files/SAM-M8Q_DataSheet_%28UBX-16012619%29.pdf}) je maximální výška 50~km a maximální rychlost 500~m/s. V případě letu balónu nebude splněna ani jedna z podmínek. 
+		GPS moduly jsou zpravidla omezeny dvěma parametry. Maximální nadmořsou výškou 18~km a maximální rychlostí 515~m/s vůči zemi https://www.ecfr.gov/current/title-22/part-121. Někteří výrobci GPS modulů berou tato omezení v konjunkci, kdy pro zablokování modulu musí platit obě podmínky, někteří výrobci uvažují  disjunkci, kdy stačí, aby nastala jedna z pomínek a modul přestane dávat validní data. Modul, který byl vybrán je u-blox SAM-M8Q. Podle dokumentace GPS modulu (\url{https://www.u-blox.com/sites/default/files/SAM-M8Q_DataSheet_%28UBX-16012619%29.pdf}) je maximální výška 50~km a maximální rychlost 500~m/s. V případě letu balónu nebude splněna ani jedna z podmínek. Tento GPS modul je součástí vývojového modulu GNSS 4 Click od firmy \textit{Microelektronika}.
 
-		U-blox moduly nabízí široké množství módů podle použití. Pro běžné použití se využívá mód \textit{Portable}. Jedná se o kompromis mezi rozsahem a přesností určení pozice. Další módy jsou zobrazeny v tabulce 
+		U-blox moduly nabízí široké množství pracovních módů podle charakter použití. Pro běžné použití se využívá mód \textit{Portable}. Jedná se o kompromis mezi rozsahem a přesností určení pozice. Další módy jsou zobrazeny v tabulce \ref{tab:ublox:modes}. V případě sondy byl zvolen mód Airborne \textless{}1g. Při letu sondy není očekáváno zrychlení přesahující 1~g a rychlosti nad 100~m/s (360~km/h). 
 		\begin{table}[]
 			\centering
-			\label{tab:ublox:modes}
 			\caption{Módy GPS přijímačů u-blox}
-				\begin{tabular}{lcccc}
+			\label{tab:ublox:modes}
+			\begin{tabular}{|l|c|c|c|c|}
 				Platform &
 				Max Altitude{[}m{]} &
 				\begin{tabular}[c]{@{}c@{}}MAX Horizontal\\ Velocity {[}m/s{]}\end{tabular} &
 				\begin{tabular}[c]{@{}c@{}}MAX Vertical\\ Velocity {[}m/s{]}\end{tabular} &
-				\begin{tabular}[c]{@{}c@{}}Max Position \\ Deviation\end{tabular} \\
-				Portable               & 12000 & 310 & 50  & Medium \\
-				Stationary             & 9000  & 10  & 6   & Small  \\
-				Pedestrian             & 9000  & 30  & 20  & Small  \\
-				Automotive             & 6000  & 84  & 15  & Medium \\
-				At sea                 & 500   & 25  & 5   & Medium \\
-				Airborne \textless{}1g & 50000 & 100 & 100 & Large  \\
-				Airborne \textless{}2g & 50000 & 250 & 100 & Large  \\
-				Airborne \textless{}4g & 50000 & 500 & 100 & Large 
+				\begin{tabular}[c]{@{}c@{}}Max Position \\ Deviation\end{tabular} \\\hline
+				Portable               	& 12000 & 310 & 50  & Medium \\\hline
+				Stationary             	& 9000  & 10  & 6   & Small  \\\hline
+				Pedestrian             	& 9000  & 30  & 20  & Small  \\\hline
+				Automotive             	& 6000  & 84  & 15  & Medium \\\hline
+				At sea                 	& 500   & 25  & 5   & Medium \\\hline
+				Airborne \textless{}1g 	& 50000 & 100 & 100 & Large  \\\hline
+				Airborne \textless{}2g 	& 50000 & 250 & 100 & Large  \\\hline
+				Airborne \textless{}4g 	& 50000 & 500 & 100 & Large  \\\hline
 				\end{tabular}
 			\end{table}
-		\subsection{Teplotní čidlo}
-		\subsection{Tlakové čidlo}
+		
+		\subsection{Teplotní a tlakové čidlo}
+		S ohledem na očekávané rozsahy měřeného tlaku a teploty byl vybrán senzor MS5607 od firmy \textit{TE Connectivity}. Rozsahy měřitelných hodnot jsou zaneseny v tabulce \ref{tab:ms:range}.
+		
+		\begin{table}[]
+			\begin{tabular}{|l|lll|l|}
+			\hline
+			Pressure   & \multicolumn{1}{l|}{Min}  & \multicolumn{1}{l|}{Typ} & Max  & Unit \\ \hline
+			Range      & \multicolumn{1}{l|}{10}   & \multicolumn{1}{l|}{}    & 1200 & mbar \\ \hline
+			Range      & \multicolumn{1}{l|}{-40}  & \multicolumn{1}{l|}{}    & 85   & °C   \\ \hline
+			Resolution & \multicolumn{3}{c|}{\textless{}0.01}                        & °C   \\ \hline
+			Accuracy   & \multicolumn{1}{l|}{-0.8} & \multicolumn{1}{l|}{}    & 0.8  & °C   \\ \hline
+			\end{tabular}
+			\caption{Rozsah senzoru MS5607, převzato z \url{https://www.parallax.com/package/altimeter-module-ms5607-datasheet})}
+			\label{tab:ms:range}
+		\end{table}
+
+		
 		\subsection{Vlhkostní čidlo}
 		\subsection{Senzor orientace}
 		
+		
+		
 		\subsection{Napájení}
-		Jako zdroj energie po dobu letu byly vybrány tužkové baterie \textit{Energizer ultimate lithium}. Dle technického listu (odkaz) jsou schopny operovat až do teploty -40~°C při poklesu kapacity z xxx na xxx mAh. S ohledem na teploty panující ve stratopauze, které klesají až k -60~°C, byl počet zvýšen na 10 ks, nechávající kapacitní rezervu. 
+		Jako zdroj energie po dobu letu byly vybrány tužkové baterie \textit{Energizer ultimate lithium}. Dle technického listu (https://data.energizer.com/pdfs/l91.pdf) jsou schopny operovat až do teploty -40~°C při poklesu kapacity z xxx na xxx mAh. S ohledem na teploty panující ve stratopauze, které klesají až k -60~°C, byl počet zvýšen na 10 ks, nechávající kapacitní rezervu. 
 
 		\subsubsection{Zdroje}
 		Vstupní napětí se v závislosti na teplotě a momentálním odběru pohybuje od 18~V do 10~V. Pro zvýšení účinnosti byl jako hlavní regulátor využit spínaný zdroj. S ohledem na dostupnost součástek a ověřenost funkčnosti byl vybrán spínaný zdroj \textit{LMR33630} od firmy \textit{Texas Instruments}. Účinnost tohoto zdroje se pohybuje od TODO: zjistit z DSH. 
