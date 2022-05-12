@@ -149,9 +149,11 @@ tato práce ze zabývá... ano zabývá se...
 	
 	\section{Elektronika sondy}
 	%součástky do -40, nízký tlak (bez elektrolytických kond.), dosah 40+ km
-	V samotném návrhu elektroniky sondy bylo možné zvolit jednu ze dvou cest. Níže práce popisuje výhody, nevýhody a možné rizika každé z nich a cestu, která byla zvolena při řešení této práce. Zmíněny jsou jak robustnost řešení, tak možná rizika způsobené lidským faktorem a časová náročnost.
 	
-		\subsection{Vývojové moduly}
+	
+		\subsection{Způsob řešení elektroniky}
+		V samotném návrhu elektroniky sondy bylo možné zvolit jednu ze dvou cest. Níže práce popisuje výhody, nevýhody a možná rizika každé z nich. Dále zdůvodňuje cestu, která byla zvolena při řešení této práce. Zmíněny jsou jak robustnost řešení, tak možná rizika způsobené lidským faktorem a časová náročnost.
+
 		%snadné na vývoj a odladění, snadná změna zapojení pří psaní kódu
 		V dnešní době existuje veliké množství mikročipů a MEMS čipů, které lze zakoupit ve formě modulů. Jedná se zpravidla o malé deky plošných spojů osazených konkrétními čipy s minimem potřebných součástek zajišťujících správné fungování. Zpravidla se jedná o blokovací kondenzátory umístěné v bezprostřední blízkosti čipů, poskytující elektrickou energii při rázovém odběru. Moduly mají vyvedené piny mikročipů na pinové lišty nacházející se na okraji PCB. 
 		
@@ -161,7 +163,7 @@ tato práce ze zabývá... ano zabývá se...
 
 		Nevýhoda tohoto řešení je malá robustnost zapojení. Komunikační cesty mezi mikroprocesorem a senzory jsou zbytečné dlouhé, jelikož jsou podřízeny umístění pinů na pinových lištách. Další nevýhodou je nemožnost ovlivnit umístění blokovacích kondenzátorů u mikroprocesoru a nebo zvýšení jejich počtu. Vývojový kit Nucelo není tvořen s ohledem na malé rozměry a velikost PCB tohoto kitu ovlivňuje celkovou velikost elektroniky sondy.
 
-		\subsection{Samostatná deska plošných spojů}
+		
 		Druhá cesta, kterou je možná se vydat při vývoji elektroniky v sondě je samostatná deska, která obsahuje jednotlivé mikročipy bez jejich modulů a separátních PCB. Díky tomu je možné minimalizovat vzdálenost mezi mikroprocesorem a senzory a zvýšit robustnost napájení čipů. Celková velikost desky je poté dána především schopnostmi návrháře. 
 		
 		Toto řešení je ale časové náročné a v případě způsobené chyby se špatně ladí. V případě zničení, nebo nefunkčnosti nějaké elektronické součástky je nutné její odpájení z desky, což může ohrozit komponenty v okolí. V případě modulů lze vyměnit modul samotný.
