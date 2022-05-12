@@ -7,6 +7,32 @@
 \documentclass[twoside]{ctuthesis}
 \usepackage{float}
 \usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{listings}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour}, commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+\lstset{style=mystyle}
+
 \ctusetup{
 	preprint = \ctuverlog,
 %	mainlanguage = english,
@@ -216,7 +242,7 @@ tato práce ze zabývá... ano zabývá se...
 
 		
 		\subsection{Vlhkostní senzor}
-		Vlhkostní senzor byl zvolen CM2322, který je součástí modulu DHT22 Click od firmy \textit{Microelektronika}. Senzor je schopen měřit v rozsahu od -40 do 80~°C a 0 až 100~\% relativní vlhkosti (\url{https://www.farnell.com/datasheets/2618831.pdf}). 
+		Vlhkostní senzor byl zvolen AM2320, který je součástí modulu DHT22 Click od firmy \textit{Microelektronika}. Senzor je schopen měřit v rozsahu od -40 do 80~°C a 0 až 100~\% relativní vlhkosti (\url{https://cdn-shop.adafruit.com/product-files/3721/AM2320.pdf}). 
 
 		\subsection{Senzor orientace}
 		Pro zjištění orientace bylo použito senzoru MPU9250, který je součástí modulu 9DOF Click. Jedná se o gyroskop Senzor resp. modul byl vybrán, jelikož byl již dříve používán na jiných projektech a byl ihned dostupný. Díky tomu bylo ihned možné přejít ke psaní ovladače pro vyčítání dat a jeho implementaci do systému. Senzor také splňuje rozsah pracovních teplot a lze tedy využít v podmínkách, které při letu nastanou (\url{https://invensense.tdk.com/wp-content/uploads/2015/02/PS-MPU-9250A-01-v1.1.pdf}).  
@@ -250,6 +276,34 @@ tato práce ze zabývá... ano zabývá se...
 
 	Nutnou součástí firmwaru je také ošetření chybových stavů a možných errorů, vyvolaných chybným čtením dat a nebo fyzickými podmínkami prostředí.
 	%čtení ze senzorů, parsování dat, posílání na zem a na sd kartu, odolnost, měření náklonu - jak?
+		\subsection{Obsluha senzorů}
+		Pro vyčítání dat ze senzorů bylo potřeba napsání driveru. Ten má za úkol jak vyčtení dat ze senzoru, tak jeho samotnou inicializaci a nastavení. 
+
+		Výčet dat ze senzoru AM2320 probíhá příkazem
+		\begin{lstlisting}[language=C]
+	uint8_t registers[3] = { 0x03, 0x00, 0x04 };
+	HAL_I2C_Master_Transmit(am2320->i2c_handle, am2320->device_address,registers, 3, HAL_MAX_DELAY);
+		\end{lstlisting}
+
+		Senzor následně vyšle data obsahující informace o vlhkosti a teplotě. Jejich příjem zajišťuje funkce
+		\begin{lstlisting}[language=C]
+	HAL_I2C_Master_Receive(am2320->i2c_handle, am2320->device_address,am2320->data, 8, HAL_MAX_DELAY;
+		\end{lstlisting}
+
+		Způsob přepočtu získaných dat na hodnoty teploty a tlaku je popsán v dokumentaci senzoru. Kód pro přepočet je následující:
+		\begin{lstlisting}[language=C]
+	int16_t temp_temperature = (am2320->data[5] | am2320->data[4] << 8);
+	if (temp_temperature & 0x8000) {
+		temp_temperature = -(int16_t) (temp_temperature & 0x7fff);
+	} else {
+		temp_temperature = (int16_t) temp_temperature;
+	}
+	*temperature = (float) temp_temperature / 10.0;
+	*humidity = (float) (am2320->data[3] | am2320->data[2] << 8) / 10.0;
+		\end{lstlisting}
+
+		
+	
 		\subsection{Měření náklonu sondy}
 		Acc, vektor mag pole, kalmánův filtr, co bylo použito
 
