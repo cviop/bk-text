@@ -393,9 +393,16 @@ tato práce ze zabývá... ano zabývá se...
 	\lstinputlisting[language=C]{Code/MPU_read_CMD.c}
 	Senzor následně vyšle hodnoty daného registru a jejich příjem proběhne pomocí funkce níže.
 	\lstinputlisting[language=C]{Code/MPU_read.c}
-	
+
 	\subsection{Zjištění náklonu sondy}
-	Acc, vektor mag pole, kalmánův filtr, co bylo použito
+	TODO:
+	\begin{enumerate}
+		\item Obr. kyvadla a sil - nelze měřit náklon pomocí acc
+  		\item Nelze měřit přes mag - vizualizace rotace kolem vektoru mag. pole
+    	\item Řešení v flightcontrollerech na dronech - kalman, příliš složité na implementaci, komplementární filtr
+     	\item Moje řešení
+	\end{enumerate}
+	
 
 
 \section{Pozemní stanice}
