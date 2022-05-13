@@ -288,6 +288,18 @@ tato práce ze zabývá... ano zabývá se...
 		Způsob přepočtu získaných dat na hodnoty teploty a tlaku je popsán v dokumentaci senzoru. Kód pro přepočet je následující:
 		\lstinputlisting[language=C]{Code/am2320_get_values.txt}
 
+		Pro senzor teploty a tlaku MS5607 je způsob výčtu dat obdobný. Nejdříve se pošle žádost o převod hodnoty jdoucí ze senzoru.
+		\lstinputlisting[language=C]{Code/ms5607_convert_press.txt}
+		Následně se pošle žádost o vyčtení hodnot 24bit analogově digitálního převodníku pomocí následujícího kódu.
+		\lstinputlisting[language=C]{Code/ms5607_get_press.txt}
+
+		Hodnoty změřené tímto způsobem jsou nekompenzované a jsou ovlivněny nelinearitou senzoru. Pro správnou kompenzaci teploty a tlaku je zapotřebí využít vývojový diagram na obr. \ref{fig:ms5607:flowchart}.
+		\begin{figure}
+			\centering
+			\includegraphics[width=.7\textwidth]{Figures/MS5607_flowchart.pdf}
+			\caption{Vývojový diagram pro kompenzaci měřených hodnot senzorem MS5607, převzato z \url{https://www.parallax.com/package/altimeter-module-ms5607-datasheet/}}
+			\label{fig:ms5607:flowchart}
+		\end{figure}
 	
 		\subsection{Měření náklonu sondy}
 		Acc, vektor mag pole, kalmánův filtr, co bylo použito
