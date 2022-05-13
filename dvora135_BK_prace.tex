@@ -276,43 +276,7 @@ tato práce ze zabývá... ano zabývá se...
 
 	Nutnou součástí firmwaru je také ošetření chybových stavů a možných errorů, vyvolaných chybným čtením dat a nebo fyzickými podmínkami prostředí.
 	%čtení ze senzorů, parsování dat, posílání na zem a na sd kartu, odolnost, měření náklonu - jak?
-		\subsection{Obsluha senzorů}
-		Pro vyčítání dat ze senzorů bylo potřeba napsání driveru. Ten má za úkol jak vyčtení dat ze senzoru, tak jeho samotnou inicializaci a nastavení. 
-
-		Výčet dat ze senzoru AM2320 probíhá příkazem
-		\lstinputlisting[language=C]{Code/am2320_write.txt}
-
-		Senzor následně vyšle data obsahující informace o vlhkosti a teplotě. Jejich příjem zajišťuje funkce
-		\lstinputlisting[language=C]{Code/am2320_read.txt}
-
-		Způsob přepočtu získaných dat na hodnoty teploty a tlaku je popsán v dokumentaci senzoru. Kód pro přepočet je následující:
-		\lstinputlisting[language=C]{Code/am2320_get_values.txt}
-
-		Pro senzor teploty a tlaku MS5607 je způsob výčtu dat obdobný. Nejdříve se pošle žádost o převod hodnoty jdoucí ze senzoru.
-		\lstinputlisting[language=C]{Code/ms5607_convert_press.txt}
-		Následně se pošle žádost o vyčtení hodnot 24bit analogově digitálního převodníku pomocí následujícího kódu.
-		\lstinputlisting[language=C]{Code/ms5607_get_press.txt}
-
-		Hodnoty změřené tímto způsobem jsou nekompenzované a jsou ovlivněny nelinearitou senzoru. Pro správnou kompenzaci teploty a tlaku je zapotřebí využít vývojový diagram na obr. \ref{fig:ms5607:flowchart}.
-		\begin{figure}
-			\centering
-			\includegraphics[width=.7\textwidth]{Figures/MS5607_flowchart.pdf}
-			\caption{Vývojový diagram pro kompenzaci měřených hodnot senzorem MS5607, převzato z \url{https://www.parallax.com/package/altimeter-module-ms5607-datasheet/}}
-			\label{fig:ms5607:flowchart}
-		\end{figure}
 	
-		\subsection{Měření náklonu sondy}
-		Acc, vektor mag pole, kalmánův filtr, co bylo použito
-
-	
-	\section{Pozemní stanice}
-	Firmware pro mikroprocesor v pozemní stanici zodpovídá za správné dekódování přijatých telemetrických údajů. Firmware musí určit, která data jsou validní. Přijatá data je poté nutno zformátovat do zprávy určené pro anténní tracker, umístěný na střeše budovy FEL. Firmware musí být odolný vůči náhodným chybám způsobených přenosem na velkou vzdálenost. Příjem i posílání dat probíhá přes sériovou linku. 
-
-	Elektronika pozemní stanice není vystavena extrémním podmínkám a není nutné řešit její odolnost vůči vnějším vlivům. 
-
-	\section{Software pro zobrazení telemetrických údajů}
-	Software určený pro příjem dat na počítači umístěném v automobilu jedoucí ve směru dopadu sondy. Software musí určit validní data a vyznačit GPS pozici sondy na mapě. Další funkcí softwaru je výpis souřadnic, výšky a rychlosti sondy a teploty okolí sondy. Data jdoucí do programu jsou posílána přes sériovou linkou z přijímače signálu vysílaného sondou. 
-
 
 \chapter{Realizace}
 
@@ -400,6 +364,48 @@ tato práce ze zabývá... ano zabývá se...
 	model PCB, model sondy, iterace, odlehčování, připojení sondy čhmú, bezpečnostní závěsy
 
 	\section{Firmware}
+	\subsection{Obsluha senzorů}
+	Pro vyčítání dat ze senzorů bylo potřeba napsání driveru. Ten má za úkol jak vyčtení dat ze senzoru, tak jeho samotnou inicializaci a nastavení. 
+
+	Výčet dat ze senzoru AM2320 probíhá příkazem
+	\lstinputlisting[language=C]{Code/am2320_write.txt}
+
+	Senzor následně vyšle data obsahující informace o vlhkosti a teplotě. Jejich příjem zajišťuje funkce
+	\lstinputlisting[language=C]{Code/am2320_read.txt}
+
+	Způsob přepočtu získaných dat na hodnoty teploty a tlaku je popsán v dokumentaci senzoru. Kód pro přepočet je následující:
+	\lstinputlisting[language=C]{Code/am2320_get_values.txt}
+
+	Pro senzor teploty a tlaku MS5607 je způsob výčtu dat obdobný. Nejdříve se pošle žádost o převod hodnoty jdoucí ze senzoru.
+	\lstinputlisting[language=C]{Code/ms5607_convert_press.txt}
+	Následně se pošle žádost o vyčtení hodnot 24bit analogově digitálního převodníku pomocí následujícího kódu.
+	\lstinputlisting[language=C]{Code/ms5607_get_press.txt}
+
+	Hodnoty změřené tímto způsobem jsou nekompenzované a jsou ovlivněny nelinearitou senzoru. Pro správnou kompenzaci teploty a tlaku je zapotřebí využít vývojový diagram na obr. \ref{fig:ms5607:flowchart}.
+	\begin{figure}
+		\centering
+		\includegraphics[width=.7\textwidth]{Figures/MS5607_flowchart.pdf}
+		\caption{Vývojový diagram pro kompenzaci měřených hodnot senzorem MS5607, převzato z \url{https://www.parallax.com/package/altimeter-module-ms5607-datasheet/}}
+		\label{fig:ms5607:flowchart}
+	\end{figure}
+
+	Na rozdíl od předešlých senzorů, tento senzor měří hodnoty a ukládá je do příslušných registrů průběžně. Registry senzoru jsou popsány v dokumentu \url{https://invensense.tdk.com/wp-content/uploads/2015/02/RM-MPU-9250A-00-v1.6.pdf}. Slouží k nastavení senzoru samotného, jeho identifikaci a k výčtu naměřených dat. U senzoru je potřeba nastavit vzorkovací frekvenci, rozsahy měřených hodnot a zdroj hodin. Pro následný přístup k datům na dané adrese se využije následujícího příkazu.
+	\lstinputlisting[language=C]{Code/MPU_read_CMD.c}
+	Senzor následně vyšle hodnoty daného registru a jejich příjem proběhne pomocí funkce níže.
+	\lstinputlisting[language=C]{Code/MPU_read.c}
+	
+	\subsection{Zjištění náklonu sondy}
+	Acc, vektor mag pole, kalmánův filtr, co bylo použito
+
+
+\section{Pozemní stanice}
+Firmware pro mikroprocesor v pozemní stanici zodpovídá za správné dekódování přijatých telemetrických údajů. Firmware musí určit, která data jsou validní. Přijatá data je poté nutno zformátovat do zprávy určené pro anténní tracker, umístěný na střeše budovy FEL. Firmware musí být odolný vůči náhodným chybám způsobených přenosem na velkou vzdálenost. Příjem i posílání dat probíhá přes sériovou linku. 
+
+Elektronika pozemní stanice není vystavena extrémním podmínkám a není nutné řešit její odolnost vůči vnějším vlivům. 
+
+\section{Software pro zobrazení telemetrických údajů}
+Software určený pro příjem dat na počítači umístěném v automobilu jedoucí ve směru dopadu sondy. Software musí určit validní data a vyznačit GPS pozici sondy na mapě. Další funkcí softwaru je výpis souřadnic, výšky a rychlosti sondy a teploty okolí sondy. Data jdoucí do programu jsou posílána přes sériovou linkou z přijímače signálu vysílaného sondou. 
+
 	výstřizky kódu z driverů, sample GPS dat, vyčítání z teplota/tlak, tlak/vlhkost, gyro/acc/mag, parsovací funkce, změřené minimum accelerace v z-ose, sešití dat, watchdog, reset při erroru
 
 	\section{Software}
