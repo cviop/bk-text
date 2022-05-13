@@ -7,12 +7,15 @@
 \documentclass[twoside]{ctuthesis}
 \usepackage{float}
 \usepackage{subcaption}
-\usepackage{xcolor}
 \usepackage{listings}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{longtable}
+
+
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{backcolour}{HTML}{e5ecf6}
 
 \lstdefinestyle{mystyle}{
   backgroundcolor=\color{backcolour}, commentstyle=\color{codegreen},
@@ -505,7 +508,43 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 	Senzor následně vyšle hodnoty daného registru a jejich příjem proběhne pomocí funkce níže. Hodnoty ReadAddr a READWRITE\_CMD jsou definovány v \url{https://invensense.tdk.com/wp-content/uploads/2015/02/RM-MPU-9250A-00-v1.6.pdf}.
 	\lstinputlisting[language=C]{Code/MPU_read.c}
 	
-	
+	\subsection{Rozebírání GPS dat}
+	Data jsou GPS přijímačem posílána každou sekundu přes sériovou linku ve formátu NMEA zpráv (\url{https://www.sparkfun.com/datasheets/GPS/NMEA%20Reference%20Manual-Rev2.1-Dec07.pdf}). Jedná se o standardizovaný formát GPS dat specifikovaný organizací NMEA (\textbf{N}ational \textbf{M}arine \textbf{E}lectronics \textbf{A}ssociation). Příklad NMEA zpráv je zanesen níže.
+	\begin{lstlisting}
+$GPRMC,132456.00,A,5005.77089,N,01421.46534,E,1.157,,290122,,,A*78
+$GPVTG,,T,,M,1.157,N,2.144,K,A*22
+$GPGGA,132456.00,5005.77089,N,01421.46534,E,1,05,1.79,294.0,M,44.4,M,,*5D
+$GPGSA,A,3,17,06,24,02,15,,,,,,,,2.46,1.79,1.70*0B
+$GPGSV,4,1,13,02,11,134,21,06,20,090,23,10,02,270,,11,06,128,19*76
+$GPGSV,4,2,13,12,70,261,,15,10,185,15,17,17,041,13,19,37,054,*7B
+$GPGSV,4,3,13,22,10,325,,24,72,147,23,25,31,257,08,28,08,068,21*7B
+$GPGSV,4,4,13,32,25,313,*4C
+$GPGLL,5005.77089,N,01421.46534,E,132456.00,A,A*69\end{lstlisting}
+
+Pro určení polohy sondy je dostačující zpráva \$GPGLL. Informace obsažené v této zprávě jsou vysvětleny v tabulce %\ref{tab:GLL}.
+\begin{longtable}[c]{|l|l|l|}
+	\hline
+	\rowcolor[HTML]{e5ecf6} 
+	\multicolumn{1}{|c|}{\cellcolor[HTML]{DEDFF4}Název} &
+	  \multicolumn{1}{c|}{\cellcolor[HTML]{DEDFF4}Příklad} &
+	  \multicolumn{1}{c|}{\cellcolor[HTML]{DEDFF4}Popis} \\ \hline
+	\endhead
+	%
+	Identifikátor zprávy & \$GPGLL      & GLL hlavička \\ \hline
+	Zem. Šířka           & 5005.77089  & ddmm.mmmm    \\ \hline
+	N/S (Sever/Jih)      & N           &              \\ \hline
+	Zem. Délka           & 01421.46534 & dddmm.mmmm   \\ \hline
+	E/W (Východ/Západ)   & E           &              \\ \hline
+	UTC Čas              & 132456.00   & hhmmss.sss   \\ \hline
+	Status &
+	  A &
+	  \begin{tabular}[c]{@{}l@{}}A - data jsou validní\\ V  data nejsou   validní\end{tabular} \\ \hline
+	Mód &
+	  A &
+	  \begin{tabular}[c]{@{}l@{}}A - autonomous\\ D - DGPS\\ E - DR\end{tabular} \\ \hline
+	Checksum             & *69         &              \\ \hline
+	<CR> <LF>            &             & Konec zprávy \\ \hline
+	\end{longtable}
 
 
 		
@@ -537,7 +576,45 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 
 
 
-
+	\section{Pozemní stanice}
+	\subsection{Firmware}
+	% Please add the following required packages to your document preamble:
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+% \usepackage{longtable}
+% Note: It may be necessary to compile the document several times to get a multi-page table to line up properly
+\begin{longtable}[c]{|l|l|l|l|}
+	\caption{Formát GPGGA zprávy}
+	\label{tab:GPGGA}\\
+	\hline
+	\rowcolor[HTML]{E5ECF6} 
+	\multicolumn{1}{|c|}{\cellcolor[HTML]{E5ECF6}Název} &
+  	\multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}Příklad} &
+  	\multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}Jednotky} &
+  	\multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}Popis} \\ \hline
+	\endhead
+	%
+	Identifikátor zprávy          & \$GPGGA     &         & GGA hlavička                \\ \hline
+	UTC Čas                       & 132456     &         & hhmmss.sss                  \\ \hline
+	Zem. Šířka                    & 5005.77089 &         & ddmm.mmmm                   \\ \hline
+	N/S (Sever/Jih)               & N          &         &                             \\ \hline
+	Zem. Délka                    & 1421.46534 &         & dddmm.mmmm                  \\ \hline
+	E/W (Východ/Západ)            & W          &         &                             \\ \hline
+	Druh určení pozice &
+	1 &
+	&
+	\begin{tabular}[c]{@{}l@{}}0 data nejsou validní\\ 1 data jsou validní\\ 2 diferenciáln í GPS\end{tabular} \\ \hline
+	Počet využitých satelitů      & 5          &         &                             \\ \hline
+	HDOP                          & 1.79       &         &                             \\ \hline
+	Nadmořská výška               & 294        & metry   &                             \\ \hline
+	Jednotky                      & M          & metry   &                             \\ \hline
+	Odchýlení od geoidu           & 44.4       & metry   & Separace geoidu a elipsoidu \\ \hline
+	Jednotky                      & M          & metry   &                             \\ \hline
+	Stáří rozdílové korekce       &            & sekundy &                             \\ \hline
+	Identifikátor rozd. reference &            &         &                             \\ \hline
+	Checksum                      & *5D        &         &                             \\ \hline
+	<CR> <LF>                     &            &         & Konec zprávy                \\ \hline
+	\end{longtable}
 
 
 	\section{Software pro zobrazení telemetrických údajů}
