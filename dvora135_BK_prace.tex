@@ -17,6 +17,9 @@
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{HTML}{e5ecf6}
 
+\renewcommand{\lstlistingname}{Ukázka kódu}% Listing -> Algorithm
+\renewcommand{\lstlistlistingname}{Seznam ukázek kódu}% List of Listings -> List of Algorithms
+
 \lstdefinestyle{mystyle}{
   backgroundcolor=\color{backcolour}, commentstyle=\color{codegreen},
   keywordstyle=\color{magenta},
@@ -545,16 +548,18 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 	Délka zprávy odeslané GPS přijímačem se liší podle dostupných údajů. Pokud GPS nezná svou polohu, pole pro zeměpisnou šířku a délku jsou prázdná. Proto nemůžeme příjimat zprávu fixní velikost. Způsob, kterým se ve firmwaru sondy NMEA zpráva přijímá je pomocí následující funkce.
 	\lstinputlisting[language=C]{Code/HAL_UARTEx_ReceiveToIdle_IT.c}
 
-	Tato funkce přijímá data až do doby, kdy nenastane klidový stav - GPS přestane vysílat data. V ten moment se vyvolá callback funkce:
-	\lstinputlisting[language=C]{Code/callback.c}
+	Tato funkce přijímá data až do doby, kdy nenastane klidový stav - GPS přestane vysílat data. V ten moment se vyvolá callback funkce zanesená 
+	\lstinputlisting[language=C,caption={Callback funkce vyvolaná interruptem}, label={lst:main:callback}]{Code/callback.c}
 	V této funkci se do globální proměnné DataRecieved uloží velikost přijatých dat. Pokud je v hlavní smyčce programu splněna podmínka, že DataRecieved > 0, program začne rozebírání přijatých dat funkcí níže. Pro rozdělení přijatých dat na jednotlivé NMEA zprávy se využívá znaků <CR> <LF>, které se nacházejí na konci každého řádku. Součástí vyslaných dat jsou i \$GPGSV zprávy obsahující informace o viditelných satelitech. Zpráv tohoto typu je vysílá několik po sobě a počet vyslaných zpráv je zanesen v prvním poli této zprávy.
 
-	\lstinputlisting[language=C]{Code/main_parse.c}
+	\lstinputlisting[language=C,caption={Hlavní parsovací funkce}, label={lst:main:parse}]{Code/main_parse.c}
 
-	Funkce uloží data do bufferu GPSparse tvořeného 2D polem a zjistí počet \$GPGSV zpráv.
+	Funkce uloží data do bufferu \lstinline{uint8_t GPSparse[15][200] = }  tvořeného 2D polem a zjistí počet \$GPGSV zpráv.
 
 	Volání funkce v hlavní smyčce programu vypadá následovně.
 	\lstinputlisting[language=C]{Code/parse_in_main.c}
+
+
 
 
 
