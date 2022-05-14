@@ -11,6 +11,8 @@
 \usepackage[table,xcdraw]{xcolor}
 \usepackage{longtable}
 
+\usepackage[tableposition=top]{caption}
+
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -21,21 +23,23 @@
 \renewcommand{\lstlistlistingname}{Seznam ukázek kódu}% List of Listings -> List of Algorithms
 
 \lstdefinestyle{mystyle}{
-  backgroundcolor=\color{backcolour}, commentstyle=\color{codegreen},
-  keywordstyle=\color{magenta},
-  numberstyle=\tiny\color{codegray},
-  stringstyle=\color{codepurple},
-  basicstyle=\ttfamily\footnotesize,
-  breakatwhitespace=false,         
-  breaklines=true,                 
-  captionpos=b,                    
-  keepspaces=true,                 
-  numbers=left,                    
-  numbersep=5pt,                  
-  showspaces=false,                
-  showstringspaces=false,
-  showtabs=false,                  
-  tabsize=2
+	backgroundcolor=\color{backcolour}, commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2,
+	emph={int,char,double,float,unsigned,void,bool, uint8_t, uint16_t, int8_t, int16_t},
+	emphstyle={\color{blue}}
 }
 \lstset{style=mystyle}
 
@@ -257,6 +261,7 @@ tato práce ze zabývá... ano zabývá se...
 
 
 	\section{Pozemní stanice}
+	\label{sec:navrh:pozemni_stanice}
 	Firmware pro mikroprocesor v pozemní stanici zodpovídá za správné dekódování přijatých telemetrických údajů. Firmware musí určit, která data jsou validní. Přijatá data je poté nutno zformátovat do zprávy určené pro anténní tracker, umístěný na střeše budovy FEL. Firmware musí být odolný vůči náhodným chybám způsobených přenosem na velkou vzdálenost. Příjem i posílání dat probíhá přes sériovou linku. 
 
 	Elektronika pozemní stanice není vystavena extrémním podmínkám a není nutné řešit její odolnost vůči vnějším vlivům. 
@@ -541,26 +546,134 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 		Mód &
 		A &
 		\begin{tabular}[c]{@{}l@{}}A - autonomous\\ D - DGPS\\ E - DR\end{tabular} \\ \hline
-		Checksum             & *69         &              \\ \hline
+		Kontrolní součet             & *69         &              \\ \hline
 		<CR> <LF>            &             & Konec zprávy \\ \hline
 	\end{longtable}
 
-	Délka zprávy odeslané GPS přijímačem se liší podle dostupných údajů. Pokud GPS nezná svou polohu, pole pro zeměpisnou šířku a délku jsou prázdná. Proto nemůžeme příjimat zprávu fixní velikost. Způsob, kterým se ve firmwaru sondy NMEA zpráva přijímá je pomocí následující funkce.
-	\lstinputlisting[language=C]{Code/HAL_UARTEx_ReceiveToIdle_IT.c}
+	Délka zprávy odeslané GPS přijímačem se liší podle dostupných údajů. Pokud GPS nezná svou polohu, pole pro zeměpisnou šířku a délku jsou prázdná. Proto nemůžeme očekávat zprávy fixní velikosti. Způsob, kterým se ve firmwaru sondy NMEA zpráva přijímá je znározněn v ukázce kódu \ref{code:ReceiveToIdle}.
+	\lstinputlisting[language=C, caption={Funkce pro příjem dat z GSP}, label={code:ReceiveToIdle}]{Code/HAL_UARTEx_ReceiveToIdle_IT.c}
 
-	Tato funkce přijímá data až do doby, kdy nenastane klidový stav - GPS přestane vysílat data. V ten moment se vyvolá callback funkce zanesená 
+	Tato funkce přijímá data až do doby, kdy nenastane klidový stav - GPS přestane vysílat data. V ten moment se vyvolá callback funkce.
 	\lstinputlisting[language=C,caption={Callback funkce vyvolaná interruptem}, label={lst:main:callback}]{Code/callback.c}
-	V této funkci se do globální proměnné DataRecieved uloží velikost přijatých dat. Pokud je v hlavní smyčce programu splněna podmínka, že DataRecieved > 0, program začne rozebírání přijatých dat funkcí níže. Pro rozdělení přijatých dat na jednotlivé NMEA zprávy se využívá znaků <CR> <LF>, které se nacházejí na konci každého řádku. Součástí vyslaných dat jsou i \$GPGSV zprávy obsahující informace o viditelných satelitech. Zpráv tohoto typu je vysílá několik po sobě a počet vyslaných zpráv je zanesen v prvním poli této zprávy.
+	V této funkci se do globální proměnné \lstinline[language=C] |uint16_t DataRecieved | uloží velikost přijatých dat. Pokud je v hlavní smyčce programu splněna podmínka, že \lstinline[language=C] |  DataRecieved > 0 |, program začne rozebírání přijatých dat funkcí \ref{lst:main:parse}. Pro rozdělení přijatých dat na jednotlivé NMEA zprávy se využívá znaků <CR> <LF>, které se nacházejí na konci každého řádku. 
+	
+	Součástí vyslaných dat jsou i \$GPGSV zprávy obsahující informace o viditelných satelitech. Zpráv tohoto typu je vysílá několik po sobě a počet vyslaných zpráv je zanesen v prvním poli této zprávy. Pro správně rozdělení přijatých dat je informace o počtu \$GPGSV zpráv nutná, jelikož ovlivňuje pořadí dalšách zpráv.
 
-	\lstinputlisting[language=C,caption={Hlavní parsovací funkce}, label={lst:main:parse}]{Code/main_parse.c}
+	Funkce \lstinline[language=C] |mainParse| v ukázce \ref{lst:main:parse} rozdělí a uloží data do bufferu \lstinline |uint8_t GPSparse[15][200] = {}|   tvořeného 2D polem a zjistí počet \$GPGSV zpráv.
 
-	Funkce uloží data do bufferu \lstinline{uint8_t GPSparse[15][200] = }  tvořeného 2D polem a zjistí počet \$GPGSV zpráv.
-
-	Volání funkce v hlavní smyčce programu vypadá následovně.
-	\lstinputlisting[language=C]{Code/parse_in_main.c}
-
+	\lstinputlisting[language=C++,caption={Hlavní parsovací funkce}, label={lst:main:parse}]{Code/main_parse.c}
 
 
+
+	Příklad volání funkce v hlavní smyčce programu je znázorněn v ukázce kódu \ref{lst:main:loop}.
+	\lstinputlisting[language=C, caption={Volání funkcí v hlavní smyčce programu}, label={lst:main:loop}]{Code/parse_in_main.txt}
+
+	Ve stejné větvi programu, kde se vykonává rozebírání NMEA zpráv, se vyčtou data ze senzorů. Tyto číslené hodnoty se poté převedou do textové podoby a přidají mezi vysílaná data. Převod z číselné hodnoty na textovou, obsahující ASCII znaky, slouží funkce \lstinline |ftoa()|, která převádí číslo typu float a funkce \lstinline[language=C] |itoa()| pro převod čísla typu int. 
+
+	Z rozebraných NMEA zpráv jsou poté vybrána data, která se spolu s naměřenými hodnotami ze senzorů, převedené do textové podoby, sešijí do první zprávy. Tato zpráva se posléze pošle skrze sériovou linku do radiového vysílače. K této zprávě se po odeslání přidají další data a zpráva je poslána do záznamníku, kde se uloží na SD kartu v lidsky čitelném formátu. Příklady vysílaných zpráv jsou v tabulkách \ref{tab:TX} a \ref{tab:SD}.
+
+	%telit data
+	\begin{table}[h]
+		\centering
+		\resizebox{\textwidth}{!}{%
+		\caption{Formát telemetrické zprávy}
+		\label{tab:TX}
+		\begin{tabular}{|l|ll|ll|l|l|l|l|}
+		\hline
+		\rowcolor[HTML]{E5ECF6} 
+		\multicolumn{1}{|c|}{\cellcolor[HTML]{E5ECF6}UTC čas} &
+		  \multicolumn{2}{c|}{\cellcolor[HTML]{E5ECF6}Zem. šířka (°)} &
+		  \multicolumn{2}{c|}{\cellcolor[HTML]{E5ECF6}Zem. Délka (°)} &
+		  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Nadmořská výška\\ (m)\end{tabular}} &
+		  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Ryhlost\\ (m/s)\end{tabular}} &
+		  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Teplota\\ (°C)\end{tabular}} &
+		  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Tlak\\ (Pa)\end{tabular}} \\ \hline
+		114231.00 &
+		  \multicolumn{1}{l|}{5001.76165} &
+		  N &
+		  \multicolumn{1}{l|}{01430.16855} &
+		  E &
+		  9510.0 &
+		  23.428 &
+		  -039.65 &
+		  0028254 \\ \hline
+		  \multicolumn{9}{c}{}\\
+		  \multicolumn{9}{c}{Přijatá zpráva: \lstinline |114231.00;5001.76165;N;01430.16855;E;9510.0;23.428;-039.65;0028254|}
+		\end{tabular}%
+		}
+		\end{table}
+
+	%SD data
+	\begin{table}[]
+		\caption{Formát dat ukládaných na SD kartu}
+		\label{tab:SD}
+		\centering
+		\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|l|ll|ll|l|l|l|l|l|l|l}
+		\hline
+		\rowcolor[HTML]{E5ECF6} 
+		\multicolumn{1}{|c|}{\cellcolor[HTML]{E5ECF6}UTC čas} &
+		  \multicolumn{2}{c|}{\cellcolor[HTML]{E5ECF6}Zem. šířka (°)} &
+		  \multicolumn{2}{c|}{\cellcolor[HTML]{E5ECF6}Zem. Délka (°)} &
+		  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Nadmořská výška\\ (m)\end{tabular}} &
+		  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Ryhlost\\ (m/s)\end{tabular}} &
+		  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Teplota\\ (°C)\end{tabular}} &
+		  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Tlak\\ (Pa)\end{tabular}} &
+		  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Teplota 2\\ (°C)\end{tabular}} &
+		  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Relativní vlhkost\\ (\%)\end{tabular}} &
+		  \multicolumn{1}{c}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Typ GPS\\ fixu\end{tabular}} \\ \hline
+		114231.00 &
+		  \multicolumn{1}{l|}{5001.76165} &
+		  N &
+		  \multicolumn{1}{l|}{01430.16855} &
+		  E &
+		  9510.0 &
+		  23.428 &
+		  -039.65 &
+		  0028254 &
+		  -40.5 &
+		  003.2 &
+		  2 \\ \hline
+		\end{tabular}
+		}
+		\begin{tabular}{c}
+			~
+		\end{tabular}
+		\resizebox{\textwidth}{!}{%
+		\begin{tabular}{l|l|l|l|l|lll|lll|lll|}
+			\hline
+			\rowcolor[HTML]{E5ECF6} 
+			\multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Počet viditelných\\ satelitů\end{tabular}} &
+			  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}PDOP} &
+			  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}HDOP} &
+			  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}VDOP} &
+			  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Nejmenší změřené\\ zrychlení v ose Z\end{tabular}} &
+			  \multicolumn{3}{c|}{\cellcolor[HTML]{E5ECF6}Velikost zrychlení} &
+			  \multicolumn{3}{c|}{\cellcolor[HTML]{E5ECF6}Velikost   úhlové rychlost} &
+			  \multicolumn{3}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Velikost intenzity\\ mag. pole\end{tabular}} \\ \hline
+			12 &
+			  1.32 &
+			  0.70 &
+			  1.12 &
+			  7062 &
+			  \multicolumn{1}{l|}{12} &
+			  \multicolumn{1}{l|}{-232} &
+			  8452 &
+			  \multicolumn{1}{l|}{52} &
+			  \multicolumn{1}{l|}{-117} &
+			  245 &
+			  \multicolumn{1}{l|}{-4218} &
+			  \multicolumn{1}{l|}{3765} &
+			  -3276 \\ \hline
+			  \multicolumn{14}{c}{}\\
+		  	  %\multicolumn{14}{c}{Přijatá zpráva: 114231.00;5001.76165;N;01430.16855;E;9510.0;23.428;-039.65;0028254;-40.5;003.2;2;12;1.32;0.70;1.12;7062;12;-232;8452;52;-117;245;-4218;3765;-3276;}
+			\end{tabular}
+			}
+		\end{table}
+		
+
+
+	
 
 
 
@@ -584,7 +697,7 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 
 	
 
-	parsování příchozích dat, doplnění NMEA zprávy pro tracker, python - parsování a přepočítání souřadnic, zobrazení na mapě, zobrazení v terminálu
+	
 
 
 
@@ -593,12 +706,19 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 
 
 	\section{Pozemní stanice}
-	\subsection{Firmware}
-	% Please add the following required packages to your document preamble:
-% \usepackage[table,xcdraw]{xcolor}
-% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
-% \usepackage{longtable}
-% Note: It may be necessary to compile the document several times to get a multi-page table to line up properly
+	výstřizky kódu z driverů, sample GPS dat, vyčítání z teplota/tlak, tlak/vlhkost, gyro/acc/mag, parsovací funkce, změřené minimum accelerace v z-ose, sešití dat, watchdog, reset při erroru
+
+	Jak již bylo zmíněno v kapitole \ref{sec:navrh:pozemni_stanice}, úkolem pozemní stanice je překládat přijímaná data zpět do formátu NMEA GPGGA zprávy, určené pro tracker. Rozdělení příchozí zprávy vyslané sondou probíhá obdobně jako v sondě. Přijatá data jsou znak po znaku iterována a zkoumá se, jestli se nenarazilo na oddělovací znak - v tomto případě středník viz ukázka kódu \ref{lst:ground:parse}. Pro samotný příjem dat nelze jako v sondě využít funkce, která přijímá, dokud nenastane prodleva. Vysílací modul sám posílá data po 30 znacích a i mezi těmito balíky dat je prodleva. Zpráva se tedy musí načítat znak po znaku, jak je ukázáno v kódu \ref{lst:ground:recieve}, a jako konec zprávy brát až znak "\lstinline |\n|".
+
+	\lstinputlisting[language=C, caption={Příjem dat pozemní stanicí}, label={lst:ground:recieve}]{Code/ground_station_read.c}
+
+	\lstinputlisting[language=C, caption={Rozdělení příchozí zprávy do jednotlivých polí}, label={lst:ground:parse}]{Code/ground_station_parse.c}
+
+	Jelikož některé informace, které \$GPGGA zpráva obsahovala, nebyly přeneseny telemetrií, musely být na zemi doplněny. Pro tracker nicméně nejsou důležité a tudíž mohly být jakékoliv. Jedná se o jednotky, odchýlení od geoidu a HDOP - Horizontal Dillution of Precision (Horizontální zředění přesnosti), viz tabulka \ref{tab:gpgga}. Poslední pole, obsahující kontrolní součet muselo být spočítáno podle údajů posílaných do trackeru. Kontrolní součet je podle (https://nmeachecksum.eqth.net/) logický XOR všech znaků mezi znaky \$ a *. Funkce pro výpočet kontrolního součtu je ukázána v kódu \ref{lst:ground:checksum}.
+
+	\lstinputlisting[language=C, caption={Výpočet kontrolního součtu}, label={lst:ground:checksum}]{Code/ground_station_checksum.c}
+
+	TODO - ukázat na osciloskopu/log analyzátoru balíky dat
 
 	\begin{longtable}[c]{|l|l|l|l|}
 	\caption{Formát GPGGA zprávy}
@@ -627,19 +747,25 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 	Jednotky                      & M          & metry   &                             \\ \hline
 	Odchýlení od geoidu           & 44.4       & metry   & Separace geoidu a elipsoidu \\ \hline
 	Jednotky                      & M          & metry   &                             \\ \hline
-	Stáří rozdílové korekce       &            & sekundy &                             \\ \hline
-	Identifikátor rozd. reference &            &         &                             \\ \hline
-	Checksum                      & *5D        &         &                             \\ \hline
+	Stáří rozdílové korekce       & -          & sekundy &                             \\ \hline
+	Diff. Ref. Station ID		  & -          &         &                             \\ \hline
+	Kontrolní součet              & *5D        &         &                             \\ \hline
 	<CR> <LF>                     &            &         & Konec zprávy                \\ \hline
 	\end{longtable}
 
 
 	\section{Software pro zobrazení telemetrických údajů}
-	
+	Zpracování telemetrických údajů pro zobrazení pozice sondy na mapě, výpis výšky sondy a teploty okolí probíhá v Python skriptu. Ten čte skrze sériovou linku data jdoucí z radiopřijímače. Data jsou příjmána do bufferu a následně rozdělena podle dělících znaků viz kód \ref{lst:track:read:parse}.
+	\lstinputlisting[language=Python, caption={Blok kódu pro příjem a rozdělení telemetrických údajů}, label={lst:track:read:parse}]{Code/track_read_parse.py}
 
-	výstřizky kódu z driverů, sample GPS dat, vyčítání z teplota/tlak, tlak/vlhkost, gyro/acc/mag, parsovací funkce, změřené minimum accelerace v z-ose, sešití dat, watchdog, reset při erroru
+	Ingormace o poloze jdoucí z GPS senzoru nelze rovnou využít pro zobrazení pozice na mapě. Formát souřadnic, který posílá GPS přijímač, je ve stupních a minutách -- \lstinline|DDMM.MMMMM DDDMM.MMMMM| viz tabulka \ref{tab:gpgll}. Pro zobrazení souřadnic pomocí \textit{gmplot} je nutné souřadnice převést do formátu desetinných stupňů \lstinline|DD.MMMMM DDD.MMMMM|. Tento převod je proveden následovně. První dvě resp. tři číslice ze zeměpisné šířky resp. délky se ponechají a reprezentují \lstinline|DD| resp. \lstinline|DDD| v novém formátu. Zbylé číslo ve formátu \lstinline|MM.MMMMM| se vydělí 60. Výsledek se dosadí za desetinnou tečku. Algoritmus pro převod v jazyce Python je znázorněn v kódu \ref{lst:track:GPS}.
+
+	\lstinputlisting[language=Python, caption={Převod formátu GPS souřadnic}, caption={lst:track:GPS}]{Code/track_coordinates.py}
+
+	Zobrazení souřadnic na mapě je provedeno pomocí modulu \textit{gmplot} (https://github.com/gmplot/gmplot). 
 
 
+	parsování příchozích dat, doplnění NMEA zprávy pro tracker, python - parsování a přepočítání souřadnic, zobrazení na mapě, zobrazení v terminálu
 
 
 
