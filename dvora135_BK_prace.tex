@@ -508,55 +508,64 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 	Senzor následně vyšle hodnoty daného registru a jejich příjem proběhne pomocí funkce níže. Hodnoty ReadAddr a READWRITE\_CMD jsou definovány v \url{https://invensense.tdk.com/wp-content/uploads/2015/02/RM-MPU-9250A-00-v1.6.pdf}.
 	\lstinputlisting[language=C]{Code/MPU_read.c}
 	
+
+
 	\subsection{Rozebírání GPS dat}
 	Data jsou GPS přijímačem posílána každou sekundu přes sériovou linku ve formátu NMEA zpráv (\url{https://www.sparkfun.com/datasheets/GPS/NMEA%20Reference%20Manual-Rev2.1-Dec07.pdf}). Jedná se o standardizovaný formát GPS dat specifikovaný organizací NMEA (\textbf{N}ational \textbf{M}arine \textbf{E}lectronics \textbf{A}ssociation). Příklad NMEA zpráv je zanesen níže.
-	\begin{lstlisting}
-$GPRMC,132456.00,A,5005.77089,N,01421.46534,E,1.157,,290122,,,A*78
-$GPVTG,,T,,M,1.157,N,2.144,K,A*22
-$GPGGA,132456.00,5005.77089,N,01421.46534,E,1,05,1.79,294.0,M,44.4,M,,*5D
-$GPGSA,A,3,17,06,24,02,15,,,,,,,,2.46,1.79,1.70*0B
-$GPGSV,4,1,13,02,11,134,21,06,20,090,23,10,02,270,,11,06,128,19*76
-$GPGSV,4,2,13,12,70,261,,15,10,185,15,17,17,041,13,19,37,054,*7B
-$GPGSV,4,3,13,22,10,325,,24,72,147,23,25,31,257,08,28,08,068,21*7B
-$GPGSV,4,4,13,32,25,313,*4C
-$GPGLL,5005.77089,N,01421.46534,E,132456.00,A,A*69\end{lstlisting}
+	\lstinputlisting{Code/NMEA.txt}
 
-Příklad formátu \$GPGLL zprávy je v tabulce . Informace obsažené v této zprávě jsou vysvětleny v tabulce %\ref{tab:GLL}.
-\begin{longtable}[c]{|l|l|l|}
-	\caption{Formát \$GPGLL zprávy}
-	\label{tab:gpgll}\\
-	\hline
-	\rowcolor[HTML]{e5ecf6} 
-	\multicolumn{1}{|c|}{\cellcolor[HTML]{DEDFF4}Název} &
-	  \multicolumn{1}{c|}{\cellcolor[HTML]{DEDFF4}Příklad} &
-	  \multicolumn{1}{c|}{\cellcolor[HTML]{DEDFF4}Popis} \\ \hline
-	\endhead
-	%
-	Identifikátor zprávy & \$GPGLL     & GLL hlavička \\ \hline
-	Zem. Šířka           & 5005.77089  & ddmm.mmmm    \\ \hline
-	N/S (Sever/Jih)      & N           &              \\ \hline
-	Zem. Délka           & 01421.46534 & dddmm.mmmm   \\ \hline
-	E/W (Východ/Západ)   & E           &              \\ \hline
-	UTC Čas              & 132456.00   & hhmmss.sss   \\ \hline
-	Status &
-	  A &
-	  \begin{tabular}[c]{@{}l@{}}A - data jsou validní\\ V  data nejsou   validní\end{tabular} \\ \hline
-	Mód &
-	  A &
-	  \begin{tabular}[c]{@{}l@{}}A - autonomous\\ D - DGPS\\ E - DR\end{tabular} \\ \hline
-	Checksum             & *69         &              \\ \hline
-	<CR> <LF>            &             & Konec zprávy \\ \hline
+
+	Příklad formátu \$GPGLL zprávy je v tabulce . Informace obsažené v této zprávě jsou vysvětleny v tabulce \ref{tab:gpgll}.
+	\begin{longtable}[c]{|l|l|l|}
+		\caption{Formát \$GPGLL zprávy}
+		\label{tab:gpgll}\\
+		\hline
+		\rowcolor[HTML]{e5ecf6} 
+		\multicolumn{1}{|c|}{\cellcolor[HTML]{DEDFF4}Název} &
+		\multicolumn{1}{c|}{\cellcolor[HTML]{DEDFF4}Příklad} &
+		\multicolumn{1}{c|}{\cellcolor[HTML]{DEDFF4}Popis} \\ \hline
+		\endhead
+		%
+		Identifikátor zprávy & \$GPGLL     & GLL hlavička \\ \hline
+		Zem. Šířka           & 5005.77089  & ddmm.mmmm    \\ \hline
+		N/S (Sever/Jih)      & N           &              \\ \hline
+		Zem. Délka           & 01421.46534 & dddmm.mmmm   \\ \hline
+		E/W (Východ/Západ)   & E           &              \\ \hline
+		UTC Čas              & 132456.00   & hhmmss.sss   \\ \hline
+		Status &
+		A &
+		\begin{tabular}[c]{@{}l@{}}A - data jsou validní\\ V  data nejsou   validní\end{tabular} \\ \hline
+		Mód &
+		A &
+		\begin{tabular}[c]{@{}l@{}}A - autonomous\\ D - DGPS\\ E - DR\end{tabular} \\ \hline
+		Checksum             & *69         &              \\ \hline
+		<CR> <LF>            &             & Konec zprávy \\ \hline
 	\end{longtable}
 
+	Délka zprávy odeslané GPS přijímačem se liší podle dostupných údajů. Pokud GPS nezná svou polohu, pole pro zeměpisnou šířku a délku jsou prázdná. Proto nemůžeme příjimat zprávu fixní velikost. Způsob, kterým se ve firmwaru sondy NMEA zpráva přijímá je pomocí následující funkce.
+	\lstinputlisting[language=C]{Code/HAL_UARTEx_ReceiveToIdle_IT.c}
 
-		
+	Tato funkce přijímá data až do doby, kdy nenastane klidový stav - GPS přestane vysílat data. V ten moment se vyvolá callback funkce:
+	\lstinputlisting[language=C]{Code/callback.c}
+	V této funkci se do globální proměnné DataRecieved uloží velikost přijatých dat. Pokud je v hlavní smyčce programu splněna podmínka, že DataRecieved > 0, program začne rozebírání přijatých dat funkcí níže. Pro rozdělení přijatých dat na jednotlivé NMEA zprávy se využívá znaků <CR> <LF>, které se nacházejí na konci každého řádku. Součástí vyslaných dat jsou i \$GPGSV zprávy obsahující informace o viditelných satelitech. Zpráv tohoto typu je vysílá několik po sobě a počet vyslaných zpráv je zanesen v prvním poli této zprávy.
+
+	\lstinputlisting[language=C]{Code/main_parse.c}
+
+	Funkce uloží data do bufferu GPSparse tvořeného 2D polem a zjistí počet \$GPGSV zpráv.
+
+	Volání funkce v hlavní smyčce programu vypadá následovně.
+	\lstinputlisting[language=C]{Code/parse_in_main.c}
+
+
+
+
 	\subsection{Zjištění náklonu sondy}
 	TODO:
 	\begin{enumerate}
 		\item Obr. kyvadla a sil - nelze měřit náklon pomocí acc
-  		\item Nelze měřit přes mag - vizualizace rotace kolem vektoru mag. pole
-    	\item Řešení v flightcontrollerech na dronech - kalman, příliš složité na implementaci, komplementární filtr
-     	\item Moje řešení
+		\item Nelze měřit přes mag - vizualizace rotace kolem vektoru mag. pole
+		\item Řešení v flightcontrollerech na dronech - kalman, příliš složité na implementaci, komplementární filtr
+		\item Moje řešení
 	\end{enumerate}
 	
 
@@ -585,9 +594,10 @@ Příklad formátu \$GPGLL zprávy je v tabulce . Informace obsažené v této z
 % If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
 % \usepackage{longtable}
 % Note: It may be necessary to compile the document several times to get a multi-page table to line up properly
-\begin{longtable}[c]{|l|l|l|l|}
+
+	\begin{longtable}[c]{|l|l|l|l|}
 	\caption{Formát GPGGA zprávy}
-	\label{tab:GPGGA}\\
+	\label{tab:gpgga}\\
 	\hline
 	\rowcolor[HTML]{E5ECF6} 
 	\multicolumn{1}{|c|}{\cellcolor[HTML]{E5ECF6}Název} &
