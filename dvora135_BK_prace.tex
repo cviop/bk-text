@@ -521,8 +521,10 @@ $GPGSV,4,3,13,22,10,325,,24,72,147,23,25,31,257,08,28,08,068,21*7B
 $GPGSV,4,4,13,32,25,313,*4C
 $GPGLL,5005.77089,N,01421.46534,E,132456.00,A,A*69\end{lstlisting}
 
-Pro určení polohy sondy je dostačující zpráva \$GPGLL. Informace obsažené v této zprávě jsou vysvětleny v tabulce %\ref{tab:GLL}.
+Příklad formátu \$GPGLL zprávy je v tabulce . Informace obsažené v této zprávě jsou vysvětleny v tabulce %\ref{tab:GLL}.
 \begin{longtable}[c]{|l|l|l|}
+	\caption{Formát \$GPGLL zprávy}
+	\label{tab:gpgll}\\
 	\hline
 	\rowcolor[HTML]{e5ecf6} 
 	\multicolumn{1}{|c|}{\cellcolor[HTML]{DEDFF4}Název} &
@@ -530,7 +532,7 @@ Pro určení polohy sondy je dostačující zpráva \$GPGLL. Informace obsažen�
 	  \multicolumn{1}{c|}{\cellcolor[HTML]{DEDFF4}Popis} \\ \hline
 	\endhead
 	%
-	Identifikátor zprávy & \$GPGLL      & GLL hlavička \\ \hline
+	Identifikátor zprávy & \$GPGLL     & GLL hlavička \\ \hline
 	Zem. Šířka           & 5005.77089  & ddmm.mmmm    \\ \hline
 	N/S (Sever/Jih)      & N           &              \\ \hline
 	Zem. Délka           & 01421.46534 & dddmm.mmmm   \\ \hline
