@@ -309,7 +309,7 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 		\subsubsection{GPS modul}
 		GPS moduly jsou zpravidla omezeny dvěma parametry. Maximální nadmořsou výškou 18~km a maximální rychlostí 515~m/s vůči zemi https://www.ecfr.gov/current/title-22/part-121. Někteří výrobci GPS modulů berou tato omezení v konjunkci, kdy pro zablokování modulu musí platit obě podmínky, někteří výrobci uvažují  disjunkci, kdy stačí, aby nastala jedna z pomínek a modul přestane dávat validní data. Modul, který byl vybrán je u-blox SAM-M8Q. Podle dokumentace GPS modulu (\url{https://www.u-blox.com/sites/default/files/SAM-M8Q_DataSheet_%28UBX-16012619%29.pdf}) je maximální výška 50~km a maximální rychlost 500~m/s. V případě letu balónu nebude splněna ani jedna z podmínek. Tento GPS modul je součástí vývojového modulu GNSS 4 Click od firmy \textit{Microelektronika}.
 
-		U-blox moduly nabízí široké množství pracovních módů podle charakter použití. Pro běžné použití se využívá mód \textit{Portable}. Jedná se o kompromis mezi rozsahem a přesností určení pozice. Další módy jsou zobrazeny v tabulce \ref{tab:ublox:modes}. V případě sondy byl zvolen mód Airborne \textless{}1g. Při letu sondy není očekáváno zrychlení přesahující 1~g a rychlosti nad 100~m/s (360~km/h). 
+		U-Blox moduly nabízí široké množství pracovních módů podle charakter použití. Pro běžné použití se využívá mód \textit{Portable}. Jedná se o kompromis mezi rozsahem a přesností určení pozice. Další módy jsou zobrazeny v tabulce \ref{tab:ublox:modes}. V případě sondy byl zvolen mód Airborne \textless{}1g. Při letu sondy není očekáváno zrychlení přesahující 1~g a rychlosti nad 100~m/s (360~km/h). 
 		\begin{table}[]
 			\centering
 			\caption{Módy GPS přijímačů u-blox}
@@ -821,6 +821,11 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 
 
 	\section{Software pro zobrazení telemetrických údajů}
+	Příjem dat samotných byl realizován stejným modulem, který je unmístěn v sondě, určený k posílání telemetrických dat. Pro minimalizaci ztrát byla anténa s modulem umístěny na platformě, která byla pomocí magnetů uchycena na střeše automobilu obr. \ref{fig:tack:mech:platform}. K modulu byl připojen převodník ze sériové linky na USB, který byl dostatečně dlouhým USB kabelem připojen k laptopu spolujezdce.
+
+	TODO:render platformy
+
+
 	Zpracování telemetrických údajů pro zobrazení pozice sondy na mapě, výpis výšky sondy a teploty okolí probíhá v Python skriptu. Ten čte skrze sériovou linku data jdoucí z radiopřijímače. Data jsou příjmána do bufferu a následně rozdělena podle dělících znaků viz kód \ref{lst:track:read:parse}.
 	\lstinputlisting[language=Python, caption={Blok kódu pro příjem a rozdělení telemetrických údajů}, label={lst:track:read:parse}]{Code/track_read_parse.py}
 
@@ -832,17 +837,12 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 
 	\lstinputlisting[language=Python, caption={Příklad zobrazení GPS souřadnic}, label={lst:track:main}]{Code/track_gnd_displ.py}
 
-	\begin{figure}
+	\begin{figure}[hbtp]
 		\centering
 		\includegraphics[width=.7\textwidth]{Figures/track_map.PNG}
 		\caption{Trajektorie letu zobrazena pomocí python skriptu \ref{lst:track:main}}
 		\label{fig:track:map}
 	\end{figure}
-
-	Příjem dat samotných byl realizován stejným modulem, který je unmístěn v sondě pro posílání telemetrických dat. Pro minimalizaci ztrát byla anténa s modulem umístěny na platformě, která byla pomocí magnetů uchycena na střeše automobilu obr. \ref{fig:tack:mech:platform}. K modulu byl připojen převodník ze sériové linky na USB, který byl dostatečně dlouhým USB kabelem připojen k laptopu spolujezdce.
-
-
-	parsování příchozích dat, doplnění NMEA zprávy pro tracker, python - parsování a přepočítání souřadnic, zobrazení na mapě, zobrazení v terminálu. 
 
 
 
@@ -854,15 +854,27 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 	\section{Testování a měření}
 	Měření směrové charakteristiky proběhlo na katedře elektromagnetického pole v bezodrazné komoře. Sonda připevněna na pohyblivou osu byla otáčena motorem a byl měřen přijatý výkon anténou umístěné naproti sondě. Díky tomu byla změřena vyzařovací charakteristika antény v rozsahu 360~°C. Celkem byly měřeny 4 směrové charakteristiky a to pro různá natočení sondy kolem své osy. Směrové charakteristiky jsou zaneseny na (obr)
 
-	TODO - graf směrových charstik.
+	TODO - graf směrových charstik\\
+	TODO - spočítat zisk antény
 
 	Dále byla měřena polarizace antény. V tomto případě byla sonda pevně umístěna na podstavci a otáčeno bylo přijímací anténou v její ose. Pro ideální kruhově polarizovanou anténu by nezáleželo na natočení přijímací antény. V případně antény umístěné v sondě je přenos znárorněn na obr. xxx.
 
-	TODO - graf polarizace
+	TODO - graf polarizace\\
+	TODO - spočíst koeficient polarizace
+
+	Pro ověření dosahu radiového spoje byl přenos dat nejdříve vyzkoušen na zemi. Vysílací část spoje se nacházela na střeše panelévého domu na Petřinách. Přijem probíhal na hoře Říp. Radiový spoj byl realizován na přímou viditelnost a nebyla zakryta 1. Fresnelova zóna, jak je vidět profilu Zemského povrchu na obr. \ref{fig:praha:rip}.
+
+	\begin{figure}[hbtp]
+		\centering
+		\includegraphics[width=\textwidth]{Figures/petriny_rip.png}
+		\caption{Profil trasy mezi Prahou a horou Říp, vykresleno pomocí \url{http://www.heywhatsthat.com/}}
+		\label{fig:praha:rip}
+	\end{figure}
+
+	Další testování proběho v klimakomoře na katedře xxx. Jedná se o komoru, kde lze dosáhnout teplot až xxx, díky čemuž lze simulovat alespoň částečně podmínky ve stratosféře.
 
 
-	směrová charakteristika, teplotní odolnost v klimakomoře, proudový odběr telitu, výlet na Říp, mapa viditelnosti z bodu na mapě. 
-
+	
 
 	
 
@@ -884,7 +896,7 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 	
 
 \chapter{Experiment}
-příjem dat, umístění antény na střeš e , nastavení spektráku
+	příjem dat, umístění antény na střeš e , nastavení spektráku
 	\section{Průběh experimentu}
 	jak to probíhalo, co se stalo, proč sonda přestala vysílat, proč doletěla jen do 17 km, nalezení pomocí sondy čhmú, sundání sondy
 
