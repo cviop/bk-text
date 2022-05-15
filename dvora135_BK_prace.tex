@@ -13,6 +13,8 @@
 
 \usepackage[tableposition=top]{caption}
 
+\newcommand{\diff}{\text{d}}
+
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -654,7 +656,7 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 			  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}VDOP} &
 			  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Nejmenší změřené\\ zrychlení v ose Z\end{tabular}} &
 			  \multicolumn{3}{c|}{\cellcolor[HTML]{E5ECF6}Velikost zrychlení} &
-			  \multicolumn{3}{c|}{\cellcolor[HTML]{E5ECF6}Velikost   úhlové rychlost} &
+			  \multicolumn{3}{c|}{\cellcolor[HTML]{E5ECF6}Velikost úhlové rychlosti} &
 			  \multicolumn{3}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Velikost intenzity\\ mag. pole\end{tabular}} \\ \hline
 			12 &
 			  1.32 &
@@ -683,9 +685,68 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 
 
 	\subsection{Zjištění náklonu sondy}
-	TODO:
+	Aby bylo možné zjisti, jaká část směrové charakteristiky antény byla využita pro přenos dat, bylo nutné zjisti výchylku sondy od svislé osy. Zjištění výchylky sondy lze realizovat metodami jendoduššími a méně přesnějšími, nebo přesnými, sofistikovanými metodami, které ale přesahují rozsah této práce.
+
+	Díky přítomnosti modulu 9DOF od firmy \textit{Microelektronika} lze pro měření náklonu využít data z akcelerometru, gyroskopu a magnetometru. Ve statickém případě lze pro výchylku využít pouze akcelerometr. Velikost zrychlení v ose $z$ sondy se bude měnit spolu s vychylováním sondy od svislé polohy. Pro výchylku $\varphi$ platí ve statickém stavu
+	\begin{align}
+		\varphi = \text{cos}^{-1}\left(\frac{a_z}{g}\right).
+	\end{align}
+	Pokud se bude sonda kývat kolem pevného bodu, bude na ni působit i odstředivé zrychlení, které se bude přičítat k $a_z$. V tomto případě by šlo zjistit velikost odstředivého zrychlení díky gyroskopu, který měří úhlovou rychlost. Pro odstředivé zrychlení $a_\text{o}$ platí
+	\begin{align}
+		a_\text{o} = \omega^2 l,
+	\end{align}
+	kde $\omega$ je úhlová rychlost daná jako $\frac{\diff \varphi}{\diff t}$ a $l$ je délka závěsu sondy. V tomto případě ale nelze stanovit délku závěsu, jelikož balón, za který je sonda přichycena, není pevný bod.
+
+	Jak již bylo řečeno, zjištění výchylky $\varphi$ je možné pouze při statisckém stavu. K němu dochází, kdy se sonda dostane do maximální výchylky a poté se úhel začně opět snižovat. Pokud správně určíme moment, kdy k tomuto stavu došlo, můžeme správně určit maximální výchylku za danou periodu. 
+
+	\begin{figure}[hbtp]
+		\centering
+		\begin{subfigure}{.49\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{Figures/sonda_naklon_acc.pdf}
+			\caption{Změna zrychlení působící ve směru $z$ při statickém vychýlení}
+			\label{fig:sonda:naklon}
+		\end{subfigure}%
+		\begin{subfigure}{.49\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{Figures/sonda_naklon_acc_odst.pdf}
+			\caption{Změna zrychlení působící ve směru $z$ při pohybu sondy}
+			\label{fig:sonda:naklon:odst}
+		\end{subfigure}
+		\caption{Zrychlení působící na sondu}
+		\label{fig:sonda:naklon:main}
+	\end{figure}
+
+	Jak bylo dřívě zmíněno, měření dat probíhá jednou za sekundu a je iniciováno příjmem GPS dat. Mimo tohoto měření jsou s větší frekvencí měřena data o zrychlení sondy a do bufferu je ukládána nejnižší hodnota zrychlení ve směru osy $z$ viz ukázka kódu \ref{lst:sonde:acc}. Funkce \lstinline[language=C]|filter(int *out, int *in, int *b)| je dolní propust prního řádu.
+	\lstinputlisting[language=C, label={Zjištění minimálního zrychlení}, label={lst:sonde:acc}]{Code/sonde_min_acc.c}
+
+	Další řešení, které se nabízelo, bylo zjištění náklonu za pomoci vektoru magnetického pole. Pro rozsahy vzdáleností, ve kterých se sonda pohybuje, můžeme uvažovat směr vektoru magnetického pole za konstantní a tedy podle něj určit náklon sondy viz. obr. \ref{fig:sonda:mag}. Na začátku měření je potřeba změřit úhel, kterým vektor magnetické indukce směřuje. Následně pro náklon sondy platí
+	\begin{align}
+		\varphi = \varphi_\text{meas} - \varphi_\text{ref}.
+	\end{align}
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=.5\textwidth]{Figures/sonda_naklon_mag.pdf}
+		\caption{Měření náklonu sondy pomocí vektoru magnetické indukce}
+		\label{fig:sonda:mag}
+	\end{figure}
+
+	Tento způsob výpočtu náklonu sondy bohužel funguje pouze ve 2D. Jestliže se přesuneme do 3D prostoru, narazíme na následující problém. Jestliže budeme sondou osově rotovat kolem vektoru magnetické indukce, měřené hodnoty se nebudou měnit. Jak je znázorněno na obr.~\ref{fig:sonda:mag:rot}. Tento způsob by šlo použít poze pokud by vektor magnetické indukce směřoval svisle k zemi. Při obecné orientaci bohužel tato metoda využít nejde.
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=.5\textwidth]{Figures/sonda_naklon_mag_osova_rotace.pdf}
+		\caption{Rotace sondy kolem osy tvořené vektorem magnetické indukce}
+		\label{fig:sonda:mag:rot}
+	\end{figure}
+	
+
+
+	
+	
+
 	\begin{enumerate}
-		\item Obr. kyvadla a sil - nelze měřit náklon pomocí acc
 		\item Nelze měřit přes mag - vizualizace rotace kolem vektoru mag. pole
 		\item Řešení v flightcontrollerech na dronech - kalman, příliš složité na implementaci, komplementární filtr
 		\item Moje řešení
