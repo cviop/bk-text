@@ -315,9 +315,9 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 			\begin{tabular}{|l|c|c|c|c|}
 				\hline
 				Platform &
-				Max Altitude{[}m{]} &
-				\begin{tabular}[c]{@{}c@{}}MAX Horizontal\\ Velocity {[}m/s{]}\end{tabular} &
-				\begin{tabular}[c]{@{}c@{}}MAX Vertical\\ Velocity {[}m/s{]}\end{tabular} &
+				Max Altitude (m) &
+				\begin{tabular}[c]{@{}c@{}}MAX Horizontal\\ Velocity (m/s)\end{tabular} &
+				\begin{tabular}[c]{@{}c@{}}MAX Vertical\\ Velocity (m/s)\end{tabular} &
 				\begin{tabular}[c]{@{}c@{}}Max Position \\ Deviation\end{tabular} \\\hline
 				Portable               	& 12000 & 310 & 50  & Medium \\\hline
 				Stationary             	& 9000  & 10  & 6   & Small  \\\hline
@@ -763,14 +763,25 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 	Zpracování telemetrických údajů pro zobrazení pozice sondy na mapě, výpis výšky sondy a teploty okolí probíhá v Python skriptu. Ten čte skrze sériovou linku data jdoucí z radiopřijímače. Data jsou příjmána do bufferu a následně rozdělena podle dělících znaků viz kód \ref{lst:track:read:parse}.
 	\lstinputlisting[language=Python, caption={Blok kódu pro příjem a rozdělení telemetrických údajů}, label={lst:track:read:parse}]{Code/track_read_parse.py}
 
-	Ingormace o poloze jdoucí z GPS senzoru nelze rovnou využít pro zobrazení pozice na mapě. Formát souřadnic, který posílá GPS přijímač, je ve stupních a minutách -- \lstinline|DDMM.MMMMM DDDMM.MMMMM| viz tabulka \ref{tab:gpgll}. Pro zobrazení souřadnic pomocí \textit{gmplot} je nutné souřadnice převést do formátu desetinných stupňů \lstinline|DD.MMMMM DDD.MMMMM|. Tento převod je proveden následovně. První dvě resp. tři číslice ze zeměpisné šířky resp. délky se ponechají a reprezentují \lstinline|DD| resp. \lstinline|DDD| v novém formátu. Zbylé číslo ve formátu \lstinline|MM.MMMMM| se vydělí 60. Výsledek se dosadí za desetinnou tečku. Algoritmus pro převod v jazyce Python je znázorněn v kódu \ref{lst:track:GPS}.
+	Ingormace o poloze jdoucí z GPS senzoru nelze rovnou využít pro zobrazení pozice na mapě. Formát souřadnic, který posílá GPS přijímač, je ve stupních a minutách -- \lstinline|DDMM.MMMMM DDDMM.MMMMM| viz tabulka \ref{tab:gpgll}. Pro zobrazení souřadnic pomocí \textit{gmplot} je nutné souřadnice převést do formátu desetinných stupňů \lstinline|DD.MMMMM DDD.MMMMM|. Tento převod je proveden následovně. První dvě resp. tři číslice ze zeměpisné šířky resp. délky se ponechají a reprezentují \lstinline|DD| resp. \lstinline|DDD| v novém formátu. Zbylé číslo ve formátu \lstinline|MM.MMMMM| se vydělí~60. Výsledek se dosadí za desetinnou tečku. Algoritmus pro převod v jazyce Python je znázorněn v kódu \ref{lst:track:GPS}.
 
-	\lstinputlisting[language=Python, caption={Převod formátu GPS souřadnic}, caption={lst:track:GPS}]{Code/track_coordinates.py}
+	\lstinputlisting[language=Python, caption={Převod formátu GPS souřadnic}, label={lst:track:GPS}]{Code/track_coordinates.py}
 
-	Zobrazení souřadnic na mapě je provedeno pomocí modulu \textit{gmplot} (https://github.com/gmplot/gmplot). 
+	Zobrazení souřadnic na mapě je provedeno pomocí modulu \textit{gmplot} (https://github.com/gmplot/gmplot). Ukázka kódu \ref{lst:track:main} ukazuje způsob inicializace modulu a zobrazení souřadnic sondy na mapě. Vzniklý soubor \lstinline|my_map.html| lze otevřít v běžném prohlížeči. Vizualizace přijatých GPS souřadnic je na obr. \ref{fig:track:map}.
+
+	\lstinputlisting[language=Python, caption={Příklad zobrazení GPS souřadnic}, label={lst:track:main}]{Code/track_gnd_displ.py}
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=.7\textwidth]{Figures/track_map.PNG}
+		\caption{Trajektorie letu zobrazena pomocí python skriptu \ref{lst:track:main}}
+		\label{fig:track:map}
+	\end{figure}
+
+	Příjem dat samotných byl realizován stejným modulem, který je unmístěn v sondě pro posílání telemetrických dat. Pro minimalizaci ztrát byla anténa s modulem umístěny na platformě, která byla pomocí magnetů uchycena na střeše automobilu obr. \ref{fig:tack:mech:platform}. K modulu byl připojen převodník ze sériové linky na USB, který byl dostatečně dlouhým USB kabelem připojen k laptopu spolujezdce.
 
 
-	parsování příchozích dat, doplnění NMEA zprávy pro tracker, python - parsování a přepočítání souřadnic, zobrazení na mapě, zobrazení v terminálu
+	parsování příchozích dat, doplnění NMEA zprávy pro tracker, python - parsování a přepočítání souřadnic, zobrazení na mapě, zobrazení v terminálu. 
 
 
 
