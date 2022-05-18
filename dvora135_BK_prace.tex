@@ -14,6 +14,7 @@
 \usepackage[tableposition=top]{caption}
 
 \newcommand{\diff}{\text{d}}
+\newcommand{\mt}[1]{\text{#1}}
 
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -954,14 +955,31 @@ TODO:
 \chapter{Výsledky}
 	\section{Výstup z experimentu}
 	výsledky, co bylo změřeno a zjištěno
-
+\newpage
 	\section{Zpracování dat}
-	zkombinovat data ze země a data ze strato, vzorečky, určit refrakci, výkonovou bilanci podle podmínek, vzít v potaz směrovou charstiku. vyrobit model šíření, grafy
+	%zkombinovat data ze země a data ze strato, vzorečky, určit refrakci, výkonovou bilanci podle podmínek, vzít v potaz směrovou charstiku. vyrobit model šíření, grafy
 
-	\begin{figure}
+
+	Výpočet refraktivity troposféry byl proveden podle doporučení ITU-R P.453-14. Refraktivitu v závoslosti na podmínkách prostředí lze přibližně vyjádřit jako
+	\begin{align}
+		N = \frac{77.6}{T} \left(P + 4810\frac{e}{T}\right),
+	\end{align}
+	kde $T$ je absolutní hodnota v K, $p$ je atmosférický tlak v hPa a $e$ je tlak vodních par v hPa. Ten lze vyjádřit pomocí hustoty vodních par z doporučení ITU-R 836. Pdle [zdroj 5] lze tlak vodních par vypočítat podle relativní vlhkosti vzduchu $H$ jako
+	\begin{align}
+		e = \frac{H}{100}\,6{,}1121\,\text{e}^{\frac{17{,}502t}{240{,}97 + t}},
+	\end{align}
+	kde $t$ je teplota v °C. Vztah platí v rozsahu teplot od -20 °C do 50 °C.
+
+	Pro aproximaci výškového profilu rekraktivity ITU doporučuje exponenciální model podle vztahu:
+	\begin{align}
+		N = N_\text{0}\,\text{e}^{-h/h_\text{0}},
+	\end{align}
+	kde $h$ je výška nad zemí, $N_\text{0}$ hodnota refraktivity v 0~km a $h_\text{0}$ výškové měřítko v km. ITU udává globální světový průměr $N_\text{0} = 315 \text{0}$ a $h_\text{0} = 7{,}35 \mt{ km}$
+
+	\begin{figure}[hbtp]
 		\centering
 		\includegraphics[width=.7\textwidth]{Graphs/refractivity_exp_lin_meas_hum.pdf}
-		\caption{Závislost refraktivity na výšce}
+		\caption{Výškový profil refraktivity}
 		\label{graph:refr}
 	\end{figure}
 
