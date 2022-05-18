@@ -64,3 +64,10 @@ zeptat se na parametry antény
 ITUR P834-9
 
 zisk asi 8 dB
+
+
+Dotazy:
+PCB/DPS
+osy kurzívou
+v jakém čase psát
+jak pojmenovávat moji sondu? "sonda vyvíjená v rámci této práce" je dlouhé
