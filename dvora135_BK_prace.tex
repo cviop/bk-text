@@ -11,6 +11,7 @@
 \usepackage[table,xcdraw]{xcolor}
 \usepackage{longtable}
 \usepackage{svg}
+\usepackage{color,soul}
 
 \usepackage[tableposition=top]{caption}
 \usepackage{graphicx}
@@ -43,7 +44,7 @@
 	showstringspaces=false,
 	showtabs=false,                  
 	tabsize=2,
-	emph={int,char,double,float,unsigned,void,bool, uint8_t, uint16_t, int8_t, int16_t},
+	emph={int,char,double,float,unsigned,void,bool, uint8_t, uint16_t, int8_t, int16_t, grep},
 	emphstyle={\color{blue}}
 }
 \lstset{style=mystyle}
@@ -202,9 +203,12 @@ tato práce ze zabývá... ano zabývá se...
 
 	\section{Šíření vln ve troposféře}
 		jak to funguje, na čem to závisí (přečíst literaturu)
-			\subsection{Troposférická refrakce}
-			\subsection{Troposférický rozptyl}
-			\subsection{Troposférická vlna}
+		\subsection{Troposférická refrakce}
+		\subsection{Troposférický rozptyl}
+		\subsection{Troposférická vlna}
+	
+		\subsection{Rádiový spoj}
+		%budget link, co očekáváme za úrovně na základě budget linku
 
 	\section{Požadavky}
 	%co za data je potřeba pro model
@@ -305,8 +309,13 @@ tato práce ze zabývá... ano zabývá se...
 
 
 
+
+
+
+
+
 \chapter{Realizace}
-Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla práce směřována při vývoji elektroniky a popisuje výběr jednotlivých komponent. Dále vysvětluje dílčí části firmwaru sondy a způsob, jakým byly řešeny problémy. Popisuje jak vysílací část - sondu, tak přijímací části. Jednak pozemní stanici, která formátovala data do zprávy čitelné anténním trackerem a jednak přijímací software na zobrazení pozice na mapě.
+Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla práce směřována při vývoji elektroniky a popisuje výběr jednotlivých komponent. Dále vysvětluje dílčí části firmwaru sondy a způsob, jakým byly řešeny problémy. Popisuje jak vysílací část - sondu, tak přijímací části. Jednak pozemní stanici, která formátovala data do zprávy čitelné anténním trackerem a jednak přijímací software na zobrazení pozice na mapě. 
 
 	\section{Elektronika}
 	
@@ -317,69 +326,69 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 
 
 		
-		\subsubsection{GPS modul}
-		GPS moduly jsou zpravidla omezeny dvěma parametry. Maximální nadmořsou výškou 18~km a maximální rychlostí 515~m/s vůči zemi https://www.ecfr.gov/current/title-22/part-121. Někteří výrobci GPS modulů berou tato omezení v konjunkci, kdy pro zablokování modulu musí platit obě podmínky, někteří výrobci uvažují  disjunkci, kdy stačí, aby nastala jedna z pomínek a modul přestane dávat validní data. Modul, který byl vybrán je u-blox SAM-M8Q. Podle dokumentace GPS modulu (\url{https://www.u-blox.com/sites/default/files/SAM-M8Q_DataSheet_%28UBX-16012619%29.pdf}) je maximální výška 50~km a maximální rychlost 500~m/s. V případě letu balónu nebude splněna ani jedna z podmínek. Tento GPS modul je součástí vývojového modulu GNSS 4 Click od firmy \textit{Microelektronika}.
+			\subsubsection{GPS modul}
+			GPS moduly jsou zpravidla omezeny dvěma parametry. Maximální nadmořsou výškou 18~km a maximální rychlostí 515~m/s vůči zemi https://www.ecfr.gov/current/title-22/part-121. Někteří výrobci GPS modulů berou tato omezení v konjunkci, kdy pro zablokování modulu musí platit obě podmínky, někteří výrobci uvažují  disjunkci, kdy stačí, aby nastala jedna z pomínek a modul přestane dávat validní data. Modul, který byl vybrán je u-blox SAM-M8Q. Podle dokumentace GPS modulu (\url{https://www.u-blox.com/sites/default/files/SAM-M8Q_DataSheet_%28UBX-16012619%29.pdf}) je maximální výška 50~km a maximální rychlost 500~m/s. V případě letu balónu nebude splněna ani jedna z podmínek. Tento GPS modul je součástí vývojového modulu GNSS 4 Click od firmy \textit{Microelektronika}.
 
-		U-Blox moduly nabízí široké množství pracovních módů podle charakter použití. Pro běžné použití se využívá mód \textit{Portable}. Jedná se o kompromis mezi rozsahem a přesností určení pozice. Další módy jsou zobrazeny v tabulce \ref{tab:ublox:modes}. V případě sondy byl zvolen mód Airborne \textless{}1g. Při letu sondy není očekáváno zrychlení přesahující 1~g a rychlosti nad 100~m/s (360~km/h). 
-		\begin{table}[]
-			\centering
-			\caption{Módy GPS přijímačů u-blox}
-			\label{tab:ublox:modes}
-			\begin{tabular}{|l|c|c|c|c|}
+			U-Blox moduly nabízí široké množství pracovních módů podle charakter použití. Pro běžné použití se využívá mód \textit{Portable}. Jedná se o kompromis mezi rozsahem a přesností určení pozice. Další módy jsou zobrazeny v tabulce \ref{tab:ublox:modes}. V případě sondy byl zvolen mód Airborne \textless{}1g. Při letu sondy není očekáváno zrychlení přesahující 1~g a rychlosti nad 100~m/s (360~km/h). 
+			\begin{table}[]
+				\centering
+				\caption{Módy GPS přijímačů u-blox}
+				\label{tab:ublox:modes}
+				\begin{tabular}{|l|c|c|c|c|}
+					\hline
+					Platform &
+					Max Altitude (m) &
+					\begin{tabular}[c]{@{}c@{}}MAX Horizontal\\ Velocity (m/s)\end{tabular} &
+					\begin{tabular}[c]{@{}c@{}}MAX Vertical\\ Velocity (m/s)\end{tabular} &
+					\begin{tabular}[c]{@{}c@{}}Max Position \\ Deviation\end{tabular} \\\hline
+					Portable               	& 12000 & 310 & 50  & Medium \\\hline
+					Stationary             	& 9000  & 10  & 6   & Small  \\\hline
+					Pedestrian             	& 9000  & 30  & 20  & Small  \\\hline
+					Automotive             	& 6000  & 84  & 15  & Medium \\\hline
+					At sea                 	& 500   & 25  & 5   & Medium \\\hline
+					Airborne \textless{}1g 	& 50000 & 100 & 100 & Large  \\\hline
+					Airborne \textless{}2g 	& 50000 & 250 & 100 & Large  \\\hline
+					Airborne \textless{}4g 	& 50000 & 500 & 100 & Large  \\\hline
+					\end{tabular}
+				\end{table}
+			
+
+
+			
+			\subsubsection{Teplotní a tlakový senzor}
+			Podle (\url{https://www.sensorsone.com/altitude-pressure-units-conversion/}) se tlak ve výšce 30~km pohybuje kolem hodnoty 10~mbar. S ohledem na očekávané rozsahy měřeného tlaku a teploty byl vybrán senzor MS5607 od firmy \textit{TE Connectivity}. Rozsahy měřitelných hodnot jsou zaneseny v tabulce \ref{tab:ms:range}. Teplotní a tlakový senzor je součástí modulu od firmy \textit{Parallax}. Výrobce na stránkách produktu \url{https://www.parallax.com/product/altimeter-module-ms5607/} uvádí, že senzor byl úspěšně testován ve výšce 36~km.
+			
+			\begin{table}[]
+				\begin{tabular}{|l|lll|l|}
 				\hline
-				Platform &
-				Max Altitude (m) &
-				\begin{tabular}[c]{@{}c@{}}MAX Horizontal\\ Velocity (m/s)\end{tabular} &
-				\begin{tabular}[c]{@{}c@{}}MAX Vertical\\ Velocity (m/s)\end{tabular} &
-				\begin{tabular}[c]{@{}c@{}}Max Position \\ Deviation\end{tabular} \\\hline
-				Portable               	& 12000 & 310 & 50  & Medium \\\hline
-				Stationary             	& 9000  & 10  & 6   & Small  \\\hline
-				Pedestrian             	& 9000  & 30  & 20  & Small  \\\hline
-				Automotive             	& 6000  & 84  & 15  & Medium \\\hline
-				At sea                 	& 500   & 25  & 5   & Medium \\\hline
-				Airborne \textless{}1g 	& 50000 & 100 & 100 & Large  \\\hline
-				Airborne \textless{}2g 	& 50000 & 250 & 100 & Large  \\\hline
-				Airborne \textless{}4g 	& 50000 & 500 & 100 & Large  \\\hline
+				Pressure   & \multicolumn{1}{l|}{Min}  & \multicolumn{1}{l|}{Typ} & Max  & Unit \\ \hline
+				Range      & \multicolumn{1}{l|}{10}   & \multicolumn{1}{l|}{}    & 1200 & mbar \\ \hline
+				Range      & \multicolumn{1}{l|}{-40}  & \multicolumn{1}{l|}{}    & 85   & °C   \\ \hline
+				Resolution & \multicolumn{3}{c|}{\textless{}0.01}                        & °C   \\ \hline
+				Accuracy   & \multicolumn{1}{l|}{-0.8} & \multicolumn{1}{l|}{}    & 0.8  & °C   \\ \hline
 				\end{tabular}
+				\caption{Rozsah senzoru MS5607, převzato z \url{https://www.parallax.com/package/altimeter-module-ms5607-datasheet})}
+				\label{tab:ms:range}
 			\end{table}
-		
+
+			
+
+
+			
+			\subsubsection{Vlhkostní senzor}
+			Vlhkostní senzor byl zvolen AM2320, který je součástí modulu DHT22 Click od firmy \textit{Microelektronika}. Senzor je schopen měřit v rozsahu od -40 do 80~°C a 0 až 100~\% relativní vlhkosti (\url{https://cdn-shop.adafruit.com/product-files/3721/AM2320.pdf}). 
+
+
+
+			
+			\subsubsection{Senzor orientace}
+			Pro zjištění orientace bylo použito senzoru MPU9250, který je součástí modulu 9DOF Click. Jedná se o gyroskop Senzor resp. modul byl vybrán, jelikož byl již dříve používán na jiných projektech a byl ihned dostupný. Díky tomu bylo ihned možné přejít ke psaní ovladače pro vyčítání dat a jeho implementaci do systému. Senzor také splňuje rozsah pracovních teplot a lze tedy využít v podmínkách, které při letu nastanou (\url{https://invensense.tdk.com/wp-content/uploads/2015/02/PS-MPU-9250A-01-v1.1.pdf}).  
+			
 
 
 		
-		\subsubsection{Teplotní a tlakový senzor}
-		Podle (\url{https://www.sensorsone.com/altitude-pressure-units-conversion/}) se tlak ve výšce 30~km pohybuje kolem hodnoty 10~mbar. S ohledem na očekávané rozsahy měřeného tlaku a teploty byl vybrán senzor MS5607 od firmy \textit{TE Connectivity}. Rozsahy měřitelných hodnot jsou zaneseny v tabulce \ref{tab:ms:range}. Teplotní a tlakový senzor je součástí modulu od firmy \textit{Parallax}. Výrobce na stránkách produktu \url{https://www.parallax.com/product/altimeter-module-ms5607/} uvádí, že senzor byl úspěšně testován ve výšce 36~km.
-		
-		\begin{table}[]
-			\begin{tabular}{|l|lll|l|}
-			\hline
-			Pressure   & \multicolumn{1}{l|}{Min}  & \multicolumn{1}{l|}{Typ} & Max  & Unit \\ \hline
-			Range      & \multicolumn{1}{l|}{10}   & \multicolumn{1}{l|}{}    & 1200 & mbar \\ \hline
-			Range      & \multicolumn{1}{l|}{-40}  & \multicolumn{1}{l|}{}    & 85   & °C   \\ \hline
-			Resolution & \multicolumn{3}{c|}{\textless{}0.01}                        & °C   \\ \hline
-			Accuracy   & \multicolumn{1}{l|}{-0.8} & \multicolumn{1}{l|}{}    & 0.8  & °C   \\ \hline
-			\end{tabular}
-			\caption{Rozsah senzoru MS5607, převzato z \url{https://www.parallax.com/package/altimeter-module-ms5607-datasheet})}
-			\label{tab:ms:range}
-		\end{table}
-
 		
 
-
-		
-		\subsubsection{Vlhkostní senzor}
-		Vlhkostní senzor byl zvolen AM2320, který je součástí modulu DHT22 Click od firmy \textit{Microelektronika}. Senzor je schopen měřit v rozsahu od -40 do 80~°C a 0 až 100~\% relativní vlhkosti (\url{https://cdn-shop.adafruit.com/product-files/3721/AM2320.pdf}). 
-
-
-
-		
-		\subsubsection{Senzor orientace}
-		Pro zjištění orientace bylo použito senzoru MPU9250, který je součástí modulu 9DOF Click. Jedná se o gyroskop Senzor resp. modul byl vybrán, jelikož byl již dříve používán na jiných projektech a byl ihned dostupný. Díky tomu bylo ihned možné přejít ke psaní ovladače pro vyčítání dat a jeho implementaci do systému. Senzor také splňuje rozsah pracovních teplot a lze tedy využít v podmínkách, které při letu nastanou (\url{https://invensense.tdk.com/wp-content/uploads/2015/02/PS-MPU-9250A-01-v1.1.pdf}).  
-		
-
-
-		
-		\subsection{Testování elektroniky}
-		měření odběru, energie pro poslání dat
 
 
 
@@ -696,7 +705,7 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 
 
 	\subsection{Zjištění náklonu sondy}
-	Aby bylo možné zjisti, jaká část směrové charakteristiky antény byla využita pro přenos dat, bylo nutné zjisti výchylku sondy od svislé osy. Zjištění výchylky sondy lze realizovat metodami jendoduššími a méně přesnějšími, nebo přesnými, sofistikovanými metodami, které ale přesahují rozsah této práce.
+	Aby bylo možné zjisti, jaká část směrové charakteristiky antény byla využita pro přenos dat, bylo nutné zjisti výchylku sondy od svislé osy. Zjištění výchylky sondy lze realizovat metodami jendoduššími a méně přesnějšími, nebo přesnými, sofistikovanými metodami. 
 
 	Díky přítomnosti modulu 9DOF od firmy \textit{Microelektronika} lze pro měření náklonu využít data z akcelerometru, gyroskopu a magnetometru. Ve statickém případě lze pro výchylku využít pouze akcelerometr. Velikost zrychlení v ose $z$ sondy se bude měnit spolu s vychylováním sondy od svislé polohy. Pro výchylku $\varphi$ platí ve statickém stavu
 	\begin{align}
@@ -728,7 +737,7 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 		\label{fig:sonda:naklon:main}
 	\end{figure}
 
-	Jak bylo dřívě zmíněno, měření dat probíhá jednou za sekundu a je iniciováno příjmem GPS dat. Mimo tohoto měření jsou s větší frekvencí měřena data o zrychlení sondy a do bufferu je ukládána nejnižší hodnota zrychlení ve směru osy $z$ viz ukázka kódu \ref{lst:sonde:acc}. Funkce \lstinline[language=C]|filter(int *out, int *in, int *b)| je dolní propust prního řádu.
+	Jak bylo dřívě zmíněno, měření dat probíhá jednou za sekundu a je iniciováno příjmem GPS dat. Mimo tohoto měření jsou s větší frekvencí měřena data o zrychlení sondy a do bufferu je ukládána nejnižší hodnota zrychlení ve směru osy $z$ viz ukázka kódu \ref{lst:sonde:acc}. Funkce \lstinline[language=C]|filter(int *out, int *in, int *b)| je dolní propust prního řádu. Po uměhnutí sekundové periody se minimální hodnota vyčte z bufferu, uloží spolu s dalšími daty na SD kartu a buffer se vynuluje.
 		\lstinputlisting[language=C, float=h, caption={Zjištění minimálního zrychlení}, label={lst:sonde:acc}]{Code/sonde_min_acc.c}
 
 
@@ -744,7 +753,7 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 		\label{fig:sonda:mag}
 	\end{figure}
 
-	Tento způsob výpočtu náklonu sondy bohužel funguje pouze ve 2D. Pokud se přesuneme do 3D prostoru, narazíme na následující problém. Jestliže budeme sondou osově rotovat kolem vektoru magnetické indukce, měřené hodnoty se nebudou měnit. Jak je znázorněno na obr.~\ref{fig:sonda:mag:rot}. Tento způsob by šlo použít poze v případě, že by vektor magnetické indukce směřoval svisle k zemi. Při obecné orientaci bohužel tato metoda využít nejde.
+	Tento způsob výpočtu náklonu sondy bohužel funguje pouze ve 2D. Pokud se přesuneme do 3D prostoru, narazíme na následující problém. Při rotaci kolem vektoru magnetické indukce se měřené hodnoty se nebudou měnit, jak je znázorněno na obr.~\ref{fig:sonda:mag:rot}. Tento způsob by šlo použít poze v případě, že by vektor magnetické indukce směřoval svisle k zemi. Při obecné orientaci bohužel tato metoda využít nejde.
 
 	\begin{figure}
 		\centering
@@ -759,7 +768,6 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 	
 TODO:
 	\begin{enumerate}
-		\item Nelze měřit přes mag - vizualizace rotace kolem vektoru mag. pole
 		\item Řešení v flightcontrollerech na dronech - kalman, příliš složité na implementaci, komplementární filtr
 		\item Moje řešení
 	\end{enumerate}
@@ -858,16 +866,30 @@ TODO:
 
 
 
-
-
-
-
-
 	\section{Testování a měření}
-	Měření směrové charakteristiky proběhlo na katedře elektromagnetického pole v bezodrazné komoře. Sonda připevněna na pohyblivou osu byla otáčena motorem a byl měřen přijatý výkon anténou umístěné naproti sondě. Díky tomu byla změřena vyzařovací charakteristika antény v rozsahu 360~°C. Celkem byly měřeny 4 směrové charakteristiky a to pro různá natočení sondy kolem své osy. Směrové charakteristiky jsou zaneseny na (obr)
+	%měření odběru, energie pro poslání dat
+	Před samotným vypuštěním bylo zapotřebí sondu otestovat. Jak spolehlivost elektroniky v nízkých teplotách, tak přenos telemetrických údajů na velkou vzdálenost. Pro korektní zpracování dat bylo také zapotřebí změřit směrovou charakteristiku antén a do jaké míry obal sondy tuto charakteristiku uvlivňuje.
 
-	TODO - graf směrových charstik\\
+	Ověření funkčnosti sondy při nízkých teplotách bylo provedeno v klimakomoře na katedře technologie. Díky rázovénu schlazení lze do jisté míry simulovat časový průběh teploty okolí, ve kterém se sonda pohybuje. Sonda byla umístěna do klimakomory \ref{fig:sonda:klimakomora} za pokojové teploty a schlazena na -55 °C. Při této teplotě byla následně ponechána xx minut a byla sledována funkčnost elektroniky. Průbeh teploty okolí měřený dvěma senzory umístěnými v sondě je vidět v grafu... . Z grafu je vidět rozdílná tepelná kapacita použitých senzorů teploty. 
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=.7\textwidth]{Figures/sonda_klimakomora.jpg}
+		\caption{Sonda umístěna v klimakomoře}
+		\label{fig:sonda:klimakomora}
+	\end{figure}
+
+	Měření směrové charakteristiky proběhlo na katedře elektromagnetického pole v bezodrazné komoře. Sonda připevněna na pohyblivou osu byla otáčena motorem a byl měřen přijatý výkon anténou umístěné naproti sondě. Díky tomu byla změřena vyzařovací charakteristika antény v rozsahu 360~°. Celkem byly měřeny 4 směrové charakteristiky a to pro různá natočení sondy kolem své vlastní osy. Směrové charakteristiky antény jsou zaneseny na obr. \ref{graph:radiation:char}.
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=.5\textwidth]{Graphs/radiation_plot.pdf}
+		\caption{Směrové charakteristiky antény pro různá natočení kolem její osy}
+		\label{graph:radiation:char}
+	\end{figure}
+
 	TODO - spočítat zisk antény
+	Zisk antény byl počítán relativně podle zisku známé antény. Použitá anténa byla xxx se ziskem xxx, jak je uvedeno v dokumentaci (odkaz na dsh).
 
 	Dále byla měřena polarizace antény. V tomto případě byla sonda pevně umístěna na podstavci a otáčeno bylo přijímací anténou v její ose. Pro ideální kruhově polarizovanou anténu by nezáleželo na natočení přijímací antény. V případně antény umístěné v sondě je přenos znárorněn na obr. xxx.
 
@@ -883,7 +905,10 @@ TODO:
 		\label{fig:praha:rip}
 	\end{figure}
 
-	Další testování proběho v klimakomoře na katedře xxx. Jedná se o komoru, kde lze dosáhnout teplot až xxx, díky čemuž lze simulovat alespoň částečně podmínky ve stratosféře.
+
+
+
+
 
 
 	
@@ -904,18 +929,86 @@ TODO:
 
 
 
+
+
+
+
+
+	
 
 	
 
 \chapter{Experiment}
-	příjem dat, umístění antény na střeše , nastavení spektráku
+	V následující kapitole je popsán průběh experimentu od přípravy až po nález sondy. Dále jsou zobrazena surová data ze sondy a ze spektrálního analyzátoru a popsáno jejich čištění, aby bylo možné je dál používat při zpracování. Anténa použitá pro příjem dat byla stejného typu jako na sondě. Umístěna byla na střeše budovy v Dejvicíh na anténním sledovači (obr.~\ref{fig:ground:tracker}), který upravoval orientaci podle polohy cíle - sondy. Ze střechy vedl koaxiální kabel do místnosti, kde byl signál rozbočovačem rozdělen do spektrálního analyzátoru a radiového přijímače v pozemní stanici. Schéma zapojení je zaneseno na obr.~\ref{fig:ground:segment:sch}.
+	\begin{figure}
+		\centering
+		\begin{subfigure}{.49\textwidth}
+			\centering
+			\includegraphics[height=1.2\textwidth]{Figures/ground_segment.pdf}
+			\caption{Schéma pozemního segmentu}
+			\label{fig:ground:segment:sch}
+		\end{subfigure}
+		\begin{subfigure}{.49\textwidth}
+			\centering
+			\includegraphics[height=1.2\textwidth]{Figures/tracker.jpg}
+			\caption{Anténní sledovač}
+			\label{fig:ground:tracker}
+		\end{subfigure}
+		\caption{Pozemní segment}
+		\ref{fig:ground}
+	\end{figure}
+
+
+
 	\section{Průběh experimentu}
-	jak to probíhalo, co se stalo, proč sonda přestala vysílat, proč doletěla jen do 17 km, nalezení pomocí sondy čhmú, sundání sondy
+	Po přichycení sondy ČHMÚ byla sonda zapnuta a vyčkáno na zjištění GPS pozice. Poté byl pracovníky ústavu napuštěn balón o hmostnosti 1200~g, do kterého byl předem vložen padák. Přesně v 13:15:20 SELČ byl balón se sondami vypuštěn. Ihned po startu byly byly vidět telemetrické údaje o pozici a výšce a byla vykreslována trajektorie letu na mapě. Přibližně po patnácti minutách jsme nasedli do automobilu a vyrazili na místo, kde byl predikován dopad sondy.
+
+	Po 37~minutách letu bylo vysílání telemetrických údajů přerušeno. Podle podledních zaznamenaných údajů se tak stalo při teplotě -40~°C v nadmořské výšce 9650.3~m. Sonda již nezačala po dobu letu vysílat. Pozice dopadu byla následně zjištěna podle pozice, kterou vysílala sonda ČHMÚ. Její vysílaná data jsou dekódována radoamatéry a zveřejňována na internetu. Po určení pozice sondy ČHMÚ byla nalezena i má sonda a to o 50~m jihozápadně. Toto bylo dáno 50m provázkem mezi sondami a směrem větru.
+
+	Sonda byla nalezena na stromě ve výšce přibližně 20~m \ref{fig:sonda:strom}. Po neúspěšných pokusech vrhání matky s přivázaným rybářským vlascem byl pro účel sundání postaven dron, na který byl přivázán provázek. Na přední strane dronu byl hliníkový hák, který se zahákl za závěs sondy a posléze byla sestava provázkem strhnuta ze stromu. Volný pád z výšky 20~m měl bohužel za následek prasknutí spodní části sondy. Nicméně anténa, která byla touto částí chtáněna, zůstala nepoškozena.
+
+	\begin{figure}
+		\centering
+		\begin{subfigure}{.49\textwidth}
+			\centering
+			\includegraphics[height=.8\textwidth]{Figures/sonda_strom.jpeg}
+			\caption{Sonda visící na stromě}
+			\label{fig:sonda:strom}
+		\end{subfigure}
+		\begin{subfigure}{.49\textwidth}
+			\centering
+			\includegraphics[height=.8\textwidth]{Figures/sonda_dron.jpeg}
+			\caption{Sonda a dron použitý k jejímu sundání}
+			\label{fig:sonda:dron}			
+		\end{subfigure}
+	\end{figure}
+	
+
 
 	\section{Naměřená data}
-	co bylo na SD kartě, výsledky měření - čístě změřená data
+	Jak bylo zmíněno v kapitole o firmwaru sondy, program byl ošetřen několika způsoby, díky kterým se sonda restartovala, pokud nastal nějaký problém. Z dat na SD kartě je patrné, že cyklus čtení dat někdy zachytil příjmanou zprávu z GPS v takové fázi, že neodpovídala předepsanému formátu a tedy nebyla do daných polí uložena odpovídající data. Jestliže se sonda z nějakého důvodu restartuje, inicializace senzorů stvá delší dobu, než je perioda posílání dat. Tedy se může stát, že v momentě, kdy je sonda připravena přijímat GPS data je již GPS přijímač posílá a tedy příjem začne uprostřed posílané zprávy. Příklad chybného formátování dat je např.:
+	\begin{center}
+		SA\textbf{2512.00}\textbf{5000.34466N01426.89992E}D-002.740066821-03.5;037.9;N;29.868;77
+	\end{center}
+	Z tučně zvýrazněných dat jsou poznat minuty sekundy a milisekundy a souřadnice sondy.
 
+	Tato data jsou dále nepoužitelna a proto bylo potřeba řádky, které je obsahovaly, odstranit. Odstanění poškozených řádků proběhlo následujícím \textit{UNIX}ovým příkazem provedeným v terminálu, který vybere všechny řádky, obsahující jednu ze dvou následujících posloupností znaků.
+	\begin{lstlisting}[language=Awk]
+	grep '00;;;;;;;\|00;50' raw_data.txt > data_clean.txt\end{lstlisting}
+	Tedy buď nulové milisekundy a prázdná pole o poloze, a nebo nulové milisekundy a první dvě číslice zeměpisné šířky, která se při pohybu sondy s ohledem na dolet nemění. 
+	\begin{table}[h!]
+		\centering
+		\begin{tabular}{l}
+			110225.\hl{00;;;;;;;}+029.21;0097759;+28.2;027.7;0;05;4.46;3.46;2.82;8305;-1120;1644;8320;\\
+			-7;235;148;-52;10;17;\\\hline
+			110226.\hl{00;50}00.41136;N;01426.85498;E;257.1;0.264;+029.20;0097766;+28.3;027.6;1;05;\\
+			4.46;3.46;2.82;8304;-1120;1662;8286;3;233;147;-29;14;45;
+		\end{tabular}
+	\end{table}
 
+	Data ze spektrálního analyzátoru byla ukládána ve formátu \textit{numpy} a obsahovala časovou značku a přijatý výkon. Čas byl ve formátu epoch. Ten udává aktuální čas v sekundách uplynulých od 1. ledna 1970. Například vypuštění v epoch formátu je 1651662920. Tento formát byl převeden po načtení souboru v programu Matlab příkazem
+	\begin{lstlisting}[language=Matlab]
+		datetime(powerData(:,[1]),'convertfrom', 'posixtime').\end{lstlisting}
 
 \chapter{Výsledky}
 	\section{Výstup z experimentu}
