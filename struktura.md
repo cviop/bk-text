@@ -24,24 +24,33 @@ Průběh experimentu
 - vyškrtání chybných dat
 
 Výsledky
-- výstup z experimentu
-- vizualizace vyparsovaných dat
-- odkázat ne na experiment
 - vytahat data 
-- proložit data polynomomem + chyba 
-- napsat, že to není 100% model.
+- výstup z experimentu
+        CO UVAŘIT do výsledků
+            - gradient refraktivity - závislost N na Km a pak určit přímky se směrnicí  N/Km - tečny.
+            - závislost útlumu na gradient refraktivity
+            - útlum když bude sonda nade monou
+            - profil refraktivity je stejný pro nás a pro Libuš - předpoklad pro zjednodušení stejně tak pro vektor mag. pole. 
+
+    - vizualizace vyparsovaných dat
+    - vytvoření modelu, - napsat, že to není 100% model.
+        - zmínit nepřesnost úhlu
+
+    - proložit data polymomem + chyba 
+    - vizualizace modelu(ů)
+
+- odkázat se na experiment
+
+Závěr
 - popsat, co bylo špatně, kriticky se podívat na práci, co tam vstupuje za nedostatky - moduly jsou nepřesné atd.
+- ponaučení 
+    - jak zlepšit sondu
+    - jak zpřesnit měření
 
 
-- gradient refraktivity - závislost N na Km a pak určit přímky se směrnicí  N/Km - tečny.
-- závislost útlumu na gradient refraktivity
-
-- útlum kdyz bude sonda nade monou
-- profil refraktivity je stejný pro nás a pro libuš - předpoklad pro zjednodušení stejně tak pro vektor mag. pole. 
 
 
-- tvorba modelu
-    - zmínit nepřesnost úhlu
+
 
 do grafu hodit závislot FLS na vzdálenosti a Reálnýho přijatýho výkonu/ztrát na vzdálenosti.
 Napočítat úhel ohybu na danou vzdálenost - poloměr na str. 79
@@ -67,7 +76,7 @@ v jakém čase psát
 jak pojmenovávat moji sondu? "sonda vyvíjená v rámci této práce" je dlouhé
 vlastní prostředi na grafy?-
 Zahrnout útlum kabelu na sondě?-
-Výkon modulu? 22.3 dBm
+Výkon modulu? 22.3 dBm -
 
 TODO:
 blokové schéma systému
