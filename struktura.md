@@ -119,10 +119,10 @@ do grafu hodit závislot FLS na vzdálenosti a Reálnýho přijatýho výkonu/zt
 Napočítat úhel ohybu na danou vzdálenost - poloměr na str. 79
 
 - výstup z experimentu
-- vizualizace vyparsovaných dat
-- odkázat ne na experiment
-- vytahat data 
-- proložit data polynomomem + chyba 
+**FAKIN DONE** - vizualizace vyparsovaných dat
+- odkázat se na experiment
+**FAKIN DONE** - vytahat data 
+**FAKIN DONE asi?** - proložit data polynomomem + chyba 
 - napsat, že to není 100% model.
 - popsat, co bylo špatně, kriticky se podívat na práci, co tam vstupuje za nedostatky - moduly jsou nepřesné atd.
 
@@ -137,8 +137,6 @@ Napočítat úhel ohybu na danou vzdálenost - poloměr na str. 79
 
 úvod, závěr, smetí kolem
 
-mřížka grafu aby odpovídala hodnotám na xaxix
-posunout graf výkonu wtf se děje??
 
 zdroje jako subfigure
 

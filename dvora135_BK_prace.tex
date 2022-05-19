@@ -755,7 +755,7 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 
 	Tento způsob výpočtu náklonu sondy bohužel funguje pouze ve 2D. Pokud se přesuneme do 3D prostoru, narazíme na následující problém. Při rotaci kolem vektoru magnetické indukce se měřené hodnoty se nebudou měnit, jak je znázorněno na obr.~\ref{fig:sonda:mag:rot}. Tento způsob by šlo použít poze v případě, že by vektor magnetické indukce směřoval svisle k zemi. Při obecné orientaci bohužel tato metoda využít nejde.
 
-	\begin{figure}
+	\begin{figure}[hbtp]
 		\centering
 		\includegraphics[width=.5\textwidth]{Figures/sonda_naklon_mag_osova_rotace.pdf}
 		\caption{Rotace sondy kolem osy tvořené vektorem magnetické indukce (pohled zespod)}
@@ -872,7 +872,7 @@ TODO:
 
 	Ověření funkčnosti sondy při nízkých teplotách bylo provedeno v klimakomoře na katedře technologie. Díky rázovénu schlazení lze do jisté míry simulovat časový průběh teploty okolí, ve kterém se sonda pohybuje. Sonda byla umístěna do klimakomory \ref{fig:sonda:klimakomora} za pokojové teploty a schlazena na -55 °C. Při této teplotě byla následně ponechána xx minut a byla sledována funkčnost elektroniky. Průbeh teploty okolí měřený dvěma senzory umístěnými v sondě je vidět v grafu... . Z grafu je vidět rozdílná tepelná kapacita použitých senzorů teploty. 
 
-	\begin{figure}
+	\begin{figure}[hbtp]
 		\centering
 		\includegraphics[width=.7\textwidth]{Figures/sonda_klimakomora.jpg}
 		\caption{Sonda umístěna v klimakomoře}
@@ -881,7 +881,7 @@ TODO:
 
 	Měření směrové charakteristiky proběhlo na katedře elektromagnetického pole v bezodrazné komoře. Sonda připevněna na pohyblivou osu byla otáčena motorem a byl měřen přijatý výkon anténou umístěné naproti sondě. Díky tomu byla změřena vyzařovací charakteristika antény v rozsahu 360~°. Celkem byly měřeny 4 směrové charakteristiky a to pro různá natočení sondy kolem své vlastní osy. Směrové charakteristiky antény jsou zaneseny na obr. \ref{graph:radiation:char}.
 
-	\begin{figure}
+	\begin{figure}[hbtp]
 		\centering
 		\includegraphics[width=.5\textwidth]{Graphs/radiation_plot.pdf}
 		\caption{Směrové charakteristiky antény pro různá natočení kolem její osy}
@@ -939,8 +939,9 @@ TODO:
 	
 
 \chapter{Experiment}
+\label{chap:expoeriment}
 	V následující kapitole je popsán průběh experimentu od přípravy až po nález sondy. Dále jsou zobrazena surová data ze sondy a ze spektrálního analyzátoru a popsáno jejich čištění, aby bylo možné je dál používat při zpracování. Anténa použitá pro příjem dat byla stejného typu jako na sondě. Umístěna byla na střeše budovy v Dejvicíh na anténním sledovači (obr.~\ref{fig:ground:tracker}), který upravoval orientaci podle polohy cíle - sondy. Ze střechy vedl koaxiální kabel do místnosti, kde byl signál rozbočovačem rozdělen do spektrálního analyzátoru a radiového přijímače v pozemní stanici. Schéma zapojení je zaneseno na obr.~\ref{fig:ground:segment:sch}.
-	\begin{figure}
+	\begin{figure}[hbtp]
 		\centering
 		\begin{subfigure}{.49\textwidth}
 			\centering
@@ -1049,7 +1050,6 @@ TODO:
 		\label{eq:refr:approx}
 	\end{align}
 	kde $h$ je výška nad zemí, $N_\mt{0}$ hodnota refraktivity v 0~km a $h_\mt{0}$ výškové měřítko v km. ITU udává globální světový průměr $N_\mt{0} = 315 \mt{ N}$ a $h_\text{0} = 7{,}35 \mt{ km}$.
-
 	\begin{figure}[hbtp]
 		\centering
 		\includegraphics[width=.7\textwidth]{Graphs/refractivity_exp_lin_meas_hum.pdf}
@@ -1057,7 +1057,7 @@ TODO:
 		\label{graph:refr}
 	\end{figure}
 
-	Data refraktivity vypočtené pomocí \eqref{eq:refr:meas} byla proložena exponenciální funkcí. Výpočet koeficientů byl proveden pomocí funkce v Matlabu \lstinline[language=Matlab]|fit(alt,N,'exp1');|, kde \lstinline|alt| je vektor nadmořských výšek v metrech a \lstinline|N| je vektor vypočtených refraktivit pro danou nadmořskou výšku.
+	Data refraktivity vypočtené pomocí \eqref{eq:refr:meas} byla proložena exponenciální funkcí viz obr.~\ref{graph:refr:fit}. Výpočet koeficientů byl proveden pomocí funkce v Matlabu \lstinline[language=Matlab]|fit(alt,N,'exp1');|, kde \lstinline|alt| je vektor nadmořských výšek v metrech a \lstinline|N| je vektor vypočtených refraktivit pro dané nadmořské výšky.
 
 	Výsledná proložená funkce ve tvaru $y=a\,\mt{exp}(b\,x)$ vyšla jako
 	\begin{align}
@@ -1073,20 +1073,29 @@ TODO:
 		\end{split}
 	\end{align}
 	Hodnota výškového měřítka vyšla z proložení dat $h_\mt{0} = 8{,}13 \mt{ km}$.
-
-	\begin{figure}
+	\begin{figure}[hbtp]
 		\centering
 		\includegraphics[width=.7\textwidth]{Graphs/refractivity_meas_fit_model.pdf}
 		\caption{Proložené hodnoty refraktivity exponenciální křivkou}
 		\label{graph:refr:fit}
 	\end{figure}
 
-	\begin{figure}
+	TODO:PROFIL PRO PRVNÍ DVA KILOMETRY
+
+	Data o přijatém výkonu anténou bohužel nelze použít. Jak bylo po dokončení experimentu zjištěno, při komunikaci anténního sledovače a jeho řídicí jednotky došlo k rušení a přijímací anténa se začala nepředvídatelně natáčet. Toto je vidět na obr.~\ref{grah:p:alt:hum}, kdy zcela bez jakýhkoliv výrazných změn okolního prostředí došlo k prudkémnu poklesu signálu. Šlo o moment, kdy se anténa vlivem rušení v komunikaci natočila jiným směrem, než byla sonda. Bohužel vinou tohoto chování sledovače není možné data použít k ověření ztrát způsobenými šířením ve volném prostoru a ztrá způsobenými refraktivitou atmosféry. 
+
+	\begin{figure}[hbtp]
 		\centering
 		\includegraphics[width=.9\textwidth]{Graphs/alt_hum_p_p_filt.pdf}
 		\caption{Průběh výkonu přijatého spektrometrem, výšky sondy a vlhkosti okolí v čase}
 		\label{grah:p:alt:hum}
 	\end{figure}
+
+	Jelikož v tomto případě není přijatý výkon téměř vůbec závislý na vzdálenosti sondy a pozemního segmentu, nebudou takto data ani interpretována. 
+
+	TODO:POLOMĚR OHYBU V ZÁVISLOSTI NA REFRAKTIVITĚ poloměr na str. 79
+	TODO:do grafu hodit závislot FLS na vzdálenosti (má to vůbec smysl?)
+
 
 
 
