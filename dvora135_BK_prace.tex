@@ -445,20 +445,24 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 
 			
 			\subsubsection{Vlhkostní senzor}
-			Vlhkostní senzor byl zvolen AM2320, který je součástí modulu DHT22 Click od firmy \textit{Microelektronika}. Senzor je schopen měřit v rozsahu od -40 do 80~°C a 0 až 100~\% relativní vlhkosti (\url{https://cdn-shop.adafruit.com/product-files/3721/AM2320.pdf}). 
+			Vlhkostní senzor byl zvolen AM2320, který je součástí modulu DHT22 Click od firmy \textit{Microelektronika}. Senzor je schopen měřit v rozsahu od -40 do 80~°C a 0 až 100~\% relativní vlhkosti (). 
 
 
 
 			
 			\subsubsection{Senzor orientace}
-			Pro zjištění orientace bylo použito senzoru MPU9250, který je součástí modulu 9DOF Click. Jedná se o gyroskop Senzor resp. modul byl vybrán, jelikož byl již dříve používán na jiných projektech a byl ihned dostupný. Díky tomu bylo ihned možné přejít ke psaní ovladače pro vyčítání dat a jeho implementaci do systému. Senzor také splňuje rozsah pracovních teplot a lze tedy využít v podmínkách, které při letu nastanou (\url{https://invensense.tdk.com/wp-content/uploads/2015/02/PS-MPU-9250A-01-v1.1.pdf}).  
+			Pro zjištění orientace bylo použito senzoru MPU9250, který je součástí modulu 9DOF Click. Jedná se o gyroskop Senzor resp. modul byl vybrán, jelikož byl již dříve používán na jiných projektech a byl ihned dostupný. Díky tomu bylo ihned možné přejít ke psaní ovladače pro vyčítání dat a jeho implementaci do systému. Senzor také splňuje rozsah pracovních teplot \cite{dsh_mpu} a lze tedy využít v podmínkách, které při letu nastanou.  
 			
 
 			\subsubsection{Radiový vysílač/přijímač}
-			Pro přenos dat vyl využit readiový vysílač Telit LE70 - 868. Jdná se o téměř \textit{\&play} zařízení. Data jsou do modulu posílána přes sériovou linku UART, odkud jsou následně přeposlána dál. Modul pracuje v režimu Half Diplex a tedy stejný typ modulu lze využít na příjem i vysílání dat bez nutnosti měnit nastavení. 
+			\label{sec:telit}
+			Pro přenos dat vyl využit rádiový vysílač Telit LE70 - 868. Jedná se o téměř \textit{\&play} zařízení. Data jsou do modulu posílána přes sériovou linku UART, odkud jsou následně přeposlána dál. Modul pracuje v režimu Half Duplex a tedy stejný typ modulu lze využít na příjem i vysílání dat bez nutnosti měnit nastavení. 
+
+			Pomocí spektrálního analyzátoru byl změřen výkon jdoucí do anténního konektoru jako $P_\mt{V} = 22{,}3$~dBm. Do této hodnoty je zahrnut i útlum koaxiálního kabelu mezi konektorem sondy a anténou. Podle dokumentace rádiového modulu \cite{telit} je citlivost přijímače 1117~dBm.
 
 			\subsubsection{Antény}
-			Antény využité v rámci této práce byly kvadrifilární šroubovicové antény (Quadrifilar Helix Antenna (QHA)). Jedná se o kruhově polarizované antény v tomto případě s levotočivou polarizací. Anténa byla sestavena z předohýbaných drátů a po kompletaci byla proměřena její charakteristika na vektorovém analyzátoru. Dále byla měřena směrová charakteristika vysílací antény (obr. \ref{graph:radiation:char}). Ta byla měřena i spolu s krytem sondy, aby se do dat přenesl útlum plastu. 
+			\label{sec:anteny}
+			Antény využité v rámci této práce byly kvadrifilární šroubovicové antény (Quadrifilar Helix Antenna (QHA)). Jedná se o kruhově polarizované antény v tomto případě s levotočivou polarizací. Anténa byla sestavena z předohýbaných drátů a po kompletaci byla proměřena její charakteristika na vektorovém analyzátoru. Dále byla měřena směrová charakteristika vysílací antény (obr. \ref{graph:radiation:char}). Ta byla měřena i spolu s krytem sondy, aby se do měřených dat přenesl také útlum plastu. 
 
 			\begin{figure}[hbtp]
 				\centering
@@ -1319,37 +1323,57 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 	\bibitem{web_spot}\textit{Spot Trace User Guide}
     \url{https://www.findmespot.com/downloads/SPOT_TRACE_User_Guide.pdf} [cit.~2022-05-19]
 
-	\bibitem{dsh_lmr}\textit{LMR33630 Datasheet}\url{https://www.ti.com/lit/ds/symlink/lmr33630.pdf?ts=1652260993140&ref_url=https%253A%252F%252Fwww.google.com%252F} [cit.~2022-05-19]
+	\bibitem{dsh_lmr}\textit{LMR33630 Datasheet}
+	\url{https://www.ti.com/lit/ds/symlink/lmr33630.pdf?ts=1652260993140&ref_url=https%253A%252F%252Fwww.google.com%252F} [cit.~2022-05-19]
 
-	\bibitem{gps_lck}\textit{Code of Federal Regulations}\url{https://www.ecfr.gov/current/title-22/part-121}
+	\bibitem{gps_lck}\textit{Code of Federal Regulations}
+	\url{https://www.ecfr.gov/current/title-22/part-121}
 
-	\bibitem{dsh_gps}\textit{U-Blox SAM-M8Q Datasheet}\url{https://content.u-blox.com/sites/default/files/SAM-M8Q_DataSheet_%28UBX-16012619%29.pdf} [cit.~2022-05-19]
+	\bibitem{dsh_gps}\textit{U-Blox SAM-M8Q Datasheet}
+	\url{https://content.u-blox.com/sites/default/files/SAM-M8Q_DataSheet_%28UBX-16012619%29.pdf} [cit.~2022-05-19]
 
-	\bibitem{dsh_mpu_map}\textit{MPU9250 Register Map}\url{https://invensense.tdk.com/wp-content/uploads/2015/02/RM-MPU-9250A-00-v1.6.pdf} [cit.~2022-05-19]
+	\bibitem{dsh_dht}\textit{DHT22 Click datasheet}
+	\url{https://cdn-shop.adafruit.com/product-files/3721/AM2320.pdf}
 
-	\bibitem{dsh_mpu}\textit{MPU9250 Datasheet}\url{https://invensense.tdk.com/wp-content/uploads/2015/02/PS-MPU-9250A-01-v1.1.pdf} [cit.~2022-05-19]
+	\bibitem{dsh_mpu_map}\textit{MPU9250 Register Map}
+	\url{https://invensense.tdk.com/wp-content/uploads/2015/02/RM-MPU-9250A-00-v1.6.pdf} [cit.~2022-05-19]
 
-	\bibitem{dsh_AM2320}\textit{AM2320 Datasheet}\url{https://cdn-shop.adafruit.com/product-files/3721/AM2320.pdf} [cit.~2022-05-19]
+	\bibitem{dsh_mpu}\textit{MPU9250 Datasheet}
+	\url{https://invensense.tdk.com/wp-content/uploads/2015/02/PS-MPU-9250A-01-v1.1.pdf} [cit.~2022-05-19]
 
-	\bibitem{dsh_MS5607}\textit{MS5607 Datasheet}\url{https://www.te.com/commerce/DocumentDelivery/DDEController?Action=showdoc&DocId=Data+Sheet%7FMS5607-02BA03%7FB2%7Fpdf%7FEnglish%7FENG_DS_MS5607-02BA03_B2.pdf%7FCAT-BLPS0035} [cit.~2022-05-19]
+	\bibitem{dsh_AM2320}\textit{AM2320 Datasheet}
+	\url{https://cdn-shop.adafruit.com/product-files/3721/AM2320.pdf} [cit.~2022-05-19]
 
-	\bibitem{dsh_ldo}\textit{LDO 1117-3v3 Datasheet}\url{https://www.st.com/resource/en/datasheet/ld1117.pdf} [cit.~2022-05-19]
+	\bibitem{dsh_MS5607}\textit{MS5607 Datasheet}
+	\url{https://www.te.com/commerce/DocumentDelivery/DDEController?Action=showdoc&DocId=Data+Sheet%7FMS5607-02BA03%7FB2%7Fpdf%7FEnglish%7FENG_DS_MS5607-02BA03_B2.pdf%7FCAT-BLPS0035} [cit.~2022-05-19]
 
-	\bibitem{dsh_AA}\textit{Energizer ultimate lithium Datasheet}\url{https://data.energizer.com/pdfs/l92.pdf} [cit.~2022-05-19]
+	\bibitem{dsh_ldo}\textit{LDO 1117-3v3 Datasheet}
+	\url{https://www.st.com/resource/en/datasheet/ld1117.pdf} [cit.~2022-05-19]
 
-	\bibitem{vaisala_foto}\textit{Nun ein wenig Information zu der Sonde RS41-SG
-	}\url{https://www.qsl.net/oe1ffs/Sondenpage/RS41/RS41.html} [cit.~2022-05-19]
+	\bibitem{dsh_AA}\textit{Energizer ultimate lithium Datasheet}
+	\url{https://data.energizer.com/pdfs/l92.pdf} [cit.~2022-05-19]
 
-	\bibitem{dsh_vaisala}\textit{Vaisala RS41 Datasheet}\url{https://www.vaisala.com/sites/default/files/documents/WEA-MET-RS41SGP-Datasheet-B211444EN.pdf} [cit.~2022-05-19]
+	\bibitem{vaisala_foto}\textit{Nun ein wenig Information zu der Sonde RS41-SG}
+	\url{https://www.qsl.net/oe1ffs/Sondenpage/RS41/RS41.html} [cit.~2022-05-19]
 
-	\bibitem{nmea}\textit{NMEA Reference Manual}\url{https://www.sparkfun.com/datasheets/GPS/NMEA%20Reference%20Manual-Rev2.1-Dec07.pdf} [cit.~2022-05-19]
+	\bibitem{dsh_vaisala}\textit{Vaisala RS41 Datasheet}
+	\url{https://www.vaisala.com/sites/default/files/documents/WEA-MET-RS41SGP-Datasheet-B211444EN.pdf} [cit.~2022-05-19]
+
+	\bibitem{nmea}\textit{NMEA Reference Manual}
+	\url{https://www.sparkfun.com/datasheets/GPS/NMEA%20Reference%20Manual-Rev2.1-Dec07.pdf} [cit.~2022-05-19]
 
 
-	\bibitem{ms_product}\textit{MS5607 product page}\url{https://www.parallax.com/product/altimeter-module-ms5607/} [cit.~2022-05-19]
+	\bibitem{ms_product}\textit{MS5607 product page}
+	\url{https://www.parallax.com/product/altimeter-module-ms5607/} [cit.~2022-05-19]
 
-	\bibitem{dsh_alt2press}\textit{Altitude to pressure conversion}\url{https://www.sensorsone.com/altitude-pressure-units-conversion/} [cit.~2022-05-19]
+	\bibitem{telit}\textit{Telit LE70-868 Datasheet}
+	\url{http://www.artbrno.cz/download/telit/Telit_LE70-868_Datasheet.pdf} [cit.~2022-05-19]
 
-	\bibitem{rozhled}\url{http://www.heywhatsthat.com/} [cit.~2022-05-19]
+	\bibitem{dsh_alt2press}\textit{Altitude to pressure conversion}
+	\url{https://www.sensorsone.com/altitude-pressure-units-conversion/} [cit.~2022-05-19]
+
+	\bibitem{rozhled}
+	\url{http://www.heywhatsthat.com/} [cit.~2022-05-19]
 
 	%\bibitem{dsh_}\textit{Datasheet}\url{} [cit.~2022-05-19]
 
