@@ -396,7 +396,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 		Níže jsou zmíněny druhy senzorů, které jsou nutné pro měření podmínek v troposféře, které ovlivňují přenos radiového signálu. Jak již bylo zmíněno, senzory musí být schopny měřit veličiny v rozsahu hodnot, které panují ve troposféře. Velký výběr modulů s mnohými senzory a dalšími elektrickými součástkami nabízí firma \textit{Microelektronika}. Jená se o produky využívané pro výuku a rychlý vývoj. Výhodou je jejich sjednocený pinout a stejné rozměry konektoru (pinové lišty). Další důvod pro vyběr modulů od tohoto výrobce byla již jejch dostupnost na katedře elektromagnetického polel
 
 			\subsubsection{GPS modul}
-			GPS moduly jsou zpravidla omezeny dvěma parametry. Maximální nadmořsou výškou 18~km a maximální rychlostí 515~m/s vůči zemi https://www.ecfr.gov/current/title-22/part-121. Někteří výrobci GPS modulů berou tato omezení v konjunkci, kdy pro zablokování modulu musí platit obě podmínky, někteří výrobci uvažují  disjunkci, kdy stačí, aby nastala jedna z pomínek a modul přestane dávat validní data. Modul, který byl vybrán je u-blox SAM-M8Q. Podle dokumentace GPS modulu (\url{https://www.u-blox.com/sites/default/files/SAM-M8Q_DataSheet_%28UBX-16012619%29.pdf}) je maximální výška 50~km a maximální rychlost 500~m/s. V případě letu balónu nebude splněna ani jedna z podmínek. Tento GPS modul je součástí vývojového modulu GNSS 4 Click od firmy \textit{Microelektronika}.
+			GPS moduly jsou zpravidla omezeny dvěma parametry. Maximální nadmořsou výškou 18~km a maximální rychlostí 515~m/s vůči zemi . Někteří výrobci GPS modulů berou tato omezení v konjunkci, kdy pro zablokování modulu musí platit obě podmínky, někteří výrobci uvažují  disjunkci, kdy stačí, aby nastala jedna z pomínek a modul přestane dávat validní data. Modul, který byl vybrán je u-blox SAM-M8Q. Podle dokumentace GPS modulu \cite{dsh_gps} je maximální výška 50~km a maximální rychlost 500~m/s. V případě letu balónu nebude splněna ani jedna z podmínek. Tento GPS modul je součástí vývojového modulu GNSS 4 Click od firmy \textit{Microelektronika}.
 
 			U-Blox moduly nabízí široké množství pracovních módů podle charakter použití. Pro běžné použití se využívá mód \textit{Portable}. Jedná se o kompromis mezi rozsahem a přesností určení pozice. Další módy jsou zobrazeny v tabulce \ref{tab:ublox:modes}. V případě sondy byl zvolen mód Airborne \textless{}1g. Při letu sondy není očekáváno zrychlení přesahující 1~g a rychlosti nad 100~m/s (360~km/h). 
 			\begin{table}[]
@@ -425,7 +425,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 
 			
 			\subsubsection{Teplotní a tlakový senzor}
-			Podle (\url{https://www.sensorsone.com/altitude-pressure-units-conversion/}) se tlak ve výšce 30~km pohybuje kolem hodnoty 10~mbar. S ohledem na očekávané rozsahy měřeného tlaku a teploty byl vybrán senzor MS5607 od firmy \textit{TE Connectivity}. Rozsahy měřitelných hodnot jsou zaneseny v tabulce \ref{tab:ms:range}. Teplotní a tlakový senzor je součástí modulu od firmy \textit{Parallax}. Výrobce na stránkách produktu \url{https://www.parallax.com/product/altimeter-module-ms5607/} uvádí, že senzor byl úspěšně testován ve výšce 36~km.
+			Podle \cite{dsh_alt2press} se tlak ve výšce 30~km pohybuje kolem hodnoty 10~mbar. S ohledem na očekávané rozsahy měřeného tlaku a teploty byl vybrán senzor MS5607 od firmy \textit{TE Connectivity}. Rozsahy měřitelných hodnot jsou zaneseny v tabulce \ref{tab:ms:range}. Teplotní a tlakový senzor je součástí modulu od firmy \textit{Parallax}. Výrobce na stránkách produktu \cite{ms_product} uvádí, že senzor byl úspěšně testován ve výšce 36~km.
 			
 			\begin{table}[]
 				\begin{tabular}{|l|lll|l|}
@@ -436,7 +436,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 				Resolution & \multicolumn{3}{c|}{\textless{}0.01}                        & °C   \\ \hline
 				Accuracy   & \multicolumn{1}{l|}{-0.8} & \multicolumn{1}{l|}{}    & 0.8  & °C   \\ \hline
 				\end{tabular}
-				\caption{Rozsah senzoru MS5607, převzato z \url{https://www.parallax.com/package/altimeter-module-ms5607-datasheet})}
+				\caption{Rozsah senzoru MS5607, převzato z \cite{dsh_MS5607}}
 				\label{tab:ms:range}
 			\end{table}
 
@@ -457,8 +457,13 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 			\subsubsection{Radiový vysílač/přijímač}
 			Pro přenos dat vyl využit readiový vysílač Telit LE70 - 868. Jdná se o téměř \textit{\&play} zařízení. Data jsou do modulu posílána přes sériovou linku UART, odkud jsou následně přeposlána dál. Modul pracuje v režimu Half Diplex a tedy stejný typ modulu lze využít na příjem i vysílání dat bez nutnosti měnit nastavení. 
 
-
-		
+			Pro přehlednost a optimální model krytu bylo potřeba vymodelovat i jednotlivé moduly. Kolem přesného 3D modelu elektroniky mohl být poté vymodelován kryt bez nutnosti čekat na výrobu DPS.
+			\begin{figure}[hbtp]
+				\centering
+				\includegraphics[width=.7\linewidth]{Figures/modules_assembly.png} 
+				\caption{Vymodelované moduly}
+				\label{fig:modules:assembly}
+			\end{figure}
 		
 
 		
@@ -508,19 +513,21 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 			Další výhodou spínaného zdroje je minimální PSRR - \textit{Power Source Rejection Ratio}. Výstupní napětí zůstává konstantní bez ohledu na změnu napětí na vstupu, dokud není překročeno minimální napájecí napětí - v našem případě rovno výstupnímu napětí. Limitace čipu je poté 3{,}8~V \cite{dsh_lmr}.
 			
 			Nevýhodou spínaných zdrojů je zanášení šumu do obvodu. Tento problém se vyřeší využitím lineárního regulátoru. Šum generovaný spínacím regulátorem by mohl způsobit nesprávné fungování mikroprocesoru a snižovat kvalitu příjmu GPS modulu. V tomto případě byla napájecí topologie následující. Napětí baterií bylo na spodní redukční desce spínacím regulátorem sníženo na 5~V. Toto napětí bylo následně skrze nevyužité piny vývojového kitu Nucleo přivedeno na horní redukční desku, kde bylo lineárním regulátorem sníženo na 3{,}3~V. Celkem jsou na desce tři větve s tímto napětím. Mikrokontrolér a senzory mají vlastní větev. Další lineární regulátor napájí pouze GPS modul a třetí lineární regulátor je určen pro radiový vysílač. Díky tomu nebude docházet k poklesu napětí napájení ve zbytku přístroje při vysílání dat. 
-
-			\begin{figure}
-				\centering
-				\includegraphics[width = \textwidth]{Figures/psu_bot.png}
-				\caption{Schéma spínaného zdroje umístěného na spodní redukční desce}
-				\label{fig:psu:bot}
-			\end{figure}
-			\begin{figure}
-				\centering
-				\includegraphics[width = \textwidth]{Figures/psu_top.png}
-				\caption{Schéma lineárních regulátorů umístěných na horní redukční desce}
-				\label{fig:psu:top}
-			\end{figure}
+			\begin{figure*}
+				\begin{subfigure}{\textwidth}
+					\centering
+					\includegraphics[width = \textwidth]{Figures/psu_bot.png}
+					\caption{Schéma spínaného zdroje umístěného na spodní redukční desce}
+					\label{fig:psu:bot}
+				\end{subfigure}
+				\begin{subfigure}{\textwidth}
+					\centering
+					\includegraphics[width = \textwidth]{Figures/psu_top.png}
+					\caption{Schéma lineárních regulátorů umístěných na horní redukční desce}
+					\label{fig:psu:top}
+				\end{subfigure}
+			\end{figure*}
+			
 
 
 		\subsection{Ochrana pinů}
@@ -528,7 +535,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 		
 		\begin{figure}
 			\centering
-			\includegraphics[width = .7\textwidth]{Figures/osetreni_vstupu.png}
+			\includegraphics[width = .55\textwidth]{Figures/osetreni_vstupu.png}
 			\caption{Příklad ošetření vstupů TVS diodami}
 			\label{fig:osetreni:vstupu}
 		\end{figure}
@@ -538,16 +545,16 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 
 	\section{Mechanická zástavba}
 	%Součástí práce je i mechanická zástavba kryt pro elektroniku. 
-	Pro přehlednost a optimální model krytu bylo potřeba vymodelovat i jednotlivé moduly. Kolem přesného 3D modelu elektroniky mohl být poté vymodelován kryt bez nutnosti čekat na výrobu DPS.
+	Díky jednotlivým modelům bylo možné vytvořit kompletní model elektronické části, kolem kterého byl poté vymodelován kryt (obr. \ref{fig:all:rez}). Kryt byl modelován s ohledem na anténu umístěnou ve spodní části. Stěny kolem antény jsou ztenčené, aby co nejméně ovlivnily ladění antény na 868~MHz. Malá mechanická odolnost stěn je kompenzována čtyřmi výztužemi vedoucí po obvodu stěny.
 	\begin{figure}[hbtp]
 		\centering
-		\begin{subfigure}{.5\textwidth}
+		\begin{subfigure}{.49\textwidth}
 			\centering
-			\includegraphics[height=.7\linewidth]{Figures/modules_assembly.png} 
-			\caption{Vymodelované moduly}
-			\label{fig:modules:assembly}
+			\includegraphics[height=.7\textwidth]{Figures/sonda_guma.png}
+			\caption{Gumový pás na přichycení skoby odvíječe}
+			\label{fig:sonda:guma}
 		\end{subfigure}%
-		\begin{subfigure}{.5\textwidth}
+		\begin{subfigure}{.49\textwidth}
 			\centering
 			\includegraphics[height=.7\linewidth]{Figures/ALL_rez_white.png}
 			\caption{Řez vrchní částí krytu sondy}
@@ -557,15 +564,32 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 	\end{figure}
 
 	
-	Díky jednotlivým modelům bylo možné vytvořit kompletní model elektronické části, kolem kterého byl poté vymodelován kryt (obr. \ref{fig:all:rez}). Kryt byl modelován s ohledem na anténu umístěnou ve spodní části. Stěny kolem antény jsou ztenčené, aby co nejméně ovlivnily ladění antény na 868~MHz. Malá mechanická odolnost stěn je kompenzována čtyřmi výztužemi vedoucí po obvodu stěny.
+	
 
-	Pro splnění hmotnostního limitu byl model krytu postupně odlehčován. Při ubírání materiálu bylo nutné brát v potaz, že hlavní původ velké hmotnosti není při 3D tisku objem tělesa, ale jeho stěny. Při tvorbě otvorů v modelu se tedy neušetřila hmotnost odpovídající objemu válce odebraného ze stěny, ale pouze dvěma jeho podstavám. Naopak materiál byl potřeba na plášť odebraného válce.
+	Pro splnění hmotnostního limitu byl model krytu postupně odlehčován. Při ubírání materiálu bylo nutné brát v potaz, že hlavní původ velké hmotnosti není při 3D tisku objem tělesa, ale jeho stěny. Při tvorbě otvorů v modelu se tedy neušetřila hmotnost odpovídající objemu válce odebraného ze stěny, ale pouze dvěma jeho podstavám. Naopak materiál byl potřeba na plášť odebraného válce. Výsledný model elektroniky sondy a krytu je na obr. \ref{fig:sonda:final}.
+	\begin{figure}[hbtp]
+		\centering
+		\begin{subfigure}{.49\textwidth}
+			\centering
+			\includegraphics[width = .85\textwidth]{Figures/sonda_no_case.png}
+			\caption{Elektronika sondy}
+			\label{fig:sonda:no:case}
+		\end{subfigure}
+		\begin{subfigure}{.49\textwidth}
+			\centering
+			\includegraphics[width = .85\textwidth]{Figures/sonda_case.png}
+			\caption{Kryt sondy}
+			\label{fig:sondacase}
+		\end{subfigure}
+		\caption{Výsledný model}
+		\label{fig:sonda:final}
+	\end{figure}
 
 	%TODO: názorný jednoduchý model s dírou a bez, iterace 
 
-	Připojení sondy ČHMÚ bylo provedeno pomocí gumového pásu, do kterého se zastrčila skoba odvíječe. To je zařízení, které zajistí postupné odmotání 50m lanka. 50~m je vzdálenost daná výrobcem, která musí být od balónu a dalších součástí sondy, aby byla zajištěna validní měření.
+	Připojení sondy ČHMÚ bylo provedeno pomocí gumového pásu (obr. \ref{fig:sonda:guma}), do kterého se zastrčila skoba odvíječe. To je zařízení, které zajistí postupné odmotání 50m lanka. 50~m je vzdálenost daná výrobcem, která musí být od balónu a dalších součástí sondy, aby byla zajištěna validní měření.
 
-	TODO: obrázek připojení sondy
+	
 
 	V případě, že by došlo k delaminaci 3D tisku, byla jak elektronika, tak sonda ČHMÚ přivázána pojistným provázkem uchyceným k hlavnímu závěsu spolu s padákem a balónem. Díky tomu by sonda stále zůstala pohromadě i když by došlo k rozbití/rozlomení krytu.
 
@@ -581,7 +605,6 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 
 
 	\section{Firmware sondy}
-	
 		\subsection{Obsluha senzorů}
 		Pro vyčítání dat ze senzorů bylo potřeba napsání driveru. Ten má za úkol jak vyčtení dat ze senzoru, tak jeho samotnou inicializaci a nastavení. 
 
@@ -603,19 +626,19 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 		\begin{figure}
 			\centering
 			\includegraphics[width=.7\textwidth]{Figures/MS5607_flowchart.pdf}
-			\caption{Vývojový diagram pro kompenzaci měřených hodnot senzorem MS5607, převzato z \url{https://www.parallax.com/package/altimeter-module-ms5607-datasheet/}}
+			\caption{Vývojový diagram pro kompenzaci měřených hodnot senzorem MS5607, převzato z \cite{dsh_MS5607}}
 			\label{fig:ms5607:flowchart}
 		\end{figure}
 
-		Na rozdíl od předešlých senzorů, tento senzor měří hodnoty a ukládá je do příslušných registrů průběžně. Registry senzoru jsou popsány v dokumentu \url{https://invensense.tdk.com/wp-content/uploads/2015/02/RM-MPU-9250A-00-v1.6.pdf}. Slouží k nastavení senzoru samotného, jeho identifikaci a k výčtu naměřených dat. U senzoru je potřeba nastavit vzorkovací frekvenci, rozsahy měřených hodnot a zdroj hodin. Pro následný přístup k datům na dané adrese se využije následujícího příkazu.
+		Na rozdíl od předešlých senzorů, tento senzor měří hodnoty a ukládá je do příslušných registrů průběžně. Registry senzoru jsou popsány v dokumentu \cite{dsh_mpu_map}. Slouží k nastavení senzoru samotného, jeho identifikaci a k výčtu naměřených dat. U senzoru je potřeba nastavit vzorkovací frekvenci, rozsahy měřených hodnot a zdroj hodin. Pro následný přístup k datům na dané adrese se využije následujícího příkazu.
 		\lstinputlisting[language=C]{Code/MPU_read_CMD.c}
-		Senzor následně vyšle hodnoty daného registru a jejich příjem proběhne pomocí funkce níže. Hodnoty ReadAddr a READWRITE\_CMD jsou definovány v \url{https://invensense.tdk.com/wp-content/uploads/2015/02/RM-MPU-9250A-00-v1.6.pdf}.
+		Senzor následně vyšle hodnoty daného registru a jejich příjem proběhne pomocí funkce níže. Hodnoty ReadAddr a READWRITE\_CMD jsou definovány v \cite{dsh_mpu_map}.
 		\lstinputlisting[language=C]{Code/MPU_read.c}
 		
 
 
 		\subsection{Rozebírání GPS dat}
-		Data jsou GPS přijímačem posílána každou sekundu přes sériovou linku ve formátu NMEA zpráv (\url{https://www.sparkfun.com/datasheets/GPS/NMEA%20Reference%20Manual-Rev2.1-Dec07.pdf}). Jedná se o standardizovaný formát GPS dat specifikovaný organizací NMEA (\textbf{N}ational \textbf{M}arine \textbf{E}lectronics \textbf{A}ssociation). Příklad NMEA zpráv je zanesen níže.
+		Data jsou GPS přijímačem posílána každou sekundu přes sériovou linku ve formátu NMEA zpráv \cite{nmea}. Jedná se o standardizovaný formát GPS dat specifikovaný organizací NMEA (\textbf{N}ational \textbf{M}arine \textbf{E}lectronics \textbf{A}ssociation). Příklad NMEA zpráv je zanesen níže.
 		\begin{table}[h!]
 			\centering
 			\begin{tabular}{l}
@@ -631,7 +654,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 			\end{tabular}
 		\end{table}
 
-		Příklad formátu \$GPGLL zprávy je v tabulce . Informace obsažené v této zprávě jsou vysvětleny v tabulce \ref{tab:gpgll}.
+		Příklad formátu \$GPGLL zprávy je v tabulce \ref{tab:gpgll}, kde jsou popsána jednotlivá pole zprávy.
 		\begin{longtable}[c]{|l|l|l|}
 			\caption{Formát \$GPGLL zprávy}
 			\label{tab:gpgll}\\
@@ -992,7 +1015,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 	\begin{figure}[hbtp]
 		\centering
 		\includegraphics[width=\textwidth]{Figures/petriny_rip.png}
-		\caption{Profil trasy mezi Prahou a horou Říp, vykresleno pomocí \url{http://www.heywhatsthat.com/ } }
+		\caption{Profil trasy mezi Prahou a horou Říp, vykresleno pomocí \cite{rozhled}}
 		\label{fig:praha:rip}
 	\end{figure}
 
@@ -1293,6 +1316,8 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 
 	\bibitem{dsh_lmr}\textit{LMR33630 Datasheet}\url{https://www.ti.com/lit/ds/symlink/lmr33630.pdf?ts=1652260993140&ref_url=https%253A%252F%252Fwww.google.com%252F} [cit.~2022-05-19]
 
+	\bibitem{gps_lck}\textit{Code of Federal Regulations}\url{https://www.ecfr.gov/current/title-22/part-121}
+
 	\bibitem{dsh_gps}\textit{U-Blox SAM-M8Q Datasheet}\url{https://content.u-blox.com/sites/default/files/SAM-M8Q_DataSheet_%28UBX-16012619%29.pdf} [cit.~2022-05-19]
 
 	\bibitem{dsh_mpu_map}\textit{MPU9250 Register Map}\url{https://invensense.tdk.com/wp-content/uploads/2015/02/RM-MPU-9250A-00-v1.6.pdf} [cit.~2022-05-19]
@@ -1311,6 +1336,15 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 	}\url{https://www.qsl.net/oe1ffs/Sondenpage/RS41/RS41.html} [cit.~2022-05-19]
 
 	\bibitem{dsh_vaisala}\textit{Vaisala RS41 Datasheet}\url{https://www.vaisala.com/sites/default/files/documents/WEA-MET-RS41SGP-Datasheet-B211444EN.pdf} [cit.~2022-05-19]
+
+	\bibitem{nmea}\textit{NMEA Reference Manual}\url{https://www.sparkfun.com/datasheets/GPS/NMEA%20Reference%20Manual-Rev2.1-Dec07.pdf} [cit.~2022-05-19]
+
+
+	\bibitem{ms_product}\textit{MS5607 product page}\url{https://www.parallax.com/product/altimeter-module-ms5607/} [cit.~2022-05-19]
+
+	\bibitem{dsh_alt2press}\textit{Altitude to pressure conversion}\url{https://www.sensorsone.com/altitude-pressure-units-conversion/} [cit.~2022-05-19]
+
+	\bibitem{rozhled}\url{http://www.heywhatsthat.com/} [cit.~2022-05-19]
 
 	%\bibitem{dsh_}\textit{Datasheet}\url{} [cit.~2022-05-19]
 
