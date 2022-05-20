@@ -163,14 +163,20 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 \chapter{Úvod}
 	\section{Cíl práce}
 	%model šíření
-	Tato práce je zaměřena na tvorbu modelu šíření radiového paprsku v atmosféře. Mezi prvky, ovlivňující kvalitu rádiového spoje, patří například ztráty volným prostorem, ale také troposférická refrakce - ohyb paprsku díky různým podmínkám v nižších vrstvách atmosféry. Teoretické modely jsou posléze porovnány s reálnými daty popisující rádiový spoj.
+	Tato práce je zaměřena na tvorbu modelu šíření radiového paprsku v atmosféře. Mezi prvky, ovlivňující kvalitu rádiového spoje, patří například ztráty volným prostorem, ale také troposférická refrakce - ohyb paprsku díky různým podmínkám v nižších vrstvách atmosféry.
 	
 
 	\section{Způsob řešení}
 	%jak to budu řešit, stavba sondy, co bude měřit, měření na střeše s trackerem
-	Pro měření podmínek ve troposféře bude zkonstruována meteorologická sonda vlastního návrhu, která bude schopna měřit veličiny, ovlivňující šíření radiového signálu. Mezi měřená data bude patřit teplota, relativní vlhkost a tlak. Přítomný GPS přijímač bude poskytovat zeměpisné souřadnice a nadmořskou výšku. Dále bude pozemním segmentem měřen výkon rádiového signálu a teoretický útlum bude porovnávaný s měřenými hodnotami. Přijímací anténa bude umístěna na střeše budovy FEL v Dejvicích a bude upevněna na anténní sledovač. Ten na základě přijatých GPS souřadnic dokáže nasměrovat anténu na sondu, čímž bude zajištěn stejný zisk přijímací antény po celou dobu letu. Díky potřebným senzorům umístěným na sodě bude možné získat náklon sondy a tedy i upravit zisk antény pro daný vyzařovací úhel.
+	Pro měření podmínek ve troposféře bude zkonstruována meteorologická sonda vlastního návrhu, která bude schopna měřit veličiny, ovlivňující šíření radiového signálu. Mezi měřená data bude patřit teplota, relativní vlhkost a tlak. Přítomný GPS přijímač bude poskytovat zeměpisné souřadnice a nadmořskou výšku. Dále bude pozemním segmentem měřen výkon rádiového signálu a teoretický útlum bude porovnávaný s měřenými hodnotami. Uspořádání experimentu je vidět na obr. \ref{diagram:main}.
 
-	V jakém čase psát úvod?
+	\begin{figure}[hbtp]
+		\centering
+		\includegraphics[width=.6\textwidth]{Figures/main_diagram.pdf}
+		\caption{Hlavní uspořádání experimentu}
+		\label{diagram:main}
+	\end{figure}
+
 
 
 
@@ -206,7 +212,7 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 	
 
 \chapter{Návrh experimentu}
-	Kapitola popisuje teorii využívanou při návrhu experimentu a výběru senzorů. Nakonec popisuje samotný návrh experimentu, díky kterému je možné vytvořit matematický model přenosu radiového signálu a následné ověření modelu se změřenými daty. 
+	Následující kapitola popisuje teorii využívanou při návrhu experimentu a výběru senzorů. Nakonec popisuje samotný návrh experimentu, díky kterému je možné vytvořit matematický model přenosu radiového signálu a následné ověření modelu změřenými daty. 
 	\section{Šíření vln ve troposféře}
 		\subsection{Troposférická refrakce}
 		Při průchodu vlny atmosférou Země je paprsek ovlivněn změnou prostředí, ve kterém se šíří. V závislosti na teplotě, tlaku a hustotě se mění i index lomu atmosféry, který má za následek refrakci - lom paprsku. Index lomu troposféry může nabývat hodnot mezi $n=1{,}000325$ při povrchu Země až $n=1{,}000110$ pro vrchní hranici troposféry~\cite{zaklady:sireni:vln}, nacházející se přibližně ve výšce 10~km \cite{web_tropo}.
@@ -222,7 +228,7 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 			N = \frac{77.6}{T} \left(P + 4810\frac{e}{T}\right),
 			\label{eq:tropo:refrac}
 		\end{align}
-		kde $T$ je absolutní hodnota v K, $p$ je atmosférický tlak v hPa a $e$ je tlak vodních par v hPa. Ten lze vypočíst pomocí hustoty vodních par z doporučení ITU-R 836 \cite{ITU:vapour}. Pdle \cite{ITU:refrac} lze tlak vodních par vypočítat také podle relativní vlhkosti vzduchu $H$ jako
+		kde $T$ je absolutní hodnota v K, $p$ je atmosférický tlak v hPa a $e$ je tlak vodních par v hPa. Ten lze vypočíst pomocí hustoty vodních par z doporučení ITU-R 836 \cite{ITU:vapour}. Podle \cite{ITU:refrac} lze tlak vodních par vypočítat také podle relativní vlhkosti vzduchu $H$ jako
 		\begin{align}
 			e = \frac{H}{100}\,6{,}1121\,\mt{e}^{\frac{17{,}502t}{240{,}97 + t}},
 			\label{eq:tropo:e}
@@ -283,10 +289,10 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 
 
 
-\chapter{Návrh a realizace}
-Tato kapitola se zabývá samotnou realizací sondy. Popisuje přístup, který byl zvolen při vývoji elektroniky a popisuje výběr jednotlivých komponent. Dále vysvětluje dílčí části firmwaru sondy a způsob, jakým byly řešeny problémy. Popisuje jak vysílací část - sondu, tak přijímací části. Jednak pozemní stanici, která formátovala data do zprávy čitelné anténním trackerem a jednak přijímací software na zobrazení pozice na mapě. 
+\chapter{Návrh systému}
+V této kapitole se stanovují požadavky na systém a jsou specifikovány podmínky, ve kterých musí sonda fungovat a jaké parametry, jako např. hmotnost, musí sonda splňovat. Dále je vedena  diskuze o možných přístupech řešení elektroniky a ty jsou rozebírána z hlediska robustnosti a časové náročnosti. V této kapitole jsou také uvedeny nejpoužívanější způsoby sledování sondy, které jsou popsány a porovnány.
 
-Schéma celé sestavy se zaneseno na obr. \ref{fig:sestava}.
+Schéma celé sestavy je zaneseno na obr. \ref{fig:sestava}.
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{Figures/sonda_blokac.drawio.pdf}
@@ -294,100 +300,98 @@ Schéma celé sestavy se zaneseno na obr. \ref{fig:sestava}.
 	\label{fig:sestava:blokac}
 \end{figure}
 
-\section{Požadavky}
-%co za data je potřeba pro model
-Hlavním požadavkem je posílání telemetrických údajů o poloze a ukládání zbylých naměřených dat na SD kartu umístěnou na palubě sondy. S ohledem na panující podmínky ve vyšších vrstvách zemské atmosféry musí být sonda schopna operovat za nízkého tlaku a teploty. Toto se vztahuje jak na mikročipy a senzory, tak na baterie, používané k napájení sondy. Další podmínkou je spolehlivé fungování v oblasti vysoké vlhkosti - oblačnosti a za deště. 
+	\section{Požadavky}
+	%co za data je potřeba pro model
+	Hlavním požadavkem je posílání telemetrických údajů o poloze a ukládání zbylých naměřených dat na SD kartu umístěnou na palubě sondy. S ohledem na panující podmínky ve vyšších vrstvách zemské atmosféry musí být sonda schopna operovat za nízkého tlaku a teploty. Toto se vztahuje jak na mikročipy a senzory, tak na baterie, používané k napájení sondy. Další podmínkou je spolehlivé fungování v oblasti vysoké vlhkosti - oblačnosti a za deště. 
 
-Z důvodu dlouhé čekací doby na povolení vypuštění balónu, které vydává Úřad pro civilní letectví, je využito povolení, které má dlouhodobě sjednané ČHMÚ. Toto povolení se vztahuje na vypouštění volných balónů s užitečným zatížením do celkové hmotnosti 600~g. Denní sonda Vaisala RS41, kterou ČHMÚ posílá 3$\times$ denně, váží 84~g. Sonda vyvíjená v rámci této práce tedy musí splňovat požadavek na hmotnost do 516~g.
+	Z důvodu dlouhé čekací doby na povolení vypuštění balónu, které vydává Úřad pro civilní letectví, je využito povolení, které má dlouhodobě sjednané ČHMÚ. Toto povolení se vztahuje na vypouštění volných balónů s užitečným zatížením do celkové hmotnosti 600~g. Denní sonda Vaisala RS41, kterou ČHMÚ posílá 3$\times$ denně, váží 84~g. Sonda vyvíjená v rámci této práce tedy musí splňovat požadavek na hmotnost do 516~g.
 
-Značná část GPS přijímačů je od výrobce zablokována pro použití ve výškách větších jak 10 km n. m. a je nutné zvolit přijímač, jehož maximální pracovní výška je alespoň 40~km.
+	Značná část GPS přijímačů je od výrobce zablokována pro použití ve výškách větších jak 10 km n. m. a je nutné zvolit přijímač, jehož maximální pracovní výška je alespoň 40~km.
 
 
+	\section{Návrh systému}
+		\subsection{Elektronika sondy}
+		%součástky do -40, nízký tlak (bez elektrolytických kond.), dosah 40+ km
 
-\section{Elektronika sondy}
-%součástky do -40, nízký tlak (bez elektrolytických kond.), dosah 40+ km
+		V samotném návrhu elektroniky sondy byl možný zvolit jeden ze dvou přístupů. Níže práce popisuje výhody, nevýhody a potenciální rizika každé z nich. Dále zdůvodňuje přístup, který byl zvolen při řešení této práce.
 
-V samotném návrhu elektroniky sondy byl možný zvolit jeden ze dvou přístupů. Níže práce popisuje výhody, nevýhody a potenciální rizika každé z nich. Dále zdůvodňuje přístup, který byl zvolen při řešení této práce.
+		%snadné na vývoj a odladění, snadná změna zapojení pří psaní kódu
+			\subsubsection{Využití vývojových modulů}
+			V dnešní době existuje veliké množství mikročipů a MEMS čipů, které lze zakoupit ve formě modulů. Jedná se zpravidla o malé deky plošných spojů osazených konkrétními čipy s minimem potřebných součástek zajišťujících správné fungování. Zpravidla se jedná o blokovací kondenzátory umístěné v bezprostřední blízkosti čipů, poskytující elektrickou energii při rázovém odběru. Moduly mají vyvedené piny mikročipů na pinové lišty nacházející se zpravidla na okraji DPS. 
 
-%snadné na vývoj a odladění, snadná změna zapojení pří psaní kódu
-	\subsubsection{Využití vývojových modulů}
-	V dnešní době existuje veliké množství mikročipů a MEMS čipů, které lze zakoupit ve formě modulů. Jedná se zpravidla o malé deky plošných spojů osazených konkrétními čipy s minimem potřebných součástek zajišťujících správné fungování. Zpravidla se jedná o blokovací kondenzátory umístěné v bezprostřední blízkosti čipů, poskytující elektrickou energii při rázovém odběru. Moduly mají vyvedené piny mikročipů na pinové lišty nacházející se zpravidla na okraji DPS. 
+			V případě mikroprocesoru se jedná o vývojový kit Nucleo od firmy \textit{ST Microelectronics}. Kit se skládá z DPS s mikroprocesorem a minimem součástek, nutných pro správné fungování procesoru. Součástí desky je také zdroj pro napájení čipu a programátor, kterým lze do mikroprocesou nahrát firmware. Jednotlivé piny mikroprocesoru jsou vyvedeny na pinové lišty na kraji desky a slouží ke snadnému propojení s moduly. 
 
-	V případě mikroprocesoru se jedná o vývojový kit Nucleo od firmy \textit{ST Microelectronics}. Kit se skládá z DPS s mikroprocesorem a minimem součástek, nutných pro správné fungování procesoru. Součástí desky je také zdroj pro napájení čipu a programátor, kterým lze do mikroprocesou nahrát firmware. Jednotlivé piny mikroprocesoru jsou vyvedeny na pinové lišty na kraji desky a slouží ke snadnému propojení s moduly. 
+			Výhodou tohoto řešení ve fázi vývoje je snadná záměna zapojení modulů a rychlé odstranění chyb způsobené chybným výběrem komunikačních pinů mikroprocesoru.
 
-	Výhodou tohoto řešení ve fázi vývoje je snadná záměna zapojení modulů a rychlé odstranění chyb způsobené chybným výběrem komunikačních pinů mikroprocesoru.
+			Nevýhoda tohoto řešení je malá robustnost zapojení. Komunikační cesty mezi mikroprocesorem a senzory jsou zbytečné dlouhé, jelikož jsou podřízeny umístění pinů na pinových lištách. Další nevýhodou je nemožnost ovlivnit umístění blokovacích kondenzátorů u mikroprocesoru a nebo zvýšení jejich počtu. Vývojový kit Nucelo není tvořen s ohledem na malé rozměry a velikost DPS tohoto kitu ovlivňuje celkovou velikost a hmotnost sondy.
 
-	Nevýhoda tohoto řešení je malá robustnost zapojení. Komunikační cesty mezi mikroprocesorem a senzory jsou zbytečné dlouhé, jelikož jsou podřízeny umístění pinů na pinových lištách. Další nevýhodou je nemožnost ovlivnit umístění blokovacích kondenzátorů u mikroprocesoru a nebo zvýšení jejich počtu. Vývojový kit Nucelo není tvořen s ohledem na malé rozměry a velikost DPS tohoto kitu ovlivňuje celkovou velikost a hmotnost sondy.
+			\subsubsection{Samostatné senzory}
+			Druhá cesta, kterou je možná se vydat při vývoji elektroniky v sondě je samostatná deska, která obsahuje jednotlivé mikročipy bez jejich modulů a separátních DPS. Díky tomu je možné minimalizovat vzdálenost mezi mikroprocesorem a senzory a zvýšit robustnost napájení čipů. Celková velikost desky je poté dána především schopnostmi návrháře. 
 
-	\subsubsection{Samostatné senzory}
-	Druhá cesta, kterou je možná se vydat při vývoji elektroniky v sondě je samostatná deska, která obsahuje jednotlivé mikročipy bez jejich modulů a separátních DPS. Díky tomu je možné minimalizovat vzdálenost mezi mikroprocesorem a senzory a zvýšit robustnost napájení čipů. Celková velikost desky je poté dána především schopnostmi návrháře. 
+			Toto řešení je časové náročnější, než první zmíněné a v případě způsobené chyby se špatně odstraňují chyby. V případě zničení, nebo nefunkčnosti nějaké elektronické součástky je nutné její odpájení z desky, což může ohrozit komponenty v okolí. V případě modulů lze vyměnit modul samotný.
 
-	Toto řešení je časové náročnější, než první zmíněné a v případě způsobené chyby se špatně odstraňují chyby. V případě zničení, nebo nefunkčnosti nějaké elektronické součástky je nutné její odpájení z desky, což může ohrozit komponenty v okolí. V případě modulů lze vyměnit modul samotný.
+			Při řešení této práce byla zvolena cesta modulů. Důvodem bylo malé množství času neumožňující případné zdlouhavé odlaďování zapojení a také nedostatek součástek samotných. V tomto případě byly dostupnější senzory ve formě modulů a mikroprocesor ve formě vývojového kitu. 
 
-	Při řešení této práce byla zvolena cesta modulů. Důvodem bylo malé množství času neumožňující případné zdlouhavé odlaďování zapojení a také nedostatek součástek samotných. V tomto případě byly dostupnější senzory ve formě modulů a mikroprocesor ve formě vývojového kitu. 
-
-	
+			
 		\subsection{Sledování sondy}
 		Sledování sondy lze realizovat několika způsoby. Níže jsou popsány nejčastější z nich a jsou diskutovány výhody, nevýhody a možná rizika.
 
-			\subsubsection{GSM tracker}
-			Amatéry často využívána, nicméně nedoporučovaná metoda \cite{web_sledovani} je zasílání dat skrze mobilní sítě. GSM sítě, přes které se data posílají, jsou určena pro telefony v okolí země a ve vyšších výškách může dojít k výpadku signálu. Velké množství sond také přistane v~neobydlených a~odlehlých oblastech, ve kterých nemusí být dostatečný signál pro přenos dat.
+				\subsubsection{GSM tracker}
+				Amatéry často využívána, nicméně nedoporučovaná metoda \cite{web_sledovani} je zasílání dat skrze mobilní sítě. GSM sítě, přes které se data posílají, jsou určena pro telefony v okolí země a ve vyšších výškách může dojít k výpadku signálu. Velké množství sond také přistane v~neobydlených a~odlehlých oblastech, ve kterých nemusí být dostatečný signál pro přenos dat.
 
 
-			\subsubsection{APRS}
-			APRS (\textit{\textbf{A}utomatic \textbf{P}acket \textbf{R}eporting \textbf{S}ystem}) je radioamatéry často využívaný způsob sledování sondy, jelikož jde o~způsob levný a spolehlivý a~mnoho radioamatérů má vlastní vybavení pro posílání dat přes APRS. Základem je APRS vysílač, který lze koupit, nebo postavit. GPS data, spolu například s~teplotou a~tlakem, jsou následně takto vysílána a~přijímána amatérskými rádii~\cite{web_sledovani}. Data se poté buď pošlou dál, nebo se nahrají na internetovou stránku k tomuto účelu zřízenou, odkud je může každý sledovat.\footnote{\url{aprs.fi}}
-			Nevýhodou APRS sledovače je bohužel fakt, že pokud sonda přistane v~neobydlené a~odlehlé oblasti, kde nejsou žádné amatérské rádiové stanice, není možno data odeslat. Proto je APRS sledovač vhodný pouze jako záloha, nebo doplnění, není dobré na něj spoléhat se stoprocentní jistotou. Pokud se vysílači nepovede vyslat souřadnice místa dopadu, můžeme přesto APRS vysílač najít pomocí radiového přijímače, naladěného na vysílací frekvenci, a~směrové antény. Další nevýhoda je potřebná licence pro vysílání na frekvenci 144,8~MHz, na které probíhá APRS \cite{web_ctu}.
+				\subsubsection{APRS}
+				APRS (\textit{\textbf{A}utomatic \textbf{P}acket \textbf{R}eporting \textbf{S}ystem}) je radioamatéry často využívaný způsob sledování sondy, jelikož jde o~způsob levný a spolehlivý a~mnoho radioamatérů má vlastní vybavení pro posílání dat přes APRS. Základem je APRS vysílač, který lze koupit, nebo postavit. GPS data, spolu například s~teplotou a~tlakem, jsou následně takto vysílána a~přijímána amatérskými rádii~\cite{web_sledovani}. Data se poté buď pošlou dál, nebo se nahrají na internetovou stránku k tomuto účelu zřízenou, odkud je může každý sledovat.\footnote{\url{aprs.fi}}
+				Nevýhodou APRS sledovače je bohužel fakt, že pokud sonda přistane v~neobydlené a~odlehlé oblasti, kde nejsou žádné amatérské rádiové stanice, není možno data odeslat. Proto je APRS sledovač vhodný pouze jako záloha, nebo doplnění, není dobré na něj spoléhat se stoprocentní jistotou. Pokud se vysílači nepovede vyslat souřadnice místa dopadu, můžeme přesto APRS vysílač najít pomocí radiového přijímače, naladěného na vysílací frekvenci, a~směrové antény. Další nevýhoda je potřebná licence pro vysílání na frekvenci 144,8~MHz, na které probíhá APRS \cite{web_ctu}.
 
 
-			\subsubsection{Satelitní sledovač}
-			Další způsob je využité satelitního sledovače. Jedná se zpravidla o zařízení na sledování majetku v případě odcizení. Získaná data o~poloze se posílají přes síť satelitů na nízké oběžné dráze Země. Využívána je služba \textit{Globalstar}, jež se specializuje na provoz satelitních telefonů. Ze satelitů jsou následně data poslána na speciální internetovou stránku, kde jsou přístupná například z~počítače, nebo mobilní aplikace. Pozice lze také zaslat přes SMS bránu, jako zprávu na mobilní telefon. Výhodou je širší pokrytí oproti GSM síti. 
+				\subsubsection{Satelitní sledovač}
+				Další způsob je využité satelitního sledovače. Jedná se zpravidla o zařízení na sledování majetku v případě odcizení. Získaná data o~poloze se posílají přes síť satelitů na nízké oběžné dráze Země. Využívána je služba \textit{Globalstar}, jež se specializuje na provoz satelitních telefonů. Ze satelitů jsou následně data poslána na speciální internetovou stránku, kde jsou přístupná například z~počítače, nebo mobilní aplikace. Pozice lze také zaslat přes SMS bránu, jako zprávu na mobilní telefon. Výhodou je širší pokrytí oproti GSM síti. 
 
-			Toto řešení má nicméně i~své nevýhody. GPS čip ve sledovači je omezený do maximální výšky 6\,500\,m\,n.\,m.~\cite{web_spot}. Kvůli tomu nastane po dosažení takové výšky tzv. blackout, kdy GPS čip přestane reagovat. Po následném sestupu sondy pod hladinu 6\,500\,m\,n.\,m. se GPS čip opět připojí a~sledovač opět začne fungovat. Další z~problémů je fakt, že sledovač musí mít GPS anténu neustále nasměrovanou k~obloze, tudíž, pokud se při dopadu sonda nějak překlopí, není možné zaměřit její pozici.
+				Toto řešení má nicméně i~své nevýhody. GPS čip ve sledovači je omezený do maximální výšky 6\,500\,m\,n.\,m.~\cite{web_spot}. Kvůli tomu nastane po dosažení takové výšky tzv. blackout, kdy GPS čip přestane reagovat. Po následném sestupu sondy pod hladinu 6\,500\,m\,n.\,m. se GPS čip opět připojí a~sledovač opět začne fungovat. Další z~problémů je fakt, že sledovač musí mít GPS anténu neustále nasměrovanou k~obloze, tudíž, pokud se při dopadu sonda nějak překlopí, není možné zaměřit její pozici.
 
-			\subsubsection{Přímé posílání GPS dat}
-			Pro tuto práci je implementačně nejjednodušším řešením přímé posílání GPS dat. S ohledem na zadání je nutné v rámci práce telemetrická data o poloze ze sondy posílat a tedy tyto informace lze využít k samotné lokalizaci a následnému nalezení sondy. Rizikem je dopad do oblasti, kde se omezí dosah telemetrického signálu. Např. do hustého lesa, nebo do zástavby.
+				\subsubsection{Přímé posílání GPS dat}
+				Pro tuto práci je implementačně nejjednodušším řešením přímé posílání GPS dat. S ohledem na zadání je nutné v rámci práce telemetrická data o poloze ze sondy posílat a tedy tyto informace lze využít k samotné lokalizaci a následnému nalezení sondy. Rizikem je dopad do oblasti, kde se omezí dosah telemetrického signálu. Např. do hustého lesa, nebo do zástavby.
 
-			S ohledem na hmotnost, kterou by předešlá řešení přidala k celkové hmotnosti, bylo zvoleno tohoto způsobu sledování.
+				S ohledem na hmotnost, kterou by předešlá řešení přidala k celkové hmotnosti, bylo zvoleno tohoto způsobu sledování.
 
-			\subsubsection{Zjištění pozice sondy ČHMÚ}
-			Jak již bylo zmíněno, sonda ČHMÚ je při letu zavěšena pod vyvíjenou sondou. Data vysílaná sondou ČHMÚ jsou přijímána a dekódována v místě vypuštění, ale také jsou zachytávána amatérskými rádii a informace o poloze jsou sdílena na internetu. Tento způsob je spolehlivý, jelikož vysílací část je komerčně prodávaná a určena pro profesionální použití. Přijímacích stanic je velké množství a tedy je vysoká pravděpodobnost, že budou data ze sondy zachycena. 
+				\subsubsection{Zjištění pozice sondy ČHMÚ}
+				Jak již bylo zmíněno, sonda ČHMÚ je při letu zavěšena pod vyvíjenou sondou. Data vysílaná sondou ČHMÚ jsou přijímána a dekódována v místě vypuštění, ale také jsou zachytávána amatérskými rádii a informace o poloze jsou sdílena na internetu. Tento způsob je spolehlivý, jelikož vysílací část je komerčně prodávaná a určena pro profesionální použití. Přijímacích stanic je velké množství a tedy je vysoká pravděpodobnost, že budou data ze sondy zachycena. 
 
-			Nevýhodou je, že sonda ČHMÚ není přímou součástí vyvíjené sondy a tedy může dojít k odtržení. Tento způsob sledování je tedy brán jako záloha.
-
-
-		
-\section{Firmware sondy}
-Firmware pro mikroprocesor v sondě zajišťuje inicializaci senzorů, správné čtení dat ze senzorů, jejich zpracování. Dále je nutné načítání data z GPS modulu a jejich rozdělení na dané zprávy a bloky informací využívaných pro určení pozice v prostoru. Všechny získané informace je poté nutno sešít do zprávy poslané telemetrií na zem a uložit na externí paměť. 
-
-Nutnou součástí firmwaru je také ošetření chybových stavů a možných errorů, vyvolaných chybným čtením dat a nebo fyzickými podmínkami prostředí.
-
-\section{Mechanická zástavba}
-Mechanická zástavba celé sondy musí splňovat požadavky pracovníků ČHMÚ, aby nedošlo k poničeni balónu a způsobení škod při dopadu na zem. Jelikož je sonda Vaisala RS41 pověšena pod sondu vznikající v rámci této práce, je nutné zajistit robustnost a zamezit odpojení sondy Vaisala, nebo rozpadu vyvíjené sondy.
-
-
-
-\section{Pozemní stanice}
-\label{sec:navrh:pozemni_stanice}
-Firmware pro mikroprocesor v pozemní stanici zodpovídá za správné dekódování přijatých telemetrických údajů. Firmware musí určit, která data jsou validní. Přijatá data je poté nutno zformátovat do zprávy určené pro anténní tracker, umístěný na střeše budovy FEL. Firmware musí být odolný vůči náhodným chybám způsobených přenosem na velkou vzdálenost. Příjem i posílání dat probíhá přes sériovou linku. 
-
-Elektronika pozemní stanice není vystavena extrémním podmínkám a není nutné řešit její odolnost vůči vnějším vlivům. 
-
-
-\section{Software pro zobrazení telemetrických údajů}
-Software určený pro příjem dat na počítači umístěném v automobilu jedoucí ve směru dopadu sondy. Software musí určit validní data a vyznačit GPS pozici sondy na mapě. Další funkcí softwaru je výpis souřadnic, výšky a rychlosti sondy a teploty okolí sondy. Data jdoucí do programu jsou posílána přes sériovou linkou z přijímače signálu vysílaného sondou. 
-
-
-
-
-	\section{Elektronika}
-	
-			
-		\subsection{Použité komponenty}
-		Níže jsou zmíněny druhy senzorů, které jsou nutné pro měření podmínek v troposféře, které ovlivňují přenos radiového signálu. Jak již bylo zmíněno, senzory musí být schopny měřit veličiny v rozsahu hodnot, které panují ve troposféře. Velký výběr modulů s mnohými senzory a dalšími elektrickými součástkami nabízí firma \textit{Microelektronika}. Jená se o produky využívané pro výuku a rychlý vývoj. Výhodou je jejich sjednocený pinout a stejné rozměry konektoru (pinové lišty).
-
+				Nevýhodou je, že sonda ČHMÚ není přímou součástí vyvíjené sondy a tedy může dojít k odtržení. Tento způsob sledování je tedy brán jako záloha.
 
 
 		
+		\subsection{Firmware sondy}
+		Firmware pro mikroprocesor v sondě zajišťuje inicializaci senzorů, správné čtení dat ze senzorů, jejich zpracování. Dále je nutné načítání data z GPS modulu a jejich rozdělení na dané zprávy a bloky informací využívaných pro určení pozice v prostoru. Všechny získané informace je poté nutno sešít do zprávy poslané telemetrií na zem a uložit na externí paměť. 
+
+		Nutnou součástí firmwaru je také ošetření chybových stavů a možných errorů, vyvolaných chybným čtením dat a nebo fyzickými podmínkami prostředí.
+
+		\subsection{Mechanická zástavba}
+		Mechanická zástavba celé sondy musí splňovat požadavky pracovníků ČHMÚ, aby nedošlo k poničeni balónu a způsobení škod při dopadu na zem. Jelikož je sonda Vaisala RS41 pověšena pod sondu vznikající v rámci této práce, je nutné zajistit robustnost a zamezit odpojení sondy Vaisala, nebo rozpadu vyvíjené sondy.
+
+
+
+		\subsection{Pozemní stanice}
+		\label{sec:navrh:pozemni_stanice}
+		Firmware pro mikroprocesor v pozemní stanici zodpovídá za správné dekódování přijatých telemetrických údajů. Firmware musí určit, která data jsou validní. Přijatá data je poté nutno zformátovat do zprávy určené pro anténní tracker, umístěný na střeše budovy FEL. Firmware musí být odolný vůči náhodným chybám způsobených přenosem na velkou vzdálenost. Příjem i posílání dat probíhá přes sériovou linku. 
+
+		Elektronika pozemní stanice není vystavena extrémním podmínkám a není nutné řešit její odolnost vůči vnějším vlivům. 
+
+
+		\subsection{Software pro zobrazení telemetrických údajů}
+		Software určený pro příjem dat na počítači umístěném v automobilu jedoucí ve směru dopadu sondy. Software musí určit validní data a vyznačit GPS pozici sondy na mapě. Další funkcí softwaru je výpis souřadnic, výšky a rychlosti sondy a teploty okolí sondy. Data jdoucí do programu jsou posílána přes sériovou linkou z přijímače signálu vysílaného sondou. 
+
+
+
+
+\chapter{Realizace systému}
+Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednotlivé moduly zodpovídající za měření dat a jsou popsány motivace jejich výběru. Dále text rozebírá dílčí části firmwaru sondy a způsob, jakým byly řešeny problémy, které nastaly vinou nestandardních podmínek. Popisuje jak vysílací část - sondu, tak přijímací části; pozemní stanici, která formátovala data do zprávy čitelné anténním trackerem a přijímací software na zobrazení pozice na mapě. 
+
+	\section{Elektronika sondy}
+		\subsubsection{Použité komponenty}
+		Níže jsou zmíněny druhy senzorů, které jsou nutné pro měření podmínek v troposféře, které ovlivňují přenos radiového signálu. Jak již bylo zmíněno, senzory musí být schopny měřit veličiny v rozsahu hodnot, které panují ve troposféře. Velký výběr modulů s mnohými senzory a dalšími elektrickými součástkami nabízí firma \textit{Microelektronika}. Jená se o produky využívané pro výuku a rychlý vývoj. Výhodou je jejich sjednocený pinout a stejné rozměry konektoru (pinové lišty). Další důvod pro vyběr modulů od tohoto výrobce byla již jejch dostupnost na katedře elektromagnetického polel
+
 			\subsubsection{GPS modul}
 			GPS moduly jsou zpravidla omezeny dvěma parametry. Maximální nadmořsou výškou 18~km a maximální rychlostí 515~m/s vůči zemi https://www.ecfr.gov/current/title-22/part-121. Někteří výrobci GPS modulů berou tato omezení v konjunkci, kdy pro zablokování modulu musí platit obě podmínky, někteří výrobci uvažují  disjunkci, kdy stačí, aby nastala jedna z pomínek a modul přestane dávat validní data. Modul, který byl vybrán je u-blox SAM-M8Q. Podle dokumentace GPS modulu (\url{https://www.u-blox.com/sites/default/files/SAM-M8Q_DataSheet_%28UBX-16012619%29.pdf}) je maximální výška 50~km a maximální rychlost 500~m/s. V případě letu balónu nebude splněna ani jedna z podmínek. Tento GPS modul je součástí vývojového modulu GNSS 4 Click od firmy \textit{Microelektronika}.
 
@@ -447,12 +451,12 @@ Software určený pro příjem dat na počítači umístěném v automobilu jedo
 			Pro zjištění orientace bylo použito senzoru MPU9250, který je součástí modulu 9DOF Click. Jedná se o gyroskop Senzor resp. modul byl vybrán, jelikož byl již dříve používán na jiných projektech a byl ihned dostupný. Díky tomu bylo ihned možné přejít ke psaní ovladače pro vyčítání dat a jeho implementaci do systému. Senzor také splňuje rozsah pracovních teplot a lze tedy využít v podmínkách, které při letu nastanou (\url{https://invensense.tdk.com/wp-content/uploads/2015/02/PS-MPU-9250A-01-v1.1.pdf}).  
 			
 
+			\subsubsection{Radiový vysílač/přijímač}
+			Pro přenos dat vyl využit readiový vysílač Telit LE70 - 868. Jdná se o téměř \textit{\&play} zařízení. Data jsou do modulu posílána přes sériovou linku UART, odkud jsou následně přeposlána dál. Modul pracuje v režimu Half Diplex a tedy stejný typ modulu lze využít na příjem i vysílání dat bez nutnosti měnit nastavení. 
+
 
 		
 		
-
-
-
 
 		
 		\subsection{DPS pro připojení modulů}
@@ -510,27 +514,20 @@ Software určený pro příjem dat na počítači umístěném v automobilu jedo
 			\end{figure}
 
 
-			\subsubsection{Ochrana pinů}
-			Jelikož většina pinů využívaných ke komunikaci byla snadno dostupná na dotyk při manipulaci, bylo potřeba je ošetřit vůči elektrostatickému výboji (ESD), který by měl za následek zničení čipu. Příklad ošetření GPIO pinů pomocí TVS diody BAV99 je na obr. \ref{fig:osetreni:vstupu}.
-			
-			\begin{figure}
-				\centering
-				\includegraphics[width = .7\textwidth]{Figures/osetreni_vstupu.png}
-				\caption{Příklad ošetření vstupů TVS diodami}
-				\label{fig:osetreni:vstupu}
-			\end{figure}
-
-
-
-
-
-
+		\subsection{Ochrana pinů}
+		Jelikož většina pinů využívaných ke komunikaci byla snadno dostupná na dotyk při manipulaci, bylo potřeba je ošetřit vůči elektrostatickému výboji (ESD), který by měl za následek zničení čipu. Příklad ošetření GPIO pinů pomocí TVS diody BAV99 je na obr. \ref{fig:osetreni:vstupu}.
+		
+		\begin{figure}
+			\centering
+			\includegraphics[width = .7\textwidth]{Figures/osetreni_vstupu.png}
+			\caption{Příklad ošetření vstupů TVS diodami}
+			\label{fig:osetreni:vstupu}
+		\end{figure}
 
 
 
 
 	\section{Mechanická zástavba}
-
 	Součástí práce je i mechanická zástavba kryt pro elektroniku. Pro přehlednost a optimální model krytu bylo potřeba vymodelovat i jednotlivé moduly. Kolem přesného 3D modelu elektroniky mohl být vymodelován kryt bez nutnosti čekat na výrobu redukčních desek.
 	\begin{figure}[hbtp]
 		\centering
@@ -554,7 +551,7 @@ Software určený pro příjem dat na počítači umístěném v automobilu jedo
 
 	Pro splnění hmotnostního limitu byl model krytu postupně odlehčován. Při ubírání materiálu bylo nutné brát v potaz, že hlavní původ velké hmotnosti není při 3D tisku objem tělesa, ale jeho stěny. Při tvorbě otvorů v modelu se tedy neušetřila hmotnost odpovídající objemu válce odebraného ze stěny, ale pouze dvěma jeho podstavám. Naopak materiál byl potřeba na plášť odebraného válce.
 
-	TODO: názorný jednoduchý model s dírou a bez, iterace 
+	%TODO: názorný jednoduchý model s dírou a bez, iterace 
 
 	Připojení sondy ČHMÚ bylo provedeno pomocí gumového pásu, do kterého se zastrčila skoba odvíječe. To je zařízení, které zajistí postupné odmotání 50m lanka. 50~m je vzdálenost daná výrobcem, která musí být od balónu a dalších součástí sondy, aby byla zajištěna validní měření.
 
@@ -562,7 +559,7 @@ Software určený pro příjem dat na počítači umístěném v automobilu jedo
 
 	V případě, že by došlo k delaminaci 3D tisku, byla jak elektronika, tak sonda ČHMÚ přivázána pojistným provázkem uchyceným k hlavnímu závěsu spolu s padákem a balónem. Díky tomu by sonda stále zůstala pohromadě i když by došlo k rozbití/rozlomení krytu.
 
-	model DPS, model sondy, iterace, odlehčování, připojení sondy čhmú, bezpečnostní závěsy
+	%model DPS, model sondy, iterace, odlehčování, připojení sondy čhmú, bezpečnostní závěsy
 
 
 
@@ -573,192 +570,270 @@ Software určený pro příjem dat na počítači umístěném v automobilu jedo
 
 
 
-	\section{Firmware}
+	\section{Firmware sondy}
 	
-	\subsection{Obsluha senzorů}
-	Pro vyčítání dat ze senzorů bylo potřeba napsání driveru. Ten má za úkol jak vyčtení dat ze senzoru, tak jeho samotnou inicializaci a nastavení. 
+		\subsection{Obsluha senzorů}
+		Pro vyčítání dat ze senzorů bylo potřeba napsání driveru. Ten má za úkol jak vyčtení dat ze senzoru, tak jeho samotnou inicializaci a nastavení. 
 
-	Výčet dat ze senzoru AM2320 probíhá příkazem
-	\lstinputlisting[language=C]{Code/am2320_write.txt}
+		Výčet dat ze senzoru AM2320 probíhá příkazem
+		\lstinputlisting[language=C]{Code/am2320_write.txt}
 
-	Senzor následně vyšle data obsahující informace o vlhkosti a teplotě. Jejich příjem zajišťuje funkce
-	\lstinputlisting[language=C]{Code/am2320_read.txt}
+		Senzor následně vyšle data obsahující informace o vlhkosti a teplotě. Jejich příjem zajišťuje funkce
+		\lstinputlisting[language=C]{Code/am2320_read.txt}
 
-	Způsob přepočtu získaných dat na hodnoty teploty a tlaku je popsán v dokumentaci senzoru. Kód pro přepočet je následující:
-	\lstinputlisting[language=C]{Code/am2320_get_values.txt}
+		Způsob přepočtu získaných dat na hodnoty teploty a tlaku je popsán v dokumentaci senzoru. Kód pro přepočet je následující:
+		\lstinputlisting[language=C]{Code/am2320_get_values.txt}
 
-	Pro senzor teploty a tlaku MS5607 je způsob výčtu dat obdobný. Nejdříve se pošle žádost o převod hodnoty jdoucí ze senzoru.
-	\lstinputlisting[language=C]{Code/ms5607_convert_press.txt}
-	Následně se pošle žádost o vyčtení hodnot 24bit analogově digitálního převodníku pomocí následujícího kódu.
-	\lstinputlisting[language=C]{Code/ms5607_get_press.txt}
+		Pro senzor teploty a tlaku MS5607 je způsob výčtu dat obdobný. Nejdříve se pošle žádost o převod hodnoty jdoucí ze senzoru.
+		\lstinputlisting[language=C]{Code/ms5607_convert_press.txt}
+		Následně se pošle žádost o vyčtení hodnot 24bit analogově digitálního převodníku pomocí následujícího kódu.
+		\lstinputlisting[language=C]{Code/ms5607_get_press.txt}
 
-	Hodnoty změřené tímto způsobem jsou nekompenzované a jsou ovlivněny nelinearitou senzoru. Pro správnou kompenzaci teploty a tlaku je zapotřebí využít vývojový diagram na obr. \ref{fig:ms5607:flowchart}.
-	\begin{figure}
-		\centering
-		\includegraphics[width=.7\textwidth]{Figures/MS5607_flowchart.pdf}
-		\caption{Vývojový diagram pro kompenzaci měřených hodnot senzorem MS5607, převzato z \url{https://www.parallax.com/package/altimeter-module-ms5607-datasheet/}}
-		\label{fig:ms5607:flowchart}
-	\end{figure}
+		Hodnoty změřené tímto způsobem jsou nekompenzované a jsou ovlivněny nelinearitou senzoru. Pro správnou kompenzaci teploty a tlaku je zapotřebí využít vývojový diagram na obr. \ref{fig:ms5607:flowchart}.
+		\begin{figure}
+			\centering
+			\includegraphics[width=.7\textwidth]{Figures/MS5607_flowchart.pdf}
+			\caption{Vývojový diagram pro kompenzaci měřených hodnot senzorem MS5607, převzato z \url{https://www.parallax.com/package/altimeter-module-ms5607-datasheet/}}
+			\label{fig:ms5607:flowchart}
+		\end{figure}
 
-	Na rozdíl od předešlých senzorů, tento senzor měří hodnoty a ukládá je do příslušných registrů průběžně. Registry senzoru jsou popsány v dokumentu \url{https://invensense.tdk.com/wp-content/uploads/2015/02/RM-MPU-9250A-00-v1.6.pdf}. Slouží k nastavení senzoru samotného, jeho identifikaci a k výčtu naměřených dat. U senzoru je potřeba nastavit vzorkovací frekvenci, rozsahy měřených hodnot a zdroj hodin. Pro následný přístup k datům na dané adrese se využije následujícího příkazu.
-	\lstinputlisting[language=C]{Code/MPU_read_CMD.c}
-	Senzor následně vyšle hodnoty daného registru a jejich příjem proběhne pomocí funkce níže. Hodnoty ReadAddr a READWRITE\_CMD jsou definovány v \url{https://invensense.tdk.com/wp-content/uploads/2015/02/RM-MPU-9250A-00-v1.6.pdf}.
-	\lstinputlisting[language=C]{Code/MPU_read.c}
-	
-
-
-	\subsection{Rozebírání GPS dat}
-	Data jsou GPS přijímačem posílána každou sekundu přes sériovou linku ve formátu NMEA zpráv (\url{https://www.sparkfun.com/datasheets/GPS/NMEA%20Reference%20Manual-Rev2.1-Dec07.pdf}). Jedná se o standardizovaný formát GPS dat specifikovaný organizací NMEA (\textbf{N}ational \textbf{M}arine \textbf{E}lectronics \textbf{A}ssociation). Příklad NMEA zpráv je zanesen níže.
-	\lstinputlisting{Code/NMEA.txt}
+		Na rozdíl od předešlých senzorů, tento senzor měří hodnoty a ukládá je do příslušných registrů průběžně. Registry senzoru jsou popsány v dokumentu \url{https://invensense.tdk.com/wp-content/uploads/2015/02/RM-MPU-9250A-00-v1.6.pdf}. Slouží k nastavení senzoru samotného, jeho identifikaci a k výčtu naměřených dat. U senzoru je potřeba nastavit vzorkovací frekvenci, rozsahy měřených hodnot a zdroj hodin. Pro následný přístup k datům na dané adrese se využije následujícího příkazu.
+		\lstinputlisting[language=C]{Code/MPU_read_CMD.c}
+		Senzor následně vyšle hodnoty daného registru a jejich příjem proběhne pomocí funkce níže. Hodnoty ReadAddr a READWRITE\_CMD jsou definovány v \url{https://invensense.tdk.com/wp-content/uploads/2015/02/RM-MPU-9250A-00-v1.6.pdf}.
+		\lstinputlisting[language=C]{Code/MPU_read.c}
+		
 
 
-	Příklad formátu \$GPGLL zprávy je v tabulce . Informace obsažené v této zprávě jsou vysvětleny v tabulce \ref{tab:gpgll}.
-	\begin{longtable}[c]{|l|l|l|}
-		\caption{Formát \$GPGLL zprávy}
-		\label{tab:gpgll}\\
-		\hline
-		\rowcolor[HTML]{e5ecf6} 
-		\multicolumn{1}{|c|}{\cellcolor[HTML]{DEDFF4}Název} &
-		\multicolumn{1}{c|}{\cellcolor[HTML]{DEDFF4}Příklad} &
-		\multicolumn{1}{c|}{\cellcolor[HTML]{DEDFF4}Popis} \\ \hline
-		\endhead
-		%
-		Identifikátor zprávy & \$GPGLL     & GLL hlavička \\ \hline
-		Zem. Šířka           & 5005.77089  & ddmm.mmmm    \\ \hline
-		N/S (Sever/Jih)      & N           &              \\ \hline
-		Zem. Délka           & 01421.46534 & dddmm.mmmm   \\ \hline
-		E/W (Východ/Západ)   & E           &              \\ \hline
-		UTC Čas              & 132456.00   & hhmmss.sss   \\ \hline
-		Status &
-		A &
-		\begin{tabular}[c]{@{}l@{}}A - data jsou validní\\ V  data nejsou   validní\end{tabular} \\ \hline
-		Mód &
-		A &
-		\begin{tabular}[c]{@{}l@{}}A - autonomous\\ D - DGPS\\ E - DR\end{tabular} \\ \hline
-		Kontrolní součet             & *69         &              \\ \hline
-		<CR> <LF>            &             & Konec zprávy \\ \hline
-	\end{longtable}
-
-	Délka zprávy odeslané GPS přijímačem se liší podle dostupných údajů. Pokud GPS nezná svou polohu, pole pro zeměpisnou šířku a délku jsou prázdná. Proto nemůžeme očekávat zprávy fixní velikosti. Způsob, kterým se ve firmwaru sondy NMEA zpráva přijímá je znározněn v ukázce kódu \ref{code:ReceiveToIdle}.
-	\lstinputlisting[language=C, caption={Funkce pro příjem dat z GSP}, label={code:ReceiveToIdle}]{Code/HAL_UARTEx_ReceiveToIdle_IT.c}
-
-	Tato funkce přijímá data až do doby, kdy nenastane klidový stav - GPS přestane vysílat data. V ten moment se vyvolá callback funkce.
-	\lstinputlisting[language=C,caption={Callback funkce vyvolaná interruptem}, label={lst:main:callback}]{Code/callback.c}
-	V této funkci se do globální proměnné \lstinline[language=C] |uint16_t DataRecieved | uloží velikost přijatých dat. Pokud je v hlavní smyčce programu splněna podmínka, že \lstinline[language=C] |  DataRecieved > 0 |, program začne rozebírání přijatých dat funkcí \ref{lst:main:parse}. Pro rozdělení přijatých dat na jednotlivé NMEA zprávy se využívá znaků <CR> <LF>, které se nacházejí na konci každého řádku. 
-	
-	Součástí vyslaných dat jsou i \$GPGSV zprávy obsahující informace o viditelných satelitech. Zpráv tohoto typu je vysílá několik po sobě a počet vyslaných zpráv je zanesen v prvním poli této zprávy. Pro správně rozdělení přijatých dat je informace o počtu \$GPGSV zpráv nutná, jelikož ovlivňuje pořadí dalšách zpráv.
-
-	Funkce \lstinline[language=C] |mainParse| v ukázce \ref{lst:main:parse} rozdělí a uloží data do bufferu \lstinline |uint8_t GPSparse[15][200] = {}|   tvořeného 2D polem a zjistí počet \$GPGSV zpráv.
-
-	\lstinputlisting[language=C++,caption={Hlavní parsovací funkce}, label={lst:main:parse}]{Code/main_parse.c}
-
-
-
-	Příklad volání funkce v hlavní smyčce programu je znázorněn v ukázce kódu \ref{lst:main:loop}.
-	\lstinputlisting[language=C, caption={Volání funkcí v hlavní smyčce programu}, label={lst:main:loop}]{Code/parse_in_main.txt}
-
-	Ve stejné větvi programu, kde se vykonává rozebírání NMEA zpráv, se vyčtou data ze senzorů. Tyto číslené hodnoty se poté převedou do textové podoby a přidají mezi vysílaná data. Převod z číselné hodnoty na textovou, obsahující ASCII znaky, slouží funkce \lstinline |ftoa()|, která převádí číslo typu float a funkce \lstinline[language=C] |itoa()| pro převod čísla typu int. 
-
-	Z rozebraných NMEA zpráv jsou poté vybrána data, která se spolu s naměřenými hodnotami ze senzorů, převedené do textové podoby, sešijí do první zprávy. Tato zpráva se posléze pošle skrze sériovou linku do radiového vysílače. K této zprávě se po odeslání přidají další data a zpráva je poslána do záznamníku, kde se uloží na SD kartu v lidsky čitelném formátu. Příklady vysílaných zpráv jsou v tabulkách \ref{tab:TX} a \ref{tab:SD}.
-
-	%telit data
-	\begin{table}[h]
-		\centering
-		\resizebox{\textwidth}{!}{%
-		\caption{Formát telemetrické zprávy}
-		\label{tab:TX}
-		\begin{tabular}{|l|ll|ll|l|l|l|l|}
-		\hline
-		\rowcolor[HTML]{E5ECF6} 
-		\multicolumn{1}{|c|}{\cellcolor[HTML]{E5ECF6}UTC čas} &
-		  \multicolumn{2}{c|}{\cellcolor[HTML]{E5ECF6}Zem. šířka (°)} &
-		  \multicolumn{2}{c|}{\cellcolor[HTML]{E5ECF6}Zem. Délka (°)} &
-		  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Nadmořská výška\\ (m)\end{tabular}} &
-		  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Ryhlost\\ (m/s)\end{tabular}} &
-		  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Teplota\\ (°C)\end{tabular}} &
-		  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Tlak\\ (Pa)\end{tabular}} \\ \hline
-		114231.00 &
-		  \multicolumn{1}{l|}{5001.76165} &
-		  N &
-		  \multicolumn{1}{l|}{01430.16855} &
-		  E &
-		  9510.0 &
-		  23.428 &
-		  -039.65 &
-		  0028254 \\ \hline
-		  \multicolumn{9}{c}{}\\
-		  \multicolumn{9}{c}{Přijatá zpráva: \lstinline |114231.00;5001.76165;N;01430.16855;E;9510.0;23.428;-039.65;0028254|}
-		\end{tabular}%
-		}
+		\subsection{Rozebírání GPS dat}
+		Data jsou GPS přijímačem posílána každou sekundu přes sériovou linku ve formátu NMEA zpráv (\url{https://www.sparkfun.com/datasheets/GPS/NMEA%20Reference%20Manual-Rev2.1-Dec07.pdf}). Jedná se o standardizovaný formát GPS dat specifikovaný organizací NMEA (\textbf{N}ational \textbf{M}arine \textbf{E}lectronics \textbf{A}ssociation). Příklad NMEA zpráv je zanesen níže.
+		\begin{table}[h!]
+			\centering
+			\begin{tabular}{l}
+				\$GPRMC,132456.00,A,5005.77089,N,01421.46534,E,1.157,,290122,,,A*78\\
+				\$GPVTG,,T,,M,1.157,N,2.144,K,A*22\\
+				\$GPGGA,132456.00,5005.77089,N,01421.46534,E,1,05,1.79,294.0,M,44.4,M,,*5D\\
+				\$GPGSA,A,3,17,06,24,02,15,,,,,,,,2.46,1.79,1.70*0B\\
+				\$GPGSV,4,1,13,02,11,134,21,06,20,090,23,10,02,270,,11,06,128,19*76\\
+				\$GPGSV,4,2,13,12,70,261,,15,10,185,15,17,17,041,13,19,37,054,*7B\\
+				\$GPGSV,4,3,13,22,10,325,,24,72,147,23,25,31,257,08,28,08,068,21*7B\\
+				\$GPGSV,4,4,13,32,25,313,*4C\\
+				\$GPGLL,5005.77089,N,01421.46534,E,132456.00,A,A*69\\
+			\end{tabular}
 		\end{table}
 
-	%SD data
-	\begin{table}[]
-		\caption{Formát dat ukládaných na SD kartu}
-		\label{tab:SD}
-		\centering
-		\resizebox{\textwidth}{!}{%
-		\begin{tabular}{|l|ll|ll|l|l|l|l|l|l|l}
-		\hline
-		\rowcolor[HTML]{E5ECF6} 
-		\multicolumn{1}{|c|}{\cellcolor[HTML]{E5ECF6}UTC čas} &
-		  \multicolumn{2}{c|}{\cellcolor[HTML]{E5ECF6}Zem. šířka (°)} &
-		  \multicolumn{2}{c|}{\cellcolor[HTML]{E5ECF6}Zem. Délka (°)} &
-		  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Nadmořská výška\\ (m)\end{tabular}} &
-		  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Ryhlost\\ (m/s)\end{tabular}} &
-		  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Teplota\\ (°C)\end{tabular}} &
-		  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Tlak\\ (Pa)\end{tabular}} &
-		  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Teplota 2\\ (°C)\end{tabular}} &
-		  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Relativní vlhkost\\ (\%)\end{tabular}} &
-		  \multicolumn{1}{c}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Typ GPS\\ fixu\end{tabular}} \\ \hline
-		114231.00 &
-		  \multicolumn{1}{l|}{5001.76165} &
-		  N &
-		  \multicolumn{1}{l|}{01430.16855} &
-		  E &
-		  9510.0 &
-		  23.428 &
-		  -039.65 &
-		  0028254 &
-		  -40.5 &
-		  003.2 &
-		  2 \\ \hline
-		\end{tabular}
-		}
-		\begin{tabular}{c}
-			~
-		\end{tabular}
-		\resizebox{\textwidth}{!}{%
-		\begin{tabular}{l|l|l|l|l|lll|lll|lll|}
+		Příklad formátu \$GPGLL zprávy je v tabulce . Informace obsažené v této zprávě jsou vysvětleny v tabulce \ref{tab:gpgll}.
+		\begin{longtable}[c]{|l|l|l|}
+			\caption{Formát \$GPGLL zprávy}
+			\label{tab:gpgll}\\
+			\hline
+			\rowcolor[HTML]{e5ecf6} 
+			\multicolumn{1}{|c|}{\cellcolor[HTML]{DEDFF4}Název} &
+			\multicolumn{1}{c|}{\cellcolor[HTML]{DEDFF4}Příklad} &
+			\multicolumn{1}{c|}{\cellcolor[HTML]{DEDFF4}Popis} \\ \hline
+			\endhead
+			%
+			Identifikátor zprávy & \$GPGLL     & GLL hlavička \\ \hline
+			Zem. Šířka           & 5005.77089  & ddmm.mmmm    \\ \hline
+			N/S (Sever/Jih)      & N           &              \\ \hline
+			Zem. Délka           & 01421.46534 & dddmm.mmmm   \\ \hline
+			E/W (Východ/Západ)   & E           &              \\ \hline
+			UTC Čas              & 132456.00   & hhmmss.sss   \\ \hline
+			Status &
+			A &
+			\begin{tabular}[c]{@{}l@{}}A - data jsou validní\\ V  data nejsou   validní\end{tabular} \\ \hline
+			Mód &
+			A &
+			\begin{tabular}[c]{@{}l@{}}A - autonomous\\ D - DGPS\\ E - DR\end{tabular} \\ \hline
+			Kontrolní součet             & *69         &              \\ \hline
+			<CR> <LF>            &             & Konec zprávy \\ \hline
+		\end{longtable}
+
+		Délka zprávy odeslané GPS přijímačem se liší podle dostupných údajů. Pokud GPS nezná svou polohu, pole pro zeměpisnou šířku a délku jsou prázdná. Proto nemůžeme očekávat zprávy fixní velikosti. Způsob, kterým se ve firmwaru sondy NMEA zpráva přijímá je znározněn v ukázce kódu \ref{code:ReceiveToIdle}.
+		\lstinputlisting[language=C, caption={Funkce pro příjem dat z GSP}, label={code:ReceiveToIdle}]{Code/HAL_UARTEx_ReceiveToIdle_IT.c}
+
+		Tato funkce přijímá data až do doby, kdy nenastane klidový stav - GPS přestane vysílat data. V ten moment se vyvolá callback funkce.
+		\lstinputlisting[language=C,caption={Callback funkce vyvolaná interruptem}, label={lst:main:callback}]{Code/callback.c}
+		V této funkci se do globální proměnné \lstinline[language=C] |uint16_t DataRecieved | uloží velikost přijatých dat. Pokud je v hlavní smyčce programu splněna podmínka, že \lstinline[language=C] |  DataRecieved > 0 |, program začne rozebírání přijatých dat funkcí \ref{lst:main:parse}. Pro rozdělení přijatých dat na jednotlivé NMEA zprávy se využívá znaků <CR> <LF>, které se nacházejí na konci každého řádku. 
+		
+		Součástí vyslaných dat jsou i \$GPGSV zprávy obsahující informace o viditelných satelitech. Zpráv tohoto typu je vysílá několik po sobě a počet vyslaných zpráv je zanesen v prvním poli této zprávy. Pro správně rozdělení přijatých dat je informace o počtu \$GPGSV zpráv nutná, jelikož ovlivňuje pořadí dalšách zpráv.
+
+		Funkce \lstinline[language=C] |mainParse| v ukázce \ref{lst:main:parse} rozdělí a uloží data do bufferu \lstinline |uint8_t GPSparse[15][200] = {}|   tvořeného 2D polem a zjistí počet \$GPGSV zpráv.
+
+		\lstinputlisting[language=C++,caption={Hlavní parsovací funkce}, label={lst:main:parse}]{Code/main_parse.c}
+
+
+
+		Příklad volání funkce v hlavní smyčce programu je znázorněn v ukázce kódu \ref{lst:main:loop}.
+		\lstinputlisting[language=C, caption={Volání funkcí v hlavní smyčce programu}, label={lst:main:loop}]{Code/parse_in_main.txt}
+
+		Ve stejné větvi programu, kde se vykonává rozebírání NMEA zpráv, se vyčtou data ze senzorů. Tyto číslené hodnoty se poté převedou do textové podoby a přidají mezi vysílaná data. Převod z číselné hodnoty na textovou, obsahující ASCII znaky, slouží funkce \lstinline |ftoa()|, která převádí číslo typu float a funkce \lstinline[language=C] |itoa()| pro převod čísla typu int. 
+
+		Z rozebraných NMEA zpráv jsou poté vybrána data, která se spolu s naměřenými hodnotami ze senzorů, převedené do textové podoby, sešijí do první zprávy. Tato zpráva se posléze pošle skrze sériovou linku do radiového vysílače. K této zprávě se po odeslání přidají další data a zpráva je poslána do záznamníku, kde se uloží na SD kartu v lidsky čitelném formátu. Příklady vysílaných zpráv jsou v tabulkách \ref{tab:TX} a \ref{tab:SD}.
+
+		%telit data
+		\begin{table}[h]
+			\centering
+			\resizebox{\textwidth}{!}{%
+			\caption{Formát telemetrické zprávy}
+			\label{tab:TX}
+			\begin{tabular}{|l|ll|ll|l|l|l|l|}
 			\hline
 			\rowcolor[HTML]{E5ECF6} 
-			\multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Počet viditelných\\ satelitů\end{tabular}} &
-			  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}PDOP} &
-			  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}HDOP} &
-			  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}VDOP} &
-			  \multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Nejmenší změřené\\ zrychlení v ose Z\end{tabular}} &
-			  \multicolumn{3}{c|}{\cellcolor[HTML]{E5ECF6}Velikost zrychlení} &
-			  \multicolumn{3}{c|}{\cellcolor[HTML]{E5ECF6}Velikost úhlové rychlosti} &
-			  \multicolumn{3}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Velikost intenzity\\ mag. pole\end{tabular}} \\ \hline
-			12 &
-			  1.32 &
-			  0.70 &
-			  1.12 &
-			  7062 &
-			  \multicolumn{1}{l|}{12} &
-			  \multicolumn{1}{l|}{-232} &
-			  8452 &
-			  \multicolumn{1}{l|}{52} &
-			  \multicolumn{1}{l|}{-117} &
-			  245 &
-			  \multicolumn{1}{l|}{-4218} &
-			  \multicolumn{1}{l|}{3765} &
-			  -3276 \\ \hline
-			  \multicolumn{14}{c}{}\\
-		  	  %\multicolumn{14}{c}{Přijatá zpráva: 114231.00;5001.76165;N;01430.16855;E;9510.0;23.428;-039.65;0028254;-40.5;003.2;2;12;1.32;0.70;1.12;7062;12;-232;8452;52;-117;245;-4218;3765;-3276;}
+			\multicolumn{1}{|c|}{\cellcolor[HTML]{E5ECF6}UTC čas} &
+			\multicolumn{2}{c|}{\cellcolor[HTML]{E5ECF6}Zem. šířka (°)} &
+			\multicolumn{2}{c|}{\cellcolor[HTML]{E5ECF6}Zem. Délka (°)} &
+			\multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Nadmořská výška\\ (m)\end{tabular}} &
+			\multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Ryhlost\\ (m/s)\end{tabular}} &
+			\multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Teplota\\ (°C)\end{tabular}} &
+			\multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Tlak\\ (Pa)\end{tabular}} \\ \hline
+			114231.00 &
+			\multicolumn{1}{l|}{5001.76165} &
+			N &
+			\multicolumn{1}{l|}{01430.16855} &
+			E &
+			9510.0 &
+			23.428 &
+			-039.65 &
+			0028254 \\ \hline
+			\multicolumn{9}{c}{}\\
+			\multicolumn{9}{c}{Přijatá zpráva: \lstinline |114231.00;5001.76165;N;01430.16855;E;9510.0;23.428;-039.65;0028254|}
+			\end{tabular}%
+			}
+			\end{table}
+
+		%SD data
+		\begin{table}[]
+			\caption{Formát dat ukládaných na SD kartu}
+			\label{tab:SD}
+			\centering
+			\resizebox{\textwidth}{!}{%
+			\begin{tabular}{|l|ll|ll|l|l|l|l|l|l|l}
+			\hline
+			\rowcolor[HTML]{E5ECF6} 
+			\multicolumn{1}{|c|}{\cellcolor[HTML]{E5ECF6}UTC čas} &
+			\multicolumn{2}{c|}{\cellcolor[HTML]{E5ECF6}Zem. šířka (°)} &
+			\multicolumn{2}{c|}{\cellcolor[HTML]{E5ECF6}Zem. Délka (°)} &
+			\multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Nadmořská výška\\ (m)\end{tabular}} &
+			\multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Ryhlost\\ (m/s)\end{tabular}} &
+			\multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Teplota\\ (°C)\end{tabular}} &
+			\multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Tlak\\ (Pa)\end{tabular}} &
+			\multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Teplota 2\\ (°C)\end{tabular}} &
+			\multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Relativní vlhkost\\ (\%)\end{tabular}} &
+			\multicolumn{1}{c}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Typ GPS\\ fixu\end{tabular}} \\ \hline
+			114231.00 &
+			\multicolumn{1}{l|}{5001.76165} &
+			N &
+			\multicolumn{1}{l|}{01430.16855} &
+			E &
+			9510.0 &
+			23.428 &
+			-039.65 &
+			0028254 &
+			-40.5 &
+			003.2 &
+			2 \\ \hline
+			\end{tabular}
+			}
+			\begin{tabular}{c}
+				~
+			\end{tabular}
+			\resizebox{\textwidth}{!}{%
+			\begin{tabular}{l|l|l|l|l|lll|lll|lll|}
+				\hline
+				\rowcolor[HTML]{E5ECF6} 
+				\multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Počet viditelných\\ satelitů\end{tabular}} &
+				\multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}PDOP} &
+				\multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}HDOP} &
+				\multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}VDOP} &
+				\multicolumn{1}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Nejmenší změřené\\ zrychlení v ose Z\end{tabular}} &
+				\multicolumn{3}{c|}{\cellcolor[HTML]{E5ECF6}Velikost zrychlení} &
+				\multicolumn{3}{c|}{\cellcolor[HTML]{E5ECF6}Velikost úhlové rychlosti} &
+				\multicolumn{3}{c|}{\cellcolor[HTML]{E5ECF6}\begin{tabular}[c]{@{}c@{}}Velikost intenzity\\ mag. pole\end{tabular}} \\ \hline
+				12 &
+				1.32 &
+				0.70 &
+				1.12 &
+				7062 &
+				\multicolumn{1}{l|}{12} &
+				\multicolumn{1}{l|}{-232} &
+				8452 &
+				\multicolumn{1}{l|}{52} &
+				\multicolumn{1}{l|}{-117} &
+				245 &
+				\multicolumn{1}{l|}{-4218} &
+				\multicolumn{1}{l|}{3765} &
+				-3276 \\ \hline
+				\multicolumn{14}{c}{}\\
+				%\multicolumn{14}{c}{Přijatá zpráva: 114231.00;5001.76165;N;01430.16855;E;9510.0;23.428;-039.65;0028254;-40.5;003.2;2;12;1.32;0.70;1.12;7062;12;-232;8452;52;-117;245;-4218;3765;-3276;}
 			\end{tabular}
 			}
 		\end{table}
+			
+
+
+		
+
+
+
+		\subsection{Zjištění náklonu sondy}
+		Aby bylo možné zjisti, jaká část směrové charakteristiky antény byla využita pro přenos dat, bylo nutné zjisti výchylku sondy od svislé osy. Zjištění výchylky sondy lze realizovat metodami jendoduššími a méně přesnějšími, nebo přesnými, sofistikovanými metodami. 
+
+		Díky přítomnosti modulu 9DOF od firmy \textit{Microelektronika} lze pro měření náklonu využít data z akcelerometru, gyroskopu a magnetometru. Ve statickém případě lze pro výchylku využít pouze akcelerometr. Velikost zrychlení v ose $z$ sondy se bude měnit spolu s vychylováním sondy od svislé polohy. Pro výchylku $\varphi$ platí ve statickém stavu
+		\begin{align}
+			\varphi = \text{cos}^{-1}\left(\frac{a_z}{g}\right).
+		\end{align}
+		Pokud se bude sonda kývat kolem pevného bodu, bude na ni působit i odstředivé zrychlení, které se bude přičítat k $a_z$. V tomto případě by šlo zjistit velikost odstředivého zrychlení díky gyroskopu, který měří úhlovou rychlost. Pro odstředivé zrychlení $a_\text{o}$ platí
+		\begin{align}
+			a_\text{o} = \omega^2 l,
+		\end{align}
+		kde $\omega$ je úhlová rychlost daná jako $\frac{\diff \varphi}{\diff t}$ a $l$ je délka závěsu sondy. V tomto případě ale nelze stanovit délku závěsu, jelikož balón, za který je sonda přichycena, není pevný bod.
+
+		Jak již bylo řečeno, zjištění výchylky $\varphi$ je možné pouze při statisckém stavu. K němu dochází, kdy se sonda dostane do maximální výchylky a poté se úhel začně opět snižovat. Pokud správně určíme moment, kdy k tomuto stavu došlo, můžeme správně určit maximální výchylku za danou periodu. 
+
+		\begin{figure}[hbtp]
+			\centering
+			\begin{subfigure}{.49\textwidth}
+				\centering
+				\includegraphics[width=\textwidth]{Figures/sonda_naklon_acc.pdf}
+				\caption{Změna zrychlení působící ve směru $z$ při statickém vychýlení}
+				\label{fig:sonda:naklon}
+			\end{subfigure}%
+			\begin{subfigure}{.49\textwidth}
+				\centering
+				\includegraphics[width=\textwidth]{Figures/sonda_naklon_acc_odst.pdf}
+				\caption{Změna zrychlení působící ve směru $z$ při pohybu sondy}
+				\label{fig:sonda:naklon:odst}
+			\end{subfigure}
+			\caption{Zrychlení působící na sondu}
+			\label{fig:sonda:naklon:main}
+		\end{figure}
+
+		Jak bylo dřívě zmíněno, měření dat probíhá jednou za sekundu a je iniciováno příjmem GPS dat. Mimo tohoto měření jsou s větší frekvencí měřena data o zrychlení sondy a do bufferu je ukládána nejnižší hodnota zrychlení ve směru osy $z$ viz ukázka kódu \ref{lst:sonde:acc}. Funkce \lstinline[language=C]|filter(int *out, int *in, int *b)| je dolní propust prního řádu. Po uměhnutí sekundové periody se minimální hodnota vyčte z bufferu, uloží spolu s dalšími daty na SD kartu a buffer se vynuluje.
+			\lstinputlisting[language=C, float=h, caption={Zjištění minimálního zrychlení}, label={lst:sonde:acc}]{Code/sonde_min_acc.c}
+
+
+		Další řešení, které se nabízelo, bylo zjištění náklonu za pomoci vektoru magnetické indukce. Pro rozsahy vzdáleností, ve kterých se sonda pohybuje, můžeme uvažovat směr vektoru magnetické indukce za konstantní a tedy podle něj určit náklon sondy viz. obr. \ref{fig:sonda:mag}. Na začátku měření je potřeba změřit úhel, kterým vektor magnetické indukce směřuje. Následně pro náklon sondy platí
+		\begin{align}
+			\varphi = \varphi_\text{meas} - \varphi_\text{ref}.
+		\end{align}
+
+		\begin{figure}[hbtp]
+			\centering
+			\includegraphics[width=.5\textwidth]{Figures/sonda_naklon_mag.pdf}
+			\caption{Měření náklonu sondy pomocí vektoru magnetické indukce}
+			\label{fig:sonda:mag}
+		\end{figure}
+
+		Tento způsob výpočtu náklonu sondy bohužel funguje pouze ve 2D. Pokud se přesuneme do 3D prostoru, narazíme na následující problém. Při rotaci kolem vektoru magnetické indukce se měřené hodnoty se nebudou měnit, jak je znázorněno na obr.~\ref{fig:sonda:mag:rot}. Tento způsob by šlo použít poze v případě, že by vektor magnetické indukce směřoval svisle k zemi. Při obecné orientaci bohužel tato metoda využít nejde.
+
+		\begin{figure}[hbtp]
+			\centering
+			\includegraphics[width=.5\textwidth]{Figures/sonda_naklon_mag_osova_rotace.pdf}
+			\caption{Rotace sondy kolem osy tvořené vektorem magnetické indukce (pohled zespod)}
+			\label{fig:sonda:mag:rot}
+		\end{figure}
+
+		Pro zjištění náklonu je využita první zmíněna metoda. Jelikož není možné zjistit okamžitou výchylku, ale pouze maximální výchylku za dobu jedné periody GPS přijímače, bylo počítáno se standartním rozkmitem sondy, jehož hodnota je bere jako konstatní po celou dobu letu. 
 		
 
 
@@ -766,72 +841,6 @@ Software určený pro příjem dat na počítači umístěném v automobilu jedo
 
 
 
-	\subsection{Zjištění náklonu sondy}
-	Aby bylo možné zjisti, jaká část směrové charakteristiky antény byla využita pro přenos dat, bylo nutné zjisti výchylku sondy od svislé osy. Zjištění výchylky sondy lze realizovat metodami jendoduššími a méně přesnějšími, nebo přesnými, sofistikovanými metodami. 
-
-	Díky přítomnosti modulu 9DOF od firmy \textit{Microelektronika} lze pro měření náklonu využít data z akcelerometru, gyroskopu a magnetometru. Ve statickém případě lze pro výchylku využít pouze akcelerometr. Velikost zrychlení v ose $z$ sondy se bude měnit spolu s vychylováním sondy od svislé polohy. Pro výchylku $\varphi$ platí ve statickém stavu
-	\begin{align}
-		\varphi = \text{cos}^{-1}\left(\frac{a_z}{g}\right).
-	\end{align}
-	Pokud se bude sonda kývat kolem pevného bodu, bude na ni působit i odstředivé zrychlení, které se bude přičítat k $a_z$. V tomto případě by šlo zjistit velikost odstředivého zrychlení díky gyroskopu, který měří úhlovou rychlost. Pro odstředivé zrychlení $a_\text{o}$ platí
-	\begin{align}
-		a_\text{o} = \omega^2 l,
-	\end{align}
-	kde $\omega$ je úhlová rychlost daná jako $\frac{\diff \varphi}{\diff t}$ a $l$ je délka závěsu sondy. V tomto případě ale nelze stanovit délku závěsu, jelikož balón, za který je sonda přichycena, není pevný bod.
-
-	Jak již bylo řečeno, zjištění výchylky $\varphi$ je možné pouze při statisckém stavu. K němu dochází, kdy se sonda dostane do maximální výchylky a poté se úhel začně opět snižovat. Pokud správně určíme moment, kdy k tomuto stavu došlo, můžeme správně určit maximální výchylku za danou periodu. 
-
-	\begin{figure}[hbtp]
-		\centering
-		\begin{subfigure}{.49\textwidth}
-			\centering
-			\includegraphics[width=\textwidth]{Figures/sonda_naklon_acc.pdf}
-			\caption{Změna zrychlení působící ve směru $z$ při statickém vychýlení}
-			\label{fig:sonda:naklon}
-		\end{subfigure}%
-		\begin{subfigure}{.49\textwidth}
-			\centering
-			\includegraphics[width=\textwidth]{Figures/sonda_naklon_acc_odst.pdf}
-			\caption{Změna zrychlení působící ve směru $z$ při pohybu sondy}
-			\label{fig:sonda:naklon:odst}
-		\end{subfigure}
-		\caption{Zrychlení působící na sondu}
-		\label{fig:sonda:naklon:main}
-	\end{figure}
-
-	Jak bylo dřívě zmíněno, měření dat probíhá jednou za sekundu a je iniciováno příjmem GPS dat. Mimo tohoto měření jsou s větší frekvencí měřena data o zrychlení sondy a do bufferu je ukládána nejnižší hodnota zrychlení ve směru osy $z$ viz ukázka kódu \ref{lst:sonde:acc}. Funkce \lstinline[language=C]|filter(int *out, int *in, int *b)| je dolní propust prního řádu. Po uměhnutí sekundové periody se minimální hodnota vyčte z bufferu, uloží spolu s dalšími daty na SD kartu a buffer se vynuluje.
-		\lstinputlisting[language=C, float=h, caption={Zjištění minimálního zrychlení}, label={lst:sonde:acc}]{Code/sonde_min_acc.c}
-
-
-	Další řešení, které se nabízelo, bylo zjištění náklonu za pomoci vektoru magnetické indukce. Pro rozsahy vzdáleností, ve kterých se sonda pohybuje, můžeme uvažovat směr vektoru magnetické indukce za konstantní a tedy podle něj určit náklon sondy viz. obr. \ref{fig:sonda:mag}. Na začátku měření je potřeba změřit úhel, kterým vektor magnetické indukce směřuje. Následně pro náklon sondy platí
-	\begin{align}
-		\varphi = \varphi_\text{meas} - \varphi_\text{ref}.
-	\end{align}
-
-	\begin{figure}[hbtp]
-		\centering
-		\includegraphics[width=.5\textwidth]{Figures/sonda_naklon_mag.pdf}
-		\caption{Měření náklonu sondy pomocí vektoru magnetické indukce}
-		\label{fig:sonda:mag}
-	\end{figure}
-
-	Tento způsob výpočtu náklonu sondy bohužel funguje pouze ve 2D. Pokud se přesuneme do 3D prostoru, narazíme na následující problém. Při rotaci kolem vektoru magnetické indukce se měřené hodnoty se nebudou měnit, jak je znázorněno na obr.~\ref{fig:sonda:mag:rot}. Tento způsob by šlo použít poze v případě, že by vektor magnetické indukce směřoval svisle k zemi. Při obecné orientaci bohužel tato metoda využít nejde.
-
-	\begin{figure}[hbtp]
-		\centering
-		\includegraphics[width=.5\textwidth]{Figures/sonda_naklon_mag_osova_rotace.pdf}
-		\caption{Rotace sondy kolem osy tvořené vektorem magnetické indukce (pohled zespod)}
-		\label{fig:sonda:mag:rot}
-	\end{figure}
-
-	Pro zjištění náklonu je využita první zmíněna metoda. Jelikož není možné zjistit okamžitou výchylku, ale pouze maximální výchylku za dobu jedné periody GPS přijímače, bylo počítáno se standartním rozkmitem sondy, jehož hodnota je bere jako konstatní po celou dobu letu. 
-	
-
-
-	
-
-
-
 
 
 
@@ -842,10 +851,10 @@ Software určený pro příjem dat na počítači umístěném v automobilu jedo
 
 
 	
-	\section{Pozemní stanice}
-	výstřizky kódu z driverů, sample GPS dat, vyčítání z teplota/tlak, tlak/vlhkost, gyro/acc/mag, parsovací funkce, změřené minimum accelerace v z-ose, sešití dat, watchdog, reset při erroru
+	\section{Realizace pozemní stanice}
+	%výstřizky kódu z driverů, sample GPS dat, vyčítání z teplota/tlak, tlak/vlhkost, gyro/acc/mag, parsovací funkce, změřené minimum accelerace v z-ose, sešití dat, watchdog, reset při erroru
 
-	Jak již bylo zmíněno v kapitole \ref{sec:navrh:pozemni_stanice}, úkolem pozemní stanice je překládat přijímaná data zpět do formátu NMEA GPGGA zprávy, určené pro tracker. Rozdělení příchozí zprávy vyslané sondou probíhá obdobně jako v sondě. Přijatá data jsou znak po znaku iterována a zkoumá se, jestli se nenarazilo na oddělovací znak - v tomto případě středník viz ukázka kódu \ref{lst:ground:parse}. Pro samotný příjem dat nelze jako v sondě využít funkce, která přijímá, dokud nenastane prodleva. Vysílací modul sám posílá data po 30 znacích a i mezi těmito balíky dat je prodleva. Zpráva se tedy musí načítat znak po znaku, jak je ukázáno v kódu \ref{lst:ground:recieve}, a jako konec zprávy brát až znak "\lstinline |\n|".
+	Jak již bylo zmíněno v kapitole \ref{sec:navrh:pozemni_stanice}, úkolem pozemní stanice je překládat přijímaná data zpět do formátu NMEA GPGGA zprávy, určené pro tracker. Rozdělení příchozí zprávy vyslané sondou probíhá obdobně jako v sondě. Přijatá data jsou znak po znaku iterována a zkoumá se, jestli se nenarazilo na oddělovací znak - v tomto případě středník viz ukázka kódu \ref{lst:ground:parse}. Pro samotný příjem dat nelze jako v sondě využít funkce, která přijímá, dokud nenastane prodleva. Vysílací modul sám posílá data po 30 znacích a i mezi těmito balíky dat je prodleva. Zpráva se tedy musí načítat znak po znaku, jak je ukázáno v kódu \ref{lst:ground:recieve}, a jako konec zprávy brát až znak \lstinline |"\n"|.
 
 	\lstinputlisting[language=C, caption={Příjem dat pozemní stanicí}, label={lst:ground:recieve}]{Code/ground_station_read.c}
 
@@ -855,7 +864,7 @@ Software určený pro příjem dat na počítači umístěném v automobilu jedo
 
 	\lstinputlisting[language=C, caption={Výpočet kontrolního součtu}, label={lst:ground:checksum}]{Code/ground_station_checksum.c}
 
-	TODO - ukázat na osciloskopu/log analyzátoru balíky dat
+	%TODO - ukázat na osciloskopu/log analyzátoru balíky dat
 
 	\begin{longtable}[c]{|l|l|l|l|}
 	\caption{Formát GPGGA zprávy}
@@ -903,7 +912,12 @@ Software určený pro příjem dat na počítači umístěném v automobilu jedo
 	\section{Software pro zobrazení telemetrických údajů}
 	Příjem dat samotných byl realizován stejným modulem, který je unmístěn v sondě, určený k posílání telemetrických dat. Pro minimalizaci ztrát byla anténa s modulem umístěny na platformě, která byla pomocí magnetů uchycena na střeše automobilu obr. \ref{fig:tack:mech:platform}. K modulu byl připojen převodník ze sériové linky na USB, který byl dostatečně dlouhým USB kabelem připojen k laptopu spolujezdce.
 
-	TODO:render platformy
+	\begin{figure}
+		\centering
+		\includegraphics[width=.6\textwidth]{Figures/antena_auto.jpeg}
+		\caption{Anténa na příjem dat pro vykreslování pozice na mapě}
+		\label{fig:auto:antena}
+	\end{figure}
 
 
 	Zpracování telemetrických údajů pro zobrazení pozice sondy na mapě, výpis výšky sondy a teploty okolí probíhá v Python skriptu. Ten čte skrze sériovou linku data jdoucí z radiopřijímače. Data jsou příjmána do bufferu a následně rozdělena podle dělících znaků viz kód \ref{lst:track:read:parse}.
@@ -946,6 +960,8 @@ Software určený pro příjem dat na počítači umístěném v automobilu jedo
 		\label{fig:sonda:klimakomora}
 	\end{figure}
 
+	TODO: průbeh teploty v klimošce
+
 	Měření směrové charakteristiky proběhlo na katedře elektromagnetického pole v bezodrazné komoře. Sonda připevněna na pohyblivou osu byla otáčena motorem a byl měřen přijatý výkon anténou umístěné naproti sondě. Díky tomu byla změřena vyzařovací charakteristika antény v rozsahu 360~°. Celkem byly měřeny 4 směrové charakteristiky a to pro různá natočení sondy kolem své vlastní osy. Směrové charakteristiky antény jsou zaneseny na obr. \ref{graph:radiation:char}.
 
 	\begin{figure}[hbtp]
@@ -955,20 +971,18 @@ Software určený pro příjem dat na počítači umístěném v automobilu jedo
 		\label{graph:radiation:char}
 	\end{figure}
 
-	TODO - spočítat zisk antény
-	Zisk antény byl počítán relativně podle zisku známé antény. Použitá anténa byla xxx se ziskem xxx, jak je uvedeno v dokumentaci (odkaz na dsh).
 
 	Dále byla měřena polarizace antény. V tomto případě byla sonda pevně umístěna na podstavci a otáčeno bylo přijímací anténou v její ose. Pro ideální kruhově polarizovanou anténu by nezáleželo na natočení přijímací antény. V případně antény umístěné v sondě je přenos znárorněn na obr. xxx.
 
 	TODO - graf polarizace\\
-	TODO - spočíst koeficient polarizace
+	TODO - spočíst koeficient polarizace, ale je to teď vůbec potřeba? Nebo jen zajímavost?
 
-	Pro ověření dosahu radiového spoje byl přenos dat nejdříve vyzkoušen na zemi. Vysílací část spoje se nacházela na střeše panelévého domu na Petřinách. Přijem probíhal na hoře Říp. Radiový spoj byl realizován na přímou viditelnost a nebyla zakryta 1. Fresnelova zóna, jak je vidět profilu Zemského povrchu na obr. \ref{fig:praha:rip}.
+	Pro ověření dosahu radiového spoje byl přenos dat nejdříve vyzkoušen na zemi. Vysílací část spoje se nacházela na střeše panelévého domu na Petřinách. Přijem probíhal na hoře Říp. Radiový spoj byl realizován na přímou viditelnost a nebyla zakryta 1. Fresnelova zóna, jak je vidět profilu zemského povrchu na obr. \ref{fig:praha:rip}.
 
 	\begin{figure}[hbtp]
 		\centering
 		\includegraphics[width=\textwidth]{Figures/petriny_rip.png}
-		\caption{Profil trasy mezi Prahou a horou Říp, vykresleno pomocí \url{http://www.heywhatsthat.com/}}
+		\caption{Profil trasy mezi Prahou a horou Říp, vykresleno pomocí \url{http://www.heywhatsthat.com/ } }
 		\label{fig:praha:rip}
 	\end{figure}
 
@@ -1042,7 +1056,6 @@ Software určený pro příjem dat na počítači umístěném v automobilu jedo
 
 	Po 27~minutách letu bylo vysílání telemetrických údajů přerušeno. Podle podledních zaznamenaných údajů se tak stalo v 13:42:53 při teplotě -40~°C v nadmořské výšce 9650.3~m. Sonda již nezačala po dobu letu vysílat. Pozice dopadu byla následně zjištěna podle pozice, kterou vysílala sonda ČHMÚ. Její vysílaná data jsou dekódována radoamatéry a zveřejňována na internetu. Po určení pozice sondy ČHMÚ byla nalezena i má sonda a to o 50~m jihozápadně. Toto bylo dáno 50m provázkem mezi sondami a směrem větru.
 
-	Sonda byla nalezena na stromě ve výšce přibližně 20~m \ref{fig:sonda:strom}. Po neúspěšných pokusech vrhání matky s přivázaným rybářským vlascem byl pro účel sundání postaven dron, na který byl přivázán provázek. Na přední strane dronu byl hliníkový hák, který se zahákl za závěs sondy a posléze byla sestava provázkem strhnuta ze stromu. Volný pád z výšky 20~m měl bohužel za následek prasknutí spodní části sondy. Nicméně anténa, která byla touto částí chtáněna, zůstala nepoškozena.
 
 	\begin{figure}[hbtp]
 		\centering
@@ -1156,7 +1169,12 @@ Software určený pro příjem dat na počítači umístěném v automobilu jedo
 		\label{graph:refr:fit}
 	\end{figure}
 
-	TODO:PROFIL PRO PRVNÍ DVA KILOMETRY
+	\begin{figure}
+		\centering
+		\includegraphics[width=.7\textwidth]{Graphs/ref2km.png}
+		\caption{Profil refraktivity pro první dva kilometry}
+		\label{graf:refr:2km}
+	\end{figure}
 
 	Data o přijatém výkonu anténou bohužel nelze použít. Jak bylo po dokončení experimentu zjištěno, při komunikaci anténního sledovače a jeho řídicí jednotky došlo k rušení a přijímací anténa se začala nepředvídatelně natáčet. Toto je vidět na obr.~\ref{grah:p:alt:hum}, kdy zcela bez jakýhkoliv výrazných změn okolního prostředí došlo k prudkémnu poklesu signálu. Šlo o moment, kdy se anténa vlivem rušení v komunikaci natočila jiným směrem, než byla sonda. Bohužel vinou tohoto chování sledovače není možné data použít k ověření ztrát způsobenými šířením ve volném prostoru a ztrá způsobenými refraktivitou atmosféry. 
 
