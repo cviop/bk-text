@@ -205,8 +205,8 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 
 	
 
-\chapter{Návrh a požadavky}
-	Tato kapitola popisuje návrh experimentu, díky kterému bude možné vytvořit matematický model přenosu radiového signálu a jeho následné ověření se změřenými daty. V první části kapitola popisuje teorii využívanou při modelování a měření parametrů přenosu. 
+\chapter{Návrh experimentu}
+	Kapitola popisuje teorii využívanou při návrhu experimentu a výběru senzorů. Nakonec popisuje samotný návrh experimentu, díky kterému je možné vytvořit matematický model přenosu radiového signálu a následné ověření modelu se změřenými daty. 
 	\section{Šíření vln ve troposféře}
 		\subsection{Troposférická refrakce}
 		Při průchodu vlny atmosférou Země je paprsek ovlivněn změnou prostředí, ve kterém se šíří. V závislosti na teplotě, tlaku a hustotě se mění i index lomu atmosféry, který má za následek refrakci - lom paprsku. Index lomu troposféry může nabývat hodnot mezi $n=1{,}000325$ při povrchu Země až $n=1{,}000110$ pro vrchní hranici troposféry~\cite{zaklady:sireni:vln}, nacházející se přibližně ve výšce 10~km \cite{web_tropo}.
@@ -272,112 +272,112 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 
 		%budget link, co očekáváme za úrovně na základě budget linku
 
-	\section{Požadavky}
-	%co za data je potřeba pro model
-	Hlavním požadavkem je posílání telemetrických údajů o poloze a ukládání zbylých naměřených dat na SD kartu umístěnou na palubě sondy. S ohledem na panující podmínky ve vyšších vrstvách zemské atmosféry musí být sonda schopna operovat za nízkého tlaku a teploty. Toto se vztahuje jak na mikročipy a senzory, tak na baterie, používané k napájení sondy. Další podmínkou je spolehlivé fungování v oblasti vysoké vlhkosti - oblačnosti a za deště. 
 
-	Z důvodu dlouhé čekací doby na povolení vypuštění balónu, které vydává Úřad pro civilní letectví, je využito povolení, které má dlouhodobě sjednané ČHMÚ. Toto povolení se vztahuje na vypouštění volných balónů s užitečným zatížením do celkové hmotnosti 600~g. Denní sonda Vaisala RS41, kterou ČHMÚ posílá 3$\times$ denně, váží 84~g. Sonda vyvíjená v rámci této práce tedy musí splňovat požadavek na hmotnost do 516~g.
 
-	Značná část GPS přijímačů je od výrobce zablokována pro použití ve výškách větších jak 10 km n. m. a je nutné zvolit přijímač, jehož maximální pracovní výška je alespoň 40~km.
 
+
+
+
+
+
+
+
+
+\chapter{Návrh a realizace}
+Tato kapitola se zabývá samotnou realizací sondy. Popisuje přístup, který byl zvolen při vývoji elektroniky a popisuje výběr jednotlivých komponent. Dále vysvětluje dílčí části firmwaru sondy a způsob, jakým byly řešeny problémy. Popisuje jak vysílací část - sondu, tak přijímací části. Jednak pozemní stanici, která formátovala data do zprávy čitelné anténním trackerem a jednak přijímací software na zobrazení pozice na mapě. 
+
+Schéma celé sestavy se zaneseno na obr. \ref{fig:sestava}.
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{Figures/sonda_blokac.drawio.pdf}
+	\caption{Blokové schéma sestavy}
+	\label{fig:sestava:blokac}
+\end{figure}
+
+\section{Požadavky}
+%co za data je potřeba pro model
+Hlavním požadavkem je posílání telemetrických údajů o poloze a ukládání zbylých naměřených dat na SD kartu umístěnou na palubě sondy. S ohledem na panující podmínky ve vyšších vrstvách zemské atmosféry musí být sonda schopna operovat za nízkého tlaku a teploty. Toto se vztahuje jak na mikročipy a senzory, tak na baterie, používané k napájení sondy. Další podmínkou je spolehlivé fungování v oblasti vysoké vlhkosti - oblačnosti a za deště. 
+
+Z důvodu dlouhé čekací doby na povolení vypuštění balónu, které vydává Úřad pro civilní letectví, je využito povolení, které má dlouhodobě sjednané ČHMÚ. Toto povolení se vztahuje na vypouštění volných balónů s užitečným zatížením do celkové hmotnosti 600~g. Denní sonda Vaisala RS41, kterou ČHMÚ posílá 3$\times$ denně, váží 84~g. Sonda vyvíjená v rámci této práce tedy musí splňovat požadavek na hmotnost do 516~g.
+
+Značná část GPS přijímačů je od výrobce zablokována pro použití ve výškách větších jak 10 km n. m. a je nutné zvolit přijímač, jehož maximální pracovní výška je alespoň 40~km.
+
+
+
+\section{Elektronika sondy}
+%součástky do -40, nízký tlak (bez elektrolytických kond.), dosah 40+ km
+
+V samotném návrhu elektroniky sondy byl možný zvolit jeden ze dvou přístupů. Níže práce popisuje výhody, nevýhody a potenciální rizika každé z nich. Dále zdůvodňuje přístup, který byl zvolen při řešení této práce.
+
+%snadné na vývoj a odladění, snadná změna zapojení pří psaní kódu
+	\subsubsection{Využití vývojových modulů}
+	V dnešní době existuje veliké množství mikročipů a MEMS čipů, které lze zakoupit ve formě modulů. Jedná se zpravidla o malé deky plošných spojů osazených konkrétními čipy s minimem potřebných součástek zajišťujících správné fungování. Zpravidla se jedná o blokovací kondenzátory umístěné v bezprostřední blízkosti čipů, poskytující elektrickou energii při rázovém odběru. Moduly mají vyvedené piny mikročipů na pinové lišty nacházející se zpravidla na okraji DPS. 
+
+	V případě mikroprocesoru se jedná o vývojový kit Nucleo od firmy \textit{ST Microelectronics}. Kit se skládá z DPS s mikroprocesorem a minimem součástek, nutných pro správné fungování procesoru. Součástí desky je také zdroj pro napájení čipu a programátor, kterým lze do mikroprocesou nahrát firmware. Jednotlivé piny mikroprocesoru jsou vyvedeny na pinové lišty na kraji desky a slouží ke snadnému propojení s moduly. 
+
+	Výhodou tohoto řešení ve fázi vývoje je snadná záměna zapojení modulů a rychlé odstranění chyb způsobené chybným výběrem komunikačních pinů mikroprocesoru.
+
+	Nevýhoda tohoto řešení je malá robustnost zapojení. Komunikační cesty mezi mikroprocesorem a senzory jsou zbytečné dlouhé, jelikož jsou podřízeny umístění pinů na pinových lištách. Další nevýhodou je nemožnost ovlivnit umístění blokovacích kondenzátorů u mikroprocesoru a nebo zvýšení jejich počtu. Vývojový kit Nucelo není tvořen s ohledem na malé rozměry a velikost DPS tohoto kitu ovlivňuje celkovou velikost a hmotnost sondy.
+
+	\subsubsection{Samostatné senzory}
+	Druhá cesta, kterou je možná se vydat při vývoji elektroniky v sondě je samostatná deska, která obsahuje jednotlivé mikročipy bez jejich modulů a separátních DPS. Díky tomu je možné minimalizovat vzdálenost mezi mikroprocesorem a senzory a zvýšit robustnost napájení čipů. Celková velikost desky je poté dána především schopnostmi návrháře. 
+
+	Toto řešení je časové náročnější, než první zmíněné a v případě způsobené chyby se špatně odstraňují chyby. V případě zničení, nebo nefunkčnosti nějaké elektronické součástky je nutné její odpájení z desky, což může ohrozit komponenty v okolí. V případě modulů lze vyměnit modul samotný.
+
+	Při řešení této práce byla zvolena cesta modulů. Důvodem bylo malé množství času neumožňující případné zdlouhavé odlaďování zapojení a také nedostatek součástek samotných. V tomto případě byly dostupnější senzory ve formě modulů a mikroprocesor ve formě vývojového kitu. 
 
 	
-	\section{Elektronika sondy}
-	%součástky do -40, nízký tlak (bez elektrolytických kond.), dosah 40+ km
+		\subsection{Sledování sondy}
+		Sledování sondy lze realizovat několika způsoby. Níže jsou popsány nejčastější z nich a jsou diskutovány výhody, nevýhody a možná rizika.
 
-	V samotném návrhu elektroniky sondy bylo možné zvolit jednu ze dvou cest. Níže práce popisuje výhody, nevýhody a potenciální rizika každé z nich. Dále zdůvodňuje cestu, která byla zvolena při řešení této práce.
+			\subsubsection{GSM tracker}
+			Amatéry často využívána, nicméně nedoporučovaná metoda \cite{web_sledovani} je zasílání dat skrze mobilní sítě. GSM sítě, přes které se data posílají, jsou určena pro telefony v okolí země a ve vyšších výškách může dojít k výpadku signálu. Velké množství sond také přistane v~neobydlených a~odlehlých oblastech, ve kterých nemusí být dostatečný signál pro přenos dat.
 
-	%snadné na vývoj a odladění, snadná změna zapojení pří psaní kódu
-		\subsubsection{Využití vývojových modulů}
-		V dnešní době existuje veliké množství mikročipů a MEMS čipů, které lze zakoupit ve formě modulů. Jedná se zpravidla o malé deky plošných spojů osazených konkrétními čipy s minimem potřebných součástek zajišťujících správné fungování. Zpravidla se jedná o blokovací kondenzátory umístěné v bezprostřední blízkosti čipů, poskytující elektrickou energii při rázovém odběru. Moduly mají vyvedené piny mikročipů na pinové lišty nacházející se zpravidla na okraji DPS. 
 
-		V případě mikroprocesoru se jedná o vývojový kit Nucleo od firmy \textit{ST Microelectronics}. Kit se skládá z DPS s mikroprocesorem a minimem součástek, nutných pro správné fungování procesoru. Součástí desky je také zdroj pro napájení čipu a programátor, kterým lze do mikroprocesou nahrát firmware. Jednotlivé piny mikroprocesoru jsou vyvedeny na pinové lišty na kraji desky a slouží ke snadnému propojení s moduly. 
+			\subsubsection{APRS}
+			APRS (\textit{\textbf{A}utomatic \textbf{P}acket \textbf{R}eporting \textbf{S}ystem}) je radioamatéry často využívaný způsob sledování sondy, jelikož jde o~způsob levný a spolehlivý a~mnoho radioamatérů má vlastní vybavení pro posílání dat přes APRS. Základem je APRS vysílač, který lze koupit, nebo postavit. GPS data, spolu například s~teplotou a~tlakem, jsou následně takto vysílána a~přijímána amatérskými rádii~\cite{web_sledovani}. Data se poté buď pošlou dál, nebo se nahrají na internetovou stránku k tomuto účelu zřízenou, odkud je může každý sledovat.\footnote{\url{aprs.fi}}
+			Nevýhodou APRS sledovače je bohužel fakt, že pokud sonda přistane v~neobydlené a~odlehlé oblasti, kde nejsou žádné amatérské rádiové stanice, není možno data odeslat. Proto je APRS sledovač vhodný pouze jako záloha, nebo doplnění, není dobré na něj spoléhat se stoprocentní jistotou. Pokud se vysílači nepovede vyslat souřadnice místa dopadu, můžeme přesto APRS vysílač najít pomocí radiového přijímače, naladěného na vysílací frekvenci, a~směrové antény. Další nevýhoda je potřebná licence pro vysílání na frekvenci 144,8~MHz, na které probíhá APRS \cite{web_ctu}.
 
-		Výhodou tohoto řešení ve fázi vývoje je snadná záměna zapojení modulů a rychlé odstranění chyb způsobené chybným výběrem komunikačních pinů mikroprocesoru.
 
-		Nevýhoda tohoto řešení je malá robustnost zapojení. Komunikační cesty mezi mikroprocesorem a senzory jsou zbytečné dlouhé, jelikož jsou podřízeny umístění pinů na pinových lištách. Další nevýhodou je nemožnost ovlivnit umístění blokovacích kondenzátorů u mikroprocesoru a nebo zvýšení jejich počtu. Vývojový kit Nucelo není tvořen s ohledem na malé rozměry a velikost DPS tohoto kitu ovlivňuje celkovou velikost elektroniky sondy.
+			\subsubsection{Satelitní sledovač}
+			Další způsob je využité satelitního sledovače. Jedná se zpravidla o zařízení na sledování majetku v případě odcizení. Získaná data o~poloze se posílají přes síť satelitů na nízké oběžné dráze Země. Využívána je služba \textit{Globalstar}, jež se specializuje na provoz satelitních telefonů. Ze satelitů jsou následně data poslána na speciální internetovou stránku, kde jsou přístupná například z~počítače, nebo mobilní aplikace. Pozice lze také zaslat přes SMS bránu, jako zprávu na mobilní telefon. Výhodou je širší pokrytí oproti GSM síti. 
 
-		\subsubsection{Samostatné senzory}
-		Druhá cesta, kterou je možná se vydat při vývoji elektroniky v sondě je samostatná deska, která obsahuje jednotlivé mikročipy bez jejich modulů a separátních DPS. Díky tomu je možné minimalizovat vzdálenost mezi mikroprocesorem a senzory a zvýšit robustnost napájení čipů. Celková velikost desky je poté dána především schopnostmi návrháře. 
+			Toto řešení má nicméně i~své nevýhody. GPS čip ve sledovači je omezený do maximální výšky 6\,500\,m\,n.\,m.~\cite{web_spot}. Kvůli tomu nastane po dosažení takové výšky tzv. blackout, kdy GPS čip přestane reagovat. Po následném sestupu sondy pod hladinu 6\,500\,m\,n.\,m. se GPS čip opět připojí a~sledovač opět začne fungovat. Další z~problémů je fakt, že sledovač musí mít GPS anténu neustále nasměrovanou k~obloze, tudíž, pokud se při dopadu sonda nějak překlopí, není možné zaměřit její pozici.
 
-		Toto řešení je ale časové náročné a v případě způsobené chyby se špatně ladí. V případě zničení, nebo nefunkčnosti nějaké elektronické součástky je nutné její odpájení z desky, což může ohrozit komponenty v okolí. V případě modulů lze vyměnit modul samotný.
+			\subsubsection{Přímé posílání GPS dat}
+			Pro tuto práci je implementačně nejjednodušším řešením přímé posílání GPS dat. S ohledem na zadání je nutné v rámci práce telemetrická data o poloze ze sondy posílat a tedy tyto informace lze využít k samotné lokalizaci a následnému nalezení sondy. Rizikem je dopad do oblasti, kde se omezí dosah telemetrického signálu. Např. do hustého lesa, nebo do zástavby.
 
-		Při řešení této práce byla zvolena cesta modulů. Důvodem bylo malé množství času neumožňující případné zdlouhavé odlaďování zapojení a také nedostatek součástek samotných. V tomto případě byly dostupnější senzory ve formě modulů a mikroprocesor ve formě vývojového kitu. 
+			S ohledem na hmotnost, kterou by předešlá řešení přidala k celkové hmotnosti, bylo zvoleno tohoto způsobu sledování.
+
+			\subsubsection{Zjištění pozice sondy ČHMÚ}
+			Jak již bylo zmíněno, sonda ČHMÚ je při letu zavěšena pod vyvíjenou sondou. Data vysílaná sondou ČHMÚ jsou přijímána a dekódována v místě vypuštění, ale také jsou zachytávána amatérskými rádii a informace o poloze jsou sdílena na internetu. Tento způsob je spolehlivý, jelikož vysílací část je komerčně prodávaná a určena pro profesionální použití. Přijímacích stanic je velké množství a tedy je vysoká pravděpodobnost, že budou data ze sondy zachycena. 
+
+			Nevýhodou je, že sonda ČHMÚ není přímou součástí vyvíjené sondy a tedy může dojít k odtržení. Tento způsob sledování je tedy brán jako záloha.
+
 
 		
-			\subsection{Sledování sondy}
-			Sledování sondy lze realizovat několika způsoby. Níže jsou popsány nejčastější z nich a jsou diskutovány výhody, nevýhody a možná rizika.
+\section{Firmware sondy}
+Firmware pro mikroprocesor v sondě zajišťuje inicializaci senzorů, správné čtení dat ze senzorů, jejich zpracování. Dále je nutné načítání data z GPS modulu a jejich rozdělení na dané zprávy a bloky informací využívaných pro určení pozice v prostoru. Všechny získané informace je poté nutno sešít do zprávy poslané telemetrií na zem a uložit na externí paměť. 
 
-				\subsubsection{GSM tracker}
-				Amatéry často využívána, nicméně velmi nedoporučovaná~\url{https://www.highaltitudescience.com/pages/tracking-a-weather-balloon} metoda je zasílání dat skrze mobilní sítě. GSM sítě, přes které se data posílají, jsou aktivní přibližně do výšky 10\,km (odkaz), není tudíž možné sledovat sondu po celou dobu letu. Velké množství sond také přistane v~neobydlených a~odlehlých oblastech, ve kterých nemusí být dostatečný signál pro přenos dat.
+Nutnou součástí firmwaru je také ošetření chybových stavů a možných errorů, vyvolaných chybným čtením dat a nebo fyzickými podmínkami prostředí.
 
-
-				\subsubsection{APRS}
-				APRS (\textit{\textbf{A}utomatic \textbf{P}acket \textbf{R}eporting \textbf{S}ystem}) je radioamatéry často využívaný způsob sledování sondy, jelikož jde o~způsob levný a spolehlivý a~mnoho radioamatérů má vlastní vybavení pro posílání dat přes APRS. Základem je APRS vysílač, který lze koupit, nebo postavit. GPS data, spolu například s~teplotou a~tlakem, jsou následně takto vysílána a~přijímána amatérskými rádii~\url{https://www.highaltitudescience.com/pages/tracking-a-weather-balloon}. Data se poté buď pošlou dál, nebo se nahrají na internetovou stránku k tomuto účelu zřízenou (\url{aprs.fi}), odkud je může každý sledovat.
-				Nevýhodou APRS sledovače je bohužel fakt, že pokud sonda přistane v~neobydlené a~odlehlé oblasti, kde nejsou žádné amatérské rádiové stanice, není možno data odeslat. Proto je APRS sledovač vhodný pouze jako záloha, nebo doplnění, není dobré na něj spoléhat se stoprocentní jistotou. Pokud se vysílači nepovede vyslat souřadnice místa dopadu, můžeme přesto APRS vysílač najít pomocí radiového přijímače, naladěného na vysílací frekvenci, a~směrové antény. Další nevýhoda je potřebná licence pro vysílání na frekvenci 144,8~MHz, na které probíhá APRS \url{https://www.zakonyprolidi.cz/cs/2005-156#cast1}
-
-
-				\subsubsection{Satelitní sledovač}
-				Další způsob je využité satelitního sledovače. Jedná se zpravidla o zařízení na sledování majetku v případě odcizení. Získaná data o~poloze se posílají přes síť satelitů na nízké oběžné dráze Země. Využívána je služba \textit{Globalstar}, jež se specializuje na provoz satelitních telefonů. Ze satelitů jsou následně data poslána na speciální internetovou stránku, kde jsou přístupná například z~počítače, nebo mobilní aplikace. Pozice lze také zaslat přes SMS bránu, jako zprávu na mobilní telefon. Výhodou je širší pokrytí oproti GSM síti. 
-
-				Toto řešení má nicméně i~své nevýhody. GPS čip ve sledovači je omezený do maximální výšky 6\,500\,m\,n.\,m.~\url{{https://www.findmespot.com/downloads/SPOT_TRACE_User_Guide.pdf}}. Kvůli tomu nastane po dosažení takové výšky tzv. blackout, kdy GPS čip přestane reagovat. Po následném sestupu sondy pod hladinu 6\,500\,m\,n.\,m. se GPS čip opět připojí a~sledovač opět začne fungovat. Další z~problémů je fakt, že sledovač musí mít GPS anténu neustále nasměrovanou k~obloze, tudíž, pokud se při dopadu sonda nějak překlopí, není možné zaměřit její pozici.
-
-				\subsubsection{Přímé posílání GPS dat}
-				Pro tuto práci je implementačně nejjednodušším řešením přímé posílání GPS dat. S ohledem na zadání je nutné v rámci práce telemetrická data o poloze ze sondy posílat a tedy tyto informace lze využít k samotné lokalizaci a následnému nalezení sondy. Rizikem je dopad do oblasti, kde se omezí dosah telemetrického signálu. Např. do hustého lesa, nebo do zástavby.
-
-				S ohledem na hmotnost, kterou by předešlá řešení přidala k celkové hmotnosti, bylo zvoleno tohoto způsobu sledování.
-
-				\subsubsection{Zjištění pozice sondy ČHMÚ}
-				Jak již bylo zmíněno, sonda ČHMÚ je při letu zavěšena pod vyvíjenou sondou. Data vysílaná sondou ČHMÚ jsou přijímána a dekódována v místě vypuštění, ale také jsou zachytávána amatérskými rádii a informace o poloze jsou sdílena na internetu. Tento způsob je spolehlivý, jelikož vysílací část je komerčně prodávaná a určena pro profesionální použití. Přijímacích stanic je velké množství a tedy je vysoká pravděpodobnost, že budou data ze sondy zachycena. 
-
-				Nevýhodou je, že sonda ČHMÚ není přímou součástí vyvíjené sondy a tedy může dojít k odtržení. Tento způsob sledování je tedy brán jako záloha.
-
-
-			
-	\section{Firmware sondy}
-	Firmware pro mikroprocesor v sondě zajišťuje inicializaci senzorů, správné čtení dat ze senzorů, jejich zpracování. Dále je nutné načítání data z GPS modulu a jejich rozdělení na dané zprávy a bloky informací využívaných pro určení pozice v prostoru. Všechny získané informace je poté nutno sešít do zprávy poslané telemetrií na zem a uložit na externí paměť. 
-
-	Nutnou součástí firmwaru je také ošetření chybových stavů a možných errorů, vyvolaných chybným čtením dat a nebo fyzickými podmínkami prostředí.
-
-	\section{Mechanická zástavba}
-	Mechanická zástavba celé sondy musí splňovat požadavky pracovníků ČHMÚ, aby nedošlo k poničeni balónu a způsobení škod při dopadu na zem. Jelikož je sonda Vaisala RS41 pověšena pod sondu vznikající v rámci této práce, je nutné zajistit robustnost a zamezit odpojení sondy Vaisala, nebo rozpadu vyvíjené sondy.
+\section{Mechanická zástavba}
+Mechanická zástavba celé sondy musí splňovat požadavky pracovníků ČHMÚ, aby nedošlo k poničeni balónu a způsobení škod při dopadu na zem. Jelikož je sonda Vaisala RS41 pověšena pod sondu vznikající v rámci této práce, je nutné zajistit robustnost a zamezit odpojení sondy Vaisala, nebo rozpadu vyvíjené sondy.
 
 
 
-	\section{Pozemní stanice}
-	\label{sec:navrh:pozemni_stanice}
-	Firmware pro mikroprocesor v pozemní stanici zodpovídá za správné dekódování přijatých telemetrických údajů. Firmware musí určit, která data jsou validní. Přijatá data je poté nutno zformátovat do zprávy určené pro anténní tracker, umístěný na střeše budovy FEL. Firmware musí být odolný vůči náhodným chybám způsobených přenosem na velkou vzdálenost. Příjem i posílání dat probíhá přes sériovou linku. 
+\section{Pozemní stanice}
+\label{sec:navrh:pozemni_stanice}
+Firmware pro mikroprocesor v pozemní stanici zodpovídá za správné dekódování přijatých telemetrických údajů. Firmware musí určit, která data jsou validní. Přijatá data je poté nutno zformátovat do zprávy určené pro anténní tracker, umístěný na střeše budovy FEL. Firmware musí být odolný vůči náhodným chybám způsobených přenosem na velkou vzdálenost. Příjem i posílání dat probíhá přes sériovou linku. 
 
-	Elektronika pozemní stanice není vystavena extrémním podmínkám a není nutné řešit její odolnost vůči vnějším vlivům. 
-	
+Elektronika pozemní stanice není vystavena extrémním podmínkám a není nutné řešit její odolnost vůči vnějším vlivům. 
 
-	\section{Software pro zobrazení telemetrických údajů}
-	Software určený pro příjem dat na počítači umístěném v automobilu jedoucí ve směru dopadu sondy. Software musí určit validní data a vyznačit GPS pozici sondy na mapě. Další funkcí softwaru je výpis souřadnic, výšky a rychlosti sondy a teploty okolí sondy. Data jdoucí do programu jsou posílána přes sériovou linkou z přijímače signálu vysílaného sondou. 
 
-	
-	
+\section{Software pro zobrazení telemetrických údajů}
+Software určený pro příjem dat na počítači umístěném v automobilu jedoucí ve směru dopadu sondy. Software musí určit validní data a vyznačit GPS pozici sondy na mapě. Další funkcí softwaru je výpis souřadnic, výšky a rychlosti sondy a teploty okolí sondy. Data jdoucí do programu jsou posílána přes sériovou linkou z přijímače signálu vysílaného sondou. 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\chapter{Realizace}
-Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla práce směřována při vývoji elektroniky a popisuje výběr jednotlivých komponent. Dále vysvětluje dílčí části firmwaru sondy a způsob, jakým byly řešeny problémy. Popisuje jak vysílací část - sondu, tak přijímací části. Jednak pozemní stanici, která formátovala data do zprávy čitelné anténním trackerem a jednak přijímací software na zobrazení pozice na mapě. 
 
 	\section{Elektronika}
 	
@@ -823,17 +823,15 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 		\caption{Rotace sondy kolem osy tvořené vektorem magnetické indukce (pohled zespod)}
 		\label{fig:sonda:mag:rot}
 	\end{figure}
+
+	Pro zjištění náklonu je využita první zmíněna metoda. Jelikož není možné zjistit okamžitou výchylku, ale pouze maximální výchylku za dobu jedné periody GPS přijímače, bylo počítáno se standartním rozkmitem sondy, jehož hodnota je bere jako konstatní po celou dobu letu. 
 	
 
 
 	
-	
-TODO:
-	\begin{enumerate}
-		\item Řešení v flightcontrollerech na dronech - kalman, příliš složité na implementaci, komplementární filtr
-		\item Moje řešení
-	\end{enumerate}
-	
+
+
+
 
 
 
@@ -844,15 +842,6 @@ TODO:
 
 
 	
-
-	
-
-
-
-
-
-
-
 	\section{Pozemní stanice}
 	výstřizky kódu z driverů, sample GPS dat, vyčítání z teplota/tlak, tlak/vlhkost, gyro/acc/mag, parsovací funkce, změřené minimum accelerace v z-ose, sešití dat, watchdog, reset při erroru
 
@@ -902,6 +891,15 @@ TODO:
 	\end{longtable}
 
 
+
+
+
+
+
+
+
+
+
 	\section{Software pro zobrazení telemetrických údajů}
 	Příjem dat samotných byl realizován stejným modulem, který je unmístěn v sondě, určený k posílání telemetrických dat. Pro minimalizaci ztrát byla anténa s modulem umístěny na platformě, která byla pomocí magnetů uchycena na střeše automobilu obr. \ref{fig:tack:mech:platform}. K modulu byl připojen převodník ze sériové linky na USB, který byl dostatečně dlouhým USB kabelem připojen k laptopu spolujezdce.
 
@@ -925,6 +923,13 @@ TODO:
 		\caption{Trajektorie letu zobrazena pomocí python skriptu \ref{lst:track:main}}
 		\label{fig:track:map}
 	\end{figure}
+
+
+
+
+
+
+
 
 
 
@@ -976,6 +981,15 @@ TODO:
 	
 
 	
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1212,13 +1226,21 @@ TODO:
 \begin{thebibliography}{1}
 	\bibitem{zaklady:sireni:vln}PECHAČ, Pavel a Stanislav ZVÁNOVEC. \textit{Základy šíření vln pro plánování pozemních rádiových spojů}. Praha: BEN - technická literatura, 2007. ISBN 978-80-7300-223-7.
 
-	\bibitem{web_tropo}Atmospheric Structure [online] \url{https://www.albany.edu/faculty/rgk/atm101/structur.htm} [cit.~2022-05-19]
+	\bibitem{web_tropo}\textit{Atmospheric Structure} [online] \url{https://www.albany.edu/faculty/rgk/atm101/structur.htm} [cit.~2022-05-19]
 
-	\bibitem{ITU:vapour}ITU-R Rec. P.836, Water vapour: surface density and total columnar content, Geneva, [online] \url{https://www.itu.int/dms_pubrec/itu-r/rec/p/R-REC-P.836-6-201712-I!!PDF-E.pdf} [cit.~2022-05-19]
+	\bibitem{ITU:vapour}ITU-R Rec. P.836, \textit{Water vapour: surface density and total columnar content}, Geneva, [online] \url{https://www.itu.int/dms_pubrec/itu-r/rec/p/R-REC-P.836-6-201712-I!!PDF-E.pdf} [cit.~2022-05-19]
 
-	\bibitem{ITU:refrac}ITU-R Rec. P.453, The radio refractive index: its formula and refractivity data, Geneva, [online] \url{https://www.itu.int/dms_pubrec/itu-r/rec/p/R-REC-P.453-14-201908-I!!PDF-E.pdf} [cit.~2022-05-19]
+	\bibitem{ITU:refrac}ITU-R Rec. P.453, \textit{The radio refractive index: its formula and refractivity data}, Geneva, [online] \url{https://www.itu.int/dms_pubrec/itu-r/rec/p/R-REC-P.453-14-201908-I!!PDF-E.pdf} [cit.~2022-05-19]
 
 	\bibitem{AOE}HOROWITZ, Paul a Winfield HILL. \textit{The art of electronics}. Third edition. New York: Cambridge University Press, 2015. ISBN 978-0-521-80926-9.
+
+	\bibitem{web_sledovani}\textit{Tracking a Weather Balloon}
+    \url{https://www.highaltitudescience.com/pages/tracking-a-weather-balloon} [cit.~2022-05-19]
+
+	\bibitem{web_ctu}\textit{Vyhláška o technických a provozních podmínkách amatérské radiokomunikační služby}, [online] \url{https://www.zakonyprolidi.cz/cs/2005-156#cast1} [cit.~2022-05-19]
+
+	\bibitem{web_spot}\textit{Spot Trace User Guide}
+    \url{https://www.findmespot.com/downloads/SPOT_TRACE_User_Guide.pdf} [cit.~2022-05-19]
 
 
 \end{thebibliography}
