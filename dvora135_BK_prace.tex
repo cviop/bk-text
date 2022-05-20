@@ -163,13 +163,14 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 \chapter{Úvod}
 	\section{Cíl práce}
 	%model šíření
-	Cílem práce je tvorba modelu přenosu radiového paprsku ve vyšších vrstvách atmosféry. Součástí modelu přenosu je také gradient refrakce, který má za následek ohyb radiového paprsku a ovlivnění kvality přenosu.
+	Tato práce je zaměřena na tvorbu modelu šíření radiového paprsku v atmosféře. Mezi prvky, ovlivňující kvalitu rádiového spoje, patří například ztráty volným prostorem, ale také troposférická refrakce - ohyb paprsku díky různým podmínkám v nižších vrstvách atmosféry. Teoretické modely jsou posléze porovnány s reálnými daty popisující rádiový spoj.
 	
 
 	\section{Způsob řešení}
 	%jak to budu řešit, stavba sondy, co bude měřit, měření na střeše s trackerem
-	Pro měření podmínek ve troposféře bude zkonstruována meteorologická sonda vlastního návrhu, která bude schopna měřit veličiny, ovlivňující šíření radiového signálu. Mezi měřená data bude patřit teplota, relativní vlhkost a tlak. Přítomný GPS přijímač bude poskytovat zeměpisné souřadnice a nadmořskou výšku. Dále bude pozemním segmentem měřen výkon rádiového signálu a teoretický útlum bude porovnávaný s měřenými hodnotami. Přijímací anténa bude umístěna na střeše budovy FEL v Dejvicích a bude upevněna na anténní sledovač. Ten na základě přijatých GPS souřadnic dokáže nasměrovat anténu na sondu, čímž bude zajištěn stejný zisk přijímací antény po celou dobu letu.
+	Pro měření podmínek ve troposféře bude zkonstruována meteorologická sonda vlastního návrhu, která bude schopna měřit veličiny, ovlivňující šíření radiového signálu. Mezi měřená data bude patřit teplota, relativní vlhkost a tlak. Přítomný GPS přijímač bude poskytovat zeměpisné souřadnice a nadmořskou výšku. Dále bude pozemním segmentem měřen výkon rádiového signálu a teoretický útlum bude porovnávaný s měřenými hodnotami. Přijímací anténa bude umístěna na střeše budovy FEL v Dejvicích a bude upevněna na anténní sledovač. Ten na základě přijatých GPS souřadnic dokáže nasměrovat anténu na sondu, čímž bude zajištěn stejný zisk přijímací antény po celou dobu letu. Díky potřebným senzorům umístěným na sodě bude možné získat náklon sondy a tedy i upravit zisk antény pro daný vyzařovací úhel.
 
+	V jakém čase psát úvod?
 
 
 
@@ -205,7 +206,7 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 	
 
 \chapter{Návrh a požadavky}
-
+	Tato kapitola popisuje návrh experimentu, díky kterému bude možné vytvořit matematický model přenosu radiového signálu a jeho následné ověření se změřenými daty. V první části kapitola popisuje teorii využívanou při modelování a měření parametrů přenosu. 
 	\section{Šíření vln ve troposféře}
 		\subsection{Troposférická refrakce}
 		Při průchodu vlny atmosférou Země je paprsek ovlivněn změnou prostředí, ve kterém se šíří. V závislosti na teplotě, tlaku a hustotě se mění i index lomu atmosféry, který má za následek refrakci - lom paprsku. Index lomu troposféry může nabývat hodnot mezi $n=1{,}000325$ při povrchu Země až $n=1{,}000110$ pro vrchní hranici troposféry~\cite{zaklady:sireni:vln}, nacházející se přibližně ve výšce 10~km \cite{web_tropo}.
@@ -236,17 +237,38 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 		Před samotným návrhem elektroniky je potřeba navrhnout rádiovou linku a ověřit výkonovou bilanci rádiového spoje. Antény použité pro vysílání i příjem jsou kvadrifilární šroubovité antény s levotočivou polarizcí. 
 
 		Výkonová bilance spoje lze zapsat jako
-		\begin{split}
+		\begin{align}
 			P_\mt{P} = P_\mt{V} + G_\mt{V} + G_\mt{P} + G_\mt{LNA} - FSL - L_\mt{kabel} - L_\mt{splitter},
-		\end{split}
-		Kde $G_\mt{V}$ a $G_\mt{P}$ jsou zisky antén, $P_\mt{V}$ je výkon vysílače, $G_\mt{LNA}$ zisk nízkošumového zesilovače, $FSL$ jsou ztráty volným prostorem, $L_\mt{kabel}$ ztráty kabelu a $L_\mt{splitter}$ ztráty rozdvojky, rozdělující signál mezi spektrální analyzátor a přijímač radiového signálu.
+			\label{eq:bilance}
+		\end{align}
+		Kde $G_\mt{V}$ a $G_\mt{P}$ jsou zisky antén, $P_\mt{V}$ je výkon vysílače měřený na vstupu antény, $G_\mt{LNA}$ zisk nízkošumového zesilovače, $FSL$ jsou ztráty volným prostorem, $L_\mt{kabel}$ ztráty kabelu a $L_\mt{splitter}$ ztráty rozdvojky, rozdělující signál mezi spektrální analyzátor a přijímač radiového signálu.
 
 		Ztráty volným byly spočteny podle \cite{zaklady:sireni:vln} jako
-		\begin{split}
+		\begin{align}
 			L_\mt{FSL} = 32,4 + 20\mt{log}(f_\mt{MHz}) + 20\mt{log}(d_\mt{km}).
-		\end{split}
-		
-		Podle měření popsaném v \ref{sec:testovani} je zisk antén $G_\mt{V} = G_\mt{P} = 4,21$~dBi. Za přijímací anténou, která je součástí pozemního segmentu, se nachází nízkošumový zesilovač se ziskem $G_\mt{LNA} = 40$~dB. Změřený 
+		\end{align}
+		Jelikož jsou ztráty volným prostorem závislé na vzdálenosti, lze je vyjádřit pouze jako intervalem krajních hodnot. Místo vypuštění sondy, Praha - Libuš, je od buovy FEL v Dejvicích vzdálené 11,2~km. Maximální vzdálenost s ohledem na maximální výšku a predikci letu byla určena jako 50~km.
+
+		Zisky resp. útlumy jednotlivých částí rádiové linky jsou zaneseny níže.
+		\begin{align*}
+			\begin{split}
+				P_\mt{V} &= 22{,}3\mt{ dBm}\\
+				G_\mt{V} &= 4{,}21\mt{ dBi}\\
+				G_\mt{P} &= 4{,}21\mt{ dBi}\\
+				G_\mt{LNA} &= 40 \mt{ dB}\\
+				L_\mt{kabel} &= 2{,}5\mt{ dB}\\
+				L_\mt{splitter} &= 3{,}6\mt{ dB}\\
+				L_\mt{FSL} &= [112{,}16 .. 125{,}16]\mt{ dB}
+			\end{split}
+		\end{align*}
+
+		Výsledný výkon očekávaný na vstupu spektránlího analyzátoru tedy bude po dosazení do \eqref{eq:bilance}:
+		\begin{align}
+			P_\mt{P} = 22{,}3 + 4{,}21 + 4{,}21 - [112{,}16~..~125{,}16] + 40 - 2{,}5 - 3{,}6\mt{ dBm}.
+		\end{align}
+		Hodnoty výkonu lze očekávat v rozmezí od $P_\mt{Pmax} = -48\mt{ dBm}$ do $P_\mt{Pmin} = -61\mt{ dBm}$.
+
+
 
 		%budget link, co očekáváme za úrovně na základě budget linku
 
@@ -263,20 +285,20 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 	\section{Elektronika sondy}
 	%součástky do -40, nízký tlak (bez elektrolytických kond.), dosah 40+ km
 
-	V samotném návrhu elektroniky sondy bylo možné zvolit jednu ze dvou cest. Níže práce popisuje výhody, nevýhody a možná rizika každé z nich. Dále zdůvodňuje cestu, která byla zvolena při řešení této práce. Zmíněny jsou jak robustnost řešení, tak možná rizika způsobené lidským faktorem a časová náročnost.
+	V samotném návrhu elektroniky sondy bylo možné zvolit jednu ze dvou cest. Níže práce popisuje výhody, nevýhody a potenciální rizika každé z nich. Dále zdůvodňuje cestu, která byla zvolena při řešení této práce.
 
 	%snadné na vývoj a odladění, snadná změna zapojení pří psaní kódu
 		\subsubsection{Využití vývojových modulů}
-		V dnešní době existuje veliké množství mikročipů a MEMS čipů, které lze zakoupit ve formě modulů. Jedná se zpravidla o malé deky plošných spojů osazených konkrétními čipy s minimem potřebných součástek zajišťujících správné fungování. Zpravidla se jedná o blokovací kondenzátory umístěné v bezprostřední blízkosti čipů, poskytující elektrickou energii při rázovém odběru. Moduly mají vyvedené piny mikročipů na pinové lišty nacházející se na okraji PCB. 
+		V dnešní době existuje veliké množství mikročipů a MEMS čipů, které lze zakoupit ve formě modulů. Jedná se zpravidla o malé deky plošných spojů osazených konkrétními čipy s minimem potřebných součástek zajišťujících správné fungování. Zpravidla se jedná o blokovací kondenzátory umístěné v bezprostřední blízkosti čipů, poskytující elektrickou energii při rázovém odběru. Moduly mají vyvedené piny mikročipů na pinové lišty nacházející se zpravidla na okraji DPS. 
 
-		V případě mikroprocesoru se jedná o vývojový kit Nucleo od firmy \textit{ST Microelectronics}. Jedná se o PCB s mikroprocesorem a minimem součástek, nutných pro správné fungování procesoru. Součástí desky je také zdroj pro napájení čipu a programátor, kterým lze do mikroprocesou nahrát firmware. Jednotlivé piny mikroprocesoru jsou vyvedeny na pinové lišty na kraji desky a slouží ke snadnému propojení s moduly. 
+		V případě mikroprocesoru se jedná o vývojový kit Nucleo od firmy \textit{ST Microelectronics}. Kit se skládá z DPS s mikroprocesorem a minimem součástek, nutných pro správné fungování procesoru. Součástí desky je také zdroj pro napájení čipu a programátor, kterým lze do mikroprocesou nahrát firmware. Jednotlivé piny mikroprocesoru jsou vyvedeny na pinové lišty na kraji desky a slouží ke snadnému propojení s moduly. 
 
 		Výhodou tohoto řešení ve fázi vývoje je snadná záměna zapojení modulů a rychlé odstranění chyb způsobené chybným výběrem komunikačních pinů mikroprocesoru.
 
-		Nevýhoda tohoto řešení je malá robustnost zapojení. Komunikační cesty mezi mikroprocesorem a senzory jsou zbytečné dlouhé, jelikož jsou podřízeny umístění pinů na pinových lištách. Další nevýhodou je nemožnost ovlivnit umístění blokovacích kondenzátorů u mikroprocesoru a nebo zvýšení jejich počtu. Vývojový kit Nucelo není tvořen s ohledem na malé rozměry a velikost PCB tohoto kitu ovlivňuje celkovou velikost elektroniky sondy.
+		Nevýhoda tohoto řešení je malá robustnost zapojení. Komunikační cesty mezi mikroprocesorem a senzory jsou zbytečné dlouhé, jelikož jsou podřízeny umístění pinů na pinových lištách. Další nevýhodou je nemožnost ovlivnit umístění blokovacích kondenzátorů u mikroprocesoru a nebo zvýšení jejich počtu. Vývojový kit Nucelo není tvořen s ohledem na malé rozměry a velikost DPS tohoto kitu ovlivňuje celkovou velikost elektroniky sondy.
 
 		\subsubsection{Samostatné senzory}
-		Druhá cesta, kterou je možná se vydat při vývoji elektroniky v sondě je samostatná deska, která obsahuje jednotlivé mikročipy bez jejich modulů a separátních PCB. Díky tomu je možné minimalizovat vzdálenost mezi mikroprocesorem a senzory a zvýšit robustnost napájení čipů. Celková velikost desky je poté dána především schopnostmi návrháře. 
+		Druhá cesta, kterou je možná se vydat při vývoji elektroniky v sondě je samostatná deska, která obsahuje jednotlivé mikročipy bez jejich modulů a separátních DPS. Díky tomu je možné minimalizovat vzdálenost mezi mikroprocesorem a senzory a zvýšit robustnost napájení čipů. Celková velikost desky je poté dána především schopnostmi návrháře. 
 
 		Toto řešení je ale časové náročné a v případě způsobené chyby se špatně ladí. V případě zničení, nebo nefunkčnosti nějaké elektronické součástky je nutné její odpájení z desky, což může ohrozit komponenty v okolí. V případě modulů lze vyměnit modul samotný.
 
@@ -433,9 +455,9 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 
 
 		
-		\subsection{PCB pro připojení modulů}
+		\subsection{DPS pro připojení modulů}
 		%Navrženy shieldy, nakresleny modely. Spínaný zdroj + LDO, ochrany vstupů, volné GPIO na rozšíření
-		Ve vývojové fázi práce byly moduly zapojeny skrze nepájivé pole a propojeny propojovacími kabely s piny Nucleo desky. Moduly byly postupně přidávány souběžně s vývojem softwaru. Po odladění komunikace se všemi použitými moduly byly vytvořeny dvě redukční PCB na propojení Nucleo kitu a modulů. Moduly jsou vyobrazeny na obr. \ref{fig:shield:top} a \ref{fig:shield:bot}. 
+		Ve vývojové fázi práce byly moduly zapojeny skrze nepájivé pole a propojeny propojovacími kabely s piny Nucleo desky. Moduly byly postupně přidávány souběžně s vývojem softwaru. Po odladění komunikace se všemi použitými moduly byly vytvořeny dvě redukční DPS na propojení Nucleo kitu a modulů. Moduly jsou vyobrazeny na obr. \ref{fig:shield:top} a \ref{fig:shield:bot}. 
 
 		\begin{figure}[hbtp]
 			\centering
@@ -454,11 +476,11 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 			\begin{subfigure}{.3\textwidth}
 				\centering
 				\includegraphics[height=0.7\linewidth]{Figures/shield_assembly.png}
-				\caption{Sestava PCB}
+				\caption{Sestava DPS}
 				\label{fig:shield:assembly}
 			\end{subfigure}
 			\caption{Redukční desky pro moduly}
-			\label{fig:shields:pcb}
+			\label{fig:shields:DPS}
 		\end{figure}
 
 
@@ -540,7 +562,7 @@ Tato kapitola se zabývá samotnou realizací sondy. Popisuje cestu, kterou byla
 
 	V případě, že by došlo k delaminaci 3D tisku, byla jak elektronika, tak sonda ČHMÚ přivázána pojistným provázkem uchyceným k hlavnímu závěsu spolu s padákem a balónem. Díky tomu by sonda stále zůstala pohromadě i když by došlo k rozbití/rozlomení krytu.
 
-	model PCB, model sondy, iterace, odlehčování, připojení sondy čhmú, bezpečnostní závěsy
+	model DPS, model sondy, iterace, odlehčování, připojení sondy čhmú, bezpečnostní závěsy
 
 
 
@@ -1160,7 +1182,7 @@ TODO:
 	co se povedlo, co se nepovedlo. Vyrobil jsem sondu a sw, přestala vysílat - proč? 
 
 	\section{Možná vylepšení}
-	malé pcb bez modulů, optimalizace sw, nepoužívat HAL, programovat přes registry, měření náklonu sondy, častější posílání dat, nezávislost na GPS.
+	malé DPS bez modulů, optimalizace sw, nepoužívat HAL, programovat přes registry, měření náklonu sondy, častější posílání dat, nezávislost na GPS.
 
 	
 
