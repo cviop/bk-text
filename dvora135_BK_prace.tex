@@ -12,6 +12,8 @@
 \usepackage{longtable}
 \usepackage{svg}
 \usepackage{color,soul}
+\usepackage{hyperref}
+%\usepackage[backend=bibtex]{biblatex}
 
 \usepackage[tableposition=top]{caption}
 \usepackage{graphicx}
@@ -123,7 +125,9 @@
 
 % Abstract in Czech
 \begin{abstract-czech}
-Aaaabstrakt
+	Tato práce se zabývá návrhem a realizací sondy, schopné měřit podmínky ve vyšších vrstvách zemské atmosféry. Naměřená data jsou zpracována a využita při tvorbě modelu šíření pro daný typ spoje. Práce obsahuje výběr stěžejních hardwarových komponent, návrh designu desek plošných spojů a stejně tak mechanickou zástavbu elektroniky. Teoretický model je následně porovnáván s reálnými daty přeneseného výkonu a jsou vyvozovány závěry. Dále se práce zabývá návrhem a realizací pozemní stanice, schopné přijímat data a formátovat je do zprávy pro anténní sledovač a realizací sledovacího softwaru na vykreslování trajektorie sondy v reálném čase. Práce poté zmiňuje jak způsoby testování elektroniky sondy, tak měření parametrů komponent, jež jsou součástí radiového spoje.
+	
+	V kapitole zaměřené na samotný experiment popisuje průběh experimentu a přípravu naměřených dat na další zpracování. Data jsou následně použita při tvorbě teoretického modelu šíření. Tento model je porovnán s hodnotami vycházejících z reálného měření daného radiového přenosu pomocí spektrálního analyzátoru.
 
 \end{abstract-czech}
 
@@ -135,7 +139,7 @@ Abstract
 
 % Acknowledgements / Poděkování
 \begin{thanks}
-Děkuji vedoucímu Tomáši Kořínkovi za cenné rady a pomoc při realizaci práce. Děkuji Ing. Martinu Motlovi za pomoc s vypouštěním sondy. (tmobile tracker)
+Děkuji vedoucímu Tomášovi Kořínkovi za cenné rady a pomoc při realizaci práce. Děkuji Ing. Martinu Motlovi za pomoc s vypouštěním sondy. (tmobile tracker)
 
 \end{thanks}
 
@@ -157,13 +161,14 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 \maketitle
 
 \chapter{Úvod}
-tato práce ze zabývá... ano zabývá se...
 	\section{Cíl práce}
 	%model šíření
+	Cílem práce je tvorba modelu přenosu radiového paprsku ve vyšších vrstvách atmosféry. Součástí modelu přenosu je také gradient refrakce, který má za následek ohyb radiového paprsku a ovlivnění kvality přenosu.
 	
 
 	\section{Způsob řešení}
 	%jak to budu řešit, stavba sondy, co bude měřit, měření na střeše s trackerem
+	Pro měření podmínek ve troposféře bude zkonstruována meteorologická sonda vlastního návrhu, která bude schopna měřit veličiny, ovlivňující šíření radiového signálu. Mezi měřená data bude patřit teplota, relativní vlhkost a tlak. Přítomný GPS přijímač bude poskytovat zeměpisné souřadnice a nadmořskou výšku. Dále bude pozemním segmentem měřen výkon rádiového signálu a teoretický útlum bude porovnávaný s měřenými hodnotami. Přijímací anténa bude umístěna na střeše budovy FEL v Dejvicích a bude upevněna na anténní sledovač. Ten na základě přijatých GPS souřadnic dokáže nasměrovat anténu na sondu, čímž bude zajištěn stejný zisk přijímací antény po celou dobu letu.
 
 
 
@@ -202,12 +207,47 @@ tato práce ze zabývá... ano zabývá se...
 \chapter{Návrh a požadavky}
 
 	\section{Šíření vln ve troposféře}
-		jak to funguje, na čem to závisí (přečíst literaturu)
 		\subsection{Troposférická refrakce}
-		\subsection{Troposférický rozptyl}
-		\subsection{Troposférická vlna}
-	
+		Při průchodu vlny atmosférou Země je paprsek ovlivněn změnou prostředí, ve kterém se šíří. V závislosti na teplotě, tlaku a hustotě se mění i index lomu atmosféry, který má za následek refrakci - lom paprsku. Index lomu troposféry může nabývat hodnot mezi $n=1{,}000325$ při povrchu Země až $n=1{,}000110$ pro vrchní hranici troposféry~\cite{zaklady:sireni:vln}, nacházející se přibližně ve výšce 10~km \cite{web_tropo}.
+
+		Pro přehlednost se zavádí tzv. refraktivita (\textit{refractivity N}), definována jako
+		\begin{align}
+			N = (n-1)\cdot 10^{-6}.
+		\end{align}
+		Jednotky refraktivity jsou tzv. \textit{N}-jednotky.
+
+		Podle doporučení ITU-R P.453 \cite{ITU:refrac} lze pro frekvence do 100~GHz spočítat refraktivitu jako
+		\begin{align}
+			N = \frac{77.6}{T} \left(P + 4810\frac{e}{T}\right),
+			\label{eq:tropo:refrac}
+		\end{align}
+		kde $T$ je absolutní hodnota v K, $p$ je atmosférický tlak v hPa a $e$ je tlak vodních par v hPa. Ten lze vypočíst pomocí hustoty vodních par z doporučení ITU-R 836 \cite{ITU:vapour}. Pdle \cite{ITU:refrac} lze tlak vodních par vypočítat také podle relativní vlhkosti vzduchu $H$ jako
+		\begin{align}
+			e = \frac{H}{100}\,6{,}1121\,\mt{e}^{\frac{17{,}502t}{240{,}97 + t}},
+			\label{eq:tropo:e}
+		\end{align}
+		kde $t$ je teplota v °C. Vztah platí v rozsahu teplot od -20 °C do 50 °C \cite{zaklady:sireni:vln}.
+
+		Z rovnic \eqref{eq:tropo:refrac} a \eqref{eq:tropo:e} je patrné, že pro stanovení výškového profilu refraktivity je potřeba měřit teplotu, tlak a relativní vlhkost. 
+
+
+
 		\subsection{Rádiový spoj}
+		Před samotným návrhem elektroniky je potřeba navrhnout rádiovou linku a ověřit výkonovou bilanci rádiového spoje. Antény použité pro vysílání i příjem jsou kvadrifilární šroubovité antény s levotočivou polarizcí. 
+
+		Výkonová bilance spoje lze zapsat jako
+		\begin{split}
+			P_\mt{P} = P_\mt{V} + G_\mt{V} + G_\mt{P} + G_\mt{LNA} - FSL - L_\mt{kabel} - L_\mt{splitter},
+		\end{split}
+		Kde $G_\mt{V}$ a $G_\mt{P}$ jsou zisky antén, $P_\mt{V}$ je výkon vysílače, $G_\mt{LNA}$ zisk nízkošumového zesilovače, $FSL$ jsou ztráty volným prostorem, $L_\mt{kabel}$ ztráty kabelu a $L_\mt{splitter}$ ztráty rozdvojky, rozdělující signál mezi spektrální analyzátor a přijímač radiového signálu.
+
+		Ztráty volným byly spočteny podle \cite{zaklady:sireni:vln} jako
+		\begin{split}
+			L_\mt{FSL} = 32,4 + 20\mt{log}(f_\mt{MHz}) + 20\mt{log}(d_\mt{km}).
+		\end{split}
+		
+		Podle měření popsaném v \ref{sec:testovani} je zisk antén $G_\mt{V} = G_\mt{P} = 4,21$~dBi. Za přijímací anténou, která je součástí pozemního segmentu, se nachází nízkošumový zesilovač se ziskem $G_\mt{LNA} = 40$~dB. Změřený 
+
 		%budget link, co očekáváme za úrovně na základě budget linku
 
 	\section{Požadavky}
@@ -1033,23 +1073,23 @@ TODO:
 	%zkombinovat data ze země a data ze strato, vzorečky, určit refrakci, výkonovou bilanci podle podmínek, vzít v potaz směrovou charstiku. vyrobit model šíření, grafy
 
 
-	Výpočet refraktivity troposféry byl proveden podle doporučení ITU-R P.453-14. Refraktivitu v závoslosti na podmínkách prostředí lze přibližně vyjádřit jako
+	Výpočet refraktivity troposféry byl proveden podle doporučení ITU-R P.453 \cite{ITU:refrac}. Refraktivitu v závoslosti na podmínkách prostředí lze přibližně vyjádřit jako
 	\begin{align}
 		N = \frac{77.6}{T} \left(P + 4810\frac{e}{T}\right),
 		\label{eq:refr:meas}
 	\end{align}
-	kde $T$ je absolutní hodnota v K, $p$ je atmosférický tlak v hPa a $e$ je tlak vodních par v hPa. Ten lze vypočíst pomocí hustoty vodních par z doporučení ITU-R 836. Pdle [zdroj 5] lze tlak vodních par vypočítat také podle relativní vlhkosti vzduchu $H$ jako
+	kde $T$ je absolutní hodnota v K, $p$ je atmosférický tlak v hPa a $e$ je tlak vodních par v hPa. Ten lze vypočíst pomocí hustoty vodních par z doporučení ITU-R 836 \cite{ITU:vapour}. Pdle \cite{ITU:refrac} lze tlak vodních par vypočítat také podle relativní vlhkosti vzduchu $H$ jako
 	\begin{align}
 		e = \frac{H}{100}\,6{,}1121\,\mt{e}^{\frac{17{,}502t}{240{,}97 + t}},
 	\end{align}
-	kde $t$ je teplota v °C. Vztah platí v rozsahu teplot od -20 °C do 50 °C.
+	kde $t$ je teplota v °C. Vztah platí v rozsahu teplot od -20 °C do 50 °C \cite{zaklady:sireni:vln}.
 
-	Pro aproximaci výškového profilu rekraktivity ITU doporučuje exponenciální model podle vztahu:
+	Pro aproximaci výškového profilu rekraktivity ITU doporučuje \cite{ITU:refrac} exponenciální model podle vztahu:
 	\begin{align}
 		N = N_\mt{0}\,\mt{e}^{-h/h_\mt{0}},
 		\label{eq:refr:approx}
 	\end{align}
-	kde $h$ je výška nad zemí, $N_\mt{0}$ hodnota refraktivity v 0~km a $h_\mt{0}$ výškové měřítko v km. ITU udává globální světový průměr $N_\mt{0} = 315 \mt{ N}$ a $h_\text{0} = 7{,}35 \mt{ km}$.
+	kde $h$ je výška nad zemí, $N_\mt{0}$ hodnota refraktivity v 0~km a $h_\mt{0}$ výškové měřítko v km. ITU udává globální světový průměr $N_\mt{0} = 315 \mt{ N}$ a $h_\text{0} = 7{,}35 \mt{ km}$ \cite{zaklady:sireni:vln}.
 	\begin{figure}[hbtp]
 		\centering
 		\includegraphics[width=.7\textwidth]{Graphs/refractivity_exp_lin_meas_hum.pdf}
@@ -1120,7 +1160,7 @@ TODO:
 	co se povedlo, co se nepovedlo. Vyrobil jsem sondu a sw, přestala vysílat - proč? 
 
 	\section{Možná vylepšení}
-	malé pcb bez modulů, optimalizace sw, nepoužívat HAL, programovat přes registry, měření náklonu sondy, častější posílání dat, nezávislost na GPS
+	malé pcb bez modulů, optimalizace sw, nepoužívat HAL, programovat přes registry, měření náklonu sondy, častější posílání dat, nezávislost na GPS.
 
 	
 
@@ -1147,9 +1187,21 @@ TODO:
 \printindex
 
 \appendix
+\begin{thebibliography}{1}
+	\bibitem{zaklady:sireni:vln}PECHAČ, Pavel a Stanislav ZVÁNOVEC. \textit{Základy šíření vln pro plánování pozemních rádiových spojů}. Praha: BEN - technická literatura, 2007. ISBN 978-80-7300-223-7.
 
-\bibliographystyle{amsalpha}
-\bibliography{ctutest}
+	\bibitem{web_tropo}Atmospheric Structure [online] \url{https://www.albany.edu/faculty/rgk/atm101/structur.htm} [cit.~2022-05-19]
+
+	\bibitem{ITU:vapour}ITU-R Rec. P.836, Water vapour: surface density and total columnar content, Geneva, [online] \url{https://www.itu.int/dms_pubrec/itu-r/rec/p/R-REC-P.836-6-201712-I!!PDF-E.pdf} [cit.~2022-05-19]
+
+	\bibitem{ITU:refrac}ITU-R Rec. P.453, The radio refractive index: its formula and refractivity data, Geneva, [online] \url{https://www.itu.int/dms_pubrec/itu-r/rec/p/R-REC-P.453-14-201908-I!!PDF-E.pdf} [cit.~2022-05-19]
+
+	\bibitem{AOE}HOROWITZ, Paul a Winfield HILL. \textit{The art of electronics}. Third edition. New York: Cambridge University Press, 2015. ISBN 978-0-521-80926-9.
+
+
+\end{thebibliography}
+%\bibliographystyle{amsalpha}
+%\bibliography{bibb}
 
 \ctutemplate{specification.as.chapter}
 
