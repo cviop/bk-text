@@ -15,6 +15,9 @@
 \usepackage{hyperref}
 %\usepackage[backend=bibtex]{biblatex}
 
+\clubpenalty 10000                      %kontrolovat sirotky
+\widowpenalty 10000    
+
 \usepackage[tableposition=top]{caption}
 \usepackage{graphicx}
 
@@ -67,14 +70,14 @@
 	department-english = {Department of electromagnetic field},
 	author = {Jakub Dvořák},
 	supervisor = {Ing. Tomáš Kořínek, Ph.D.},
-	supervisor-address = {Technická 2, \\ Praha 6},
+	supervisor-address = {},
 	supervisor-specialist = {},
 	fieldofstudy-english = {},
 	subfieldofstudy-english = {},
 	fieldofstudy-czech = {},
 	subfieldofstudy-czech = {},
-	keywords-czech = {slovo, klíč},
-	keywords-english = {word, key},
+	keywords-czech = {atmosféra, refrakce, meteorologická sonda, troposféra, útlum volného prostoru},
+	keywords-english = {atmosphere, refraction, meteorological sonde, troposphere, free space loss},
 	day = 20,
 	month = 5,
 	year = 2022,
@@ -125,22 +128,22 @@
 
 % Abstract in Czech
 \begin{abstract-czech}
-	Tato práce se zabývá návrhem a realizací sondy, schopné měřit podmínky ve vyšších vrstvách zemské atmosféry. Naměřená data jsou zpracována a využita při tvorbě modelu šíření pro daný typ spoje. Práce obsahuje výběr stěžejních hardwarových komponent, návrh designu desek plošných spojů a stejně tak mechanickou zástavbu elektroniky. Teoretický model je následně porovnáván s reálnými daty přeneseného výkonu a jsou vyvozovány závěry. Dále se práce zabývá návrhem a realizací pozemní stanice, schopné přijímat data a formátovat je do zprávy pro anténní sledovač a realizací sledovacího softwaru na vykreslování trajektorie sondy v reálném čase. Práce poté zmiňuje jak způsoby testování elektroniky sondy, tak měření parametrů komponent, jež jsou součástí radiového spoje.
+	Tato práce se zabývá návrhem a realizací sondy, schopné měřit podmínky ve vyšších vrstvách zemské atmosféry. Naměřená data jsou zpracována a využita při tvorbě modelu šíření pro daný typ spoje. Práce obsahuje výběr stěžejních hardwarových komponent, návrh designu desek plošných spojů a stejně tak mechanickou zástavbu elektroniky. Dále se práce zabývá návrhem a realizací pozemní stanice, schopné přijímat data a formátovat je do zprávy pro anténní sledovač a realizací sledovacího softwaru na vykreslování trajektorie sondy v reálném čase. Práce poté zmiňuje jak způsoby testování elektroniky sondy, tak měření parametrů komponent, jež jsou součástí radiového spoje.
 	
-	V kapitole zaměřené na samotný experiment popisuje průběh experimentu a přípravu naměřených dat na další zpracování. Data jsou následně použita při tvorbě teoretického modelu šíření. Tento model je porovnán s hodnotami vycházejících z reálného měření daného radiového přenosu pomocí spektrálního analyzátoru.
+	V kapitole zaměřené na samotný experiment popisuje průběh experimentu a přípravu naměřených dat na další zpracování. Data jsou následně použita při tvorbě teoretického modelu šíření. 
 
 \end{abstract-czech}
 
 % Abstract in English
 \begin{abstract-english}
-Abstract
-	
+	This thesis is focused on design and implementation of high altitude sonde capable of measuring conditions in upper atmosphere layers. Measured data are then processed and used in propagation model blablabla, nechám přeložit taťovi. 
 \end{abstract-english}
 
 % Acknowledgements / Poděkování
 \begin{thanks}
-Děkuji vedoucímu Tomášovi Kořínkovi za cenné rady a pomoc při realizaci práce. Děkuji Ing. Martinu Motlovi za pomoc s vypouštěním sondy. (tmobile tracker)
+Děkuji vedoucímu Tomášovi Kořínkovi za cenné rady a pomoc při realizaci práce. Děkuji Ing. Martinu Motlovi a Pavlu Žárskému za pomoc s vypouštěním sondy.
 
+Dík také patří mé mamince za pomoc při hledání sondy a její nález. %Také děkuji za neustávající podporu v mých letech studentských. 
 \end{thanks}
 
 % Declaration / Prohlášení
@@ -240,14 +243,14 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 
 
 		\subsection{Rádiový spoj}
-		Před samotným návrhem elektroniky je potřeba navrhnout rádiovou linku a ověřit výkonovou bilanci rádiového spoje. Antény použité pro vysílání i příjem jsou kvadrifilární šroubovité antény s levotočivou polarizcí. 
+		Před samotným návrhem elektroniky je potřeba navrhnout rádiovou linku a ověřit výkonovou bilanci rádiového spoje. Antény použité pro vysílání i příjem jsou kvadrifilární šroubovité antény s levotočivou polarizací. 
 
 		Výkonová bilance spoje lze zapsat jako
 		\begin{align}
 			P_\mt{P} = P_\mt{V} + G_\mt{V} + G_\mt{P} + G_\mt{LNA} - FSL - L_\mt{kabel} - L_\mt{splitter},
 			\label{eq:bilance}
 		\end{align}
-		Kde $G_\mt{V}$ a $G_\mt{P}$ jsou zisky antén, $P_\mt{V}$ je výkon vysílače měřený na vstupu antény, $G_\mt{LNA}$ zisk nízkošumového zesilovače, $FSL$ jsou ztráty volným prostorem, $L_\mt{kabel}$ ztráty kabelu a $L_\mt{splitter}$ ztráty rozdvojky, rozdělující signál mezi spektrální analyzátor a přijímač radiového signálu.
+		Kde $G_\mt{V}$ a $G_\mt{P}$ jsou zisky antén, $P_\mt{V}$ je výkon vysílače měřený na vstupu antény, $G_\mt{LNA}$ zisk nízkošumového zesilovače, $FSL$ jsou ztráty volným prostorem, $L_\mt{kabel}$ ztráty kabelu a $L_\mt{splitter}$ ztráty děliče výkonu, rozdělující signál mezi spektrální analyzátor a přijímač radiového signálu.
 
 		Ztráty volným byly spočteny podle \cite{zaklady:sireni:vln} jako
 		\begin{align}
@@ -491,14 +494,20 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 
 		
 		\subsection{Napájení}
-		Jako zdroj energie po dobu letu byly vybrány tužkové baterie \textit{Energizer ultimate lithium}. Dle technického listu (\url{https://data.energizer.com/pdfs/l91.pdf}) jsou schopny operovat až do teploty -40~°C při poklesu kapacity z xxx na xxx mAh. S ohledem na teploty panující ve stratopauze, které klesají až k -60~°C, byl počet zvýšen na 10 ks, nechávající kapacitní rezervu. 
+		Jako zdroj energie po dobu letu byly vybrány tužkové baterie \textit{Energizer ultimate lithium}. Dle technického listu \cite{dsh:AA} jsou schopny operovat až do teploty -40~°C při poklesu kapacity z xxx na xxx mAh. S ohledem na teploty panující ve stratopauze, které klesají až k -60~°C, byl počet zvýšen na 10 ks, nechávající kapacitní rezervu. 
 
 			\subsubsection{Zdroje}
-			Vstupní napětí se v závislosti na teplotě a momentálním odběru pohybuje od 18~V do 10~V. Pro zvýšení účinnosti byl jako hlavní regulátor využit spínaný zdroj. S ohledem na dostupnost součástek a ověřenost funkčnosti byl vybrán spínaný zdroj \textit{LMR33630} od firmy \textit{Texas Instruments}. Účinnost tohoto zdroje se pohybuje od TODO: zjistit z DSH. 
+			Vstupní napětí se v závislosti na teplotě a momentálním odběru pohybuje od 18~V do 10~V. Pro zvýšení účinnosti byl jako hlavní regulátor využit spínaný zdroj. S ohledem na dostupnost součástek a ověřenost funkčnosti byl vybrán spínaný zdroj \textit{LMR33630} od firmy \textit{Texas Instruments}. Účinnost tohoto zdroje se pohybuje pro přítomná napájecí napětí od viz graf na obr.~\ref{graf:lmr}.
+			\begin{figure}[hbtp]
+				\centering
+				\includegraphics[width=.6\textwidth]{Graphs/lmr33630eff.pdf}
+				\caption{Závislost účinnosti na výstupním napětí pro daná vstupní napětí a výstupní napětí $V_\mt{out}= 5\mt{ V}$, převzato z \cite{dsh_lmr}}
+				\label{graf:lmr}
+			\end{figure}
 
-			Další výhodou spínaného zdroje je minimální PSRR - \textit{Power Source Rejection Ratio}. Výstupní napětí zůstává konstantní bez ohledu na změnu napětí na vstupu, dokud není překročeno minimální napájecí napětí. TOTO: kolik pro 5V vout. 
+			Další výhodou spínaného zdroje je minimální PSRR - \textit{Power Source Rejection Ratio}. Výstupní napětí zůstává konstantní bez ohledu na změnu napětí na vstupu, dokud není překročeno minimální napájecí napětí - v našem případě rovno výstupnímu napětí. Limitace čipu je poté 3{,}8~V \cite{dsh_lmr}.
 			
-			Nevýhodou spínaných zdrojů je zanášení šumu do obvodu. Tento problém se vyřeší využitím lineárního regulátoru. Šum generovaný spínacím regulátorem by mohl způsobit nesprávné fungování mikroprocesoru a snižovat kvalitu příjmu GPS modulu. V tomto případě byla napájecí topologie následující. Napětí baterií bylo na spodní redukční desce spínacím regulátorem sníženo na 5~V. Toto napětí bylo následně skrze nevyužité piny vývojového kitu Nucleo přivedeno na horní redukční desku, kde bylo lineárním regulátorem sníženo na 3,3~V. Celkem jsou na desce tři větve s tímto napětím. Mikrokontrolér a senzory mají vlastní větev. Další lineární regulátor napájí pouze GPS modul a třetí lineární regulátor je určen pro radiový vysílač. Díky tomu nebude docházet k poklesu napětí napájení ve zbytku přístroje při vysílání dat. 
+			Nevýhodou spínaných zdrojů je zanášení šumu do obvodu. Tento problém se vyřeší využitím lineárního regulátoru. Šum generovaný spínacím regulátorem by mohl způsobit nesprávné fungování mikroprocesoru a snižovat kvalitu příjmu GPS modulu. V tomto případě byla napájecí topologie následující. Napětí baterií bylo na spodní redukční desce spínacím regulátorem sníženo na 5~V. Toto napětí bylo následně skrze nevyužité piny vývojového kitu Nucleo přivedeno na horní redukční desku, kde bylo lineárním regulátorem sníženo na 3{,}3~V. Celkem jsou na desce tři větve s tímto napětím. Mikrokontrolér a senzory mají vlastní větev. Další lineární regulátor napájí pouze GPS modul a třetí lineární regulátor je určen pro radiový vysílač. Díky tomu nebude docházet k poklesu napětí napájení ve zbytku přístroje při vysílání dat. 
 
 			\begin{figure}
 				\centering
@@ -528,7 +537,8 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 
 
 	\section{Mechanická zástavba}
-	Součástí práce je i mechanická zástavba kryt pro elektroniku. Pro přehlednost a optimální model krytu bylo potřeba vymodelovat i jednotlivé moduly. Kolem přesného 3D modelu elektroniky mohl být vymodelován kryt bez nutnosti čekat na výrobu redukčních desek.
+	%Součástí práce je i mechanická zástavba kryt pro elektroniku. 
+	Pro přehlednost a optimální model krytu bylo potřeba vymodelovat i jednotlivé moduly. Kolem přesného 3D modelu elektroniky mohl být poté vymodelován kryt bez nutnosti čekat na výrobu DPS.
 	\begin{figure}[hbtp]
 		\centering
 		\begin{subfigure}{.5\textwidth}
@@ -987,7 +997,9 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 	\end{figure}
 
 
-
+%popsat i antenu k modulum
+%antenu hodit nahoru a jen napsat, ze jsem j
+%anotace 
 
 
 
@@ -1211,11 +1223,30 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 
 \chapter{Závěr}
 	\section{Shrnutí experimentu}
-	co se povedlo, co se nepovedlo. Vyrobil jsem sondu a sw, přestala vysílat - proč? 
+	%co se povedlo, co se nepovedlo. Vyrobil jsem sondu a sw, přestala vysílat - proč? 
+	V rámci práce vznikla sonda schopná měřit podmínky ve stratosféře a vybraná data posílat na zem. Bylo zařízeno její vypuštění pod záštitou ČHMÚ a po dopadu byla sonda opět nalezena. Dále vzniky podpůrné jednotky určené pro příjem dat ze sondy a jejich zpracování v reálném čase.
+
+	I přes testování sondy v nízkých teplotách, panujících ve vyšších vrstvách zemské atmosféry, bylo posílání a zapiování dat zastaveno. Nicméně naměřená data do 10~km stačila pro vytvoření modelu šíření radiového signálu.
+
+	Anténní sledovač, použitý pro sledování sondy ze střechy FEL v Dejvicích bohužel znehodnotil měřená data. Vinou rušení mezi řídicím boxem a elektronikou zodpovědnou za otáčení antény, došlo k náhodným otáčením antény a příjem signálu v nespecifikovaném bodě směrové charakteristiky. 
+
+	Data naměřena sondou byla využita při tvorbě výškového gradientu refraktivity a ten byl porovnán s doporučeným exponenciálním modelem podle \cite{ITU:refrac}. Koeficienty doporučeného modelu byly porovnány s koeficienty exponenciálního proložení modelu vznikým v rámci této práce. 
+
+
 
 	\section{Možná vylepšení}
-	malé DPS bez modulů, optimalizace sw, nepoužívat HAL, programovat přes registry, měření náklonu sondy, častější posílání dat, nezávislost na GPS.
+	%malé DPS bez modulů, optimalizace sw, nepoužívat HAL, programovat přes registry, měření náklonu sondy, častější posílání dat, nezávislost na GPS.
+	Hlavním problémem po elektronické stránce bylo využití senzorů ve formě modulů a ne jako čipů samotných. Nemožnost zkrátit zbytečné dlouhé napájecí přívody k čipům a dlouhé komunikační cesty mohly mít za následek celkovou nefunkčnost sondy. Jsou to nicméně problémy, keré se mohou objevit jen za velmi specifických podmínek a testování je nemusí odhalit. V dalším vývoji je proto zcela logické již dělat samotné DPS, které bude obsahovat všechny komponenty potřebné pro správné fungování sondy.
 
+	Software byl založen na HAL knihovnách od firmy \textit{STMicroelectronics}. Ty jsou dobré pro jednoduché programy, nicméně jejich omezená dokumetace znemožňuje tvorbu bezpečného kódu. Psaní kódu na úrovni registrů je tedy jedna z cest, jak zajistit bezpečný kód s předvídatelným chováním. Takový kód nicméně vyžaduje hlubší povědomí o programování mikroprocesorů.
+
+	Pro přesné určení bodu, kterým anténa směřovala na pozemní segment je potřeba kombinace dat z akcelerometru, gyroskopu a magnetometru. Byla zmíněna metoda \textit{Kalmánova filtru}. Díky tomu by se nemuselo počítat s typickým rozkmitem, ale v daný moment relativně přesně určit směřování sondy. \textit{Kalmánův filtr} se běžne využívá napřáklad v dronech a některé řídící algorytmy mají otevřený kód, který lze použít pro inspiraci.
+
+	Jak je kód napsán, spoléhá na přicházející data z GPS přijímače a každou sekundu s jejich příchodem provede odečtení dat, jejich zpracování a poslání a uložení na SD kartu. V případě, že odpojíme GPS přijímač, nebudou odečítány žádné hodnoty. Zlepšení vidím v nezávislosti posílání dat na GPS přijímači.
+
+	Jako poslední místo na zlepšení vidím vyřazení dosavadního anténního sledovače z pozemního segmentu a využití všesměrové antény s fixním úchytem.
+
+	Všechna tato vylepšení mají své místo v další revizi sondy a jednotek kolem ní. Jsou ideálním začtkem při navazování na tuto práci ať už autorem a nebo nadšeným čtenářem.
 	
 
 
@@ -1259,6 +1290,30 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 
 	\bibitem{web_spot}\textit{Spot Trace User Guide}
     \url{https://www.findmespot.com/downloads/SPOT_TRACE_User_Guide.pdf} [cit.~2022-05-19]
+
+	\bibitem{dsh_lmr}\textit{LMR33630 Datasheet}\url{https://www.ti.com/lit/ds/symlink/lmr33630.pdf?ts=1652260993140&ref_url=https%253A%252F%252Fwww.google.com%252F} [cit.~2022-05-19]
+
+	\bibitem{dsh_gps}\textit{U-Blox SAM-M8Q Datasheet}\url{https://content.u-blox.com/sites/default/files/SAM-M8Q_DataSheet_%28UBX-16012619%29.pdf} [cit.~2022-05-19]
+
+	\bibitem{dsh_mpu_map}\textit{MPU9250 Register Map}\url{https://invensense.tdk.com/wp-content/uploads/2015/02/RM-MPU-9250A-00-v1.6.pdf} [cit.~2022-05-19]
+
+	\bibitem{dsh_mpu}\textit{MPU9250 Datasheet}\url{https://invensense.tdk.com/wp-content/uploads/2015/02/PS-MPU-9250A-01-v1.1.pdf} [cit.~2022-05-19]
+
+	\bibitem{dsh_AM2320}\textit{AM2320 Datasheet}\url{https://cdn-shop.adafruit.com/product-files/3721/AM2320.pdf} [cit.~2022-05-19]
+
+	\bibitem{dsh_MS5607}\textit{MS5607 Datasheet}\url{https://www.te.com/commerce/DocumentDelivery/DDEController?Action=showdoc&DocId=Data+Sheet%7FMS5607-02BA03%7FB2%7Fpdf%7FEnglish%7FENG_DS_MS5607-02BA03_B2.pdf%7FCAT-BLPS0035} [cit.~2022-05-19]
+
+	\bibitem{dsh_ldo}\textit{LDO 1117-3v3 Datasheet}\url{https://www.st.com/resource/en/datasheet/ld1117.pdf} [cit.~2022-05-19]
+
+	\bibitem{dsh_AA}\textit{Energizer ultimate lithium Datasheet}\url{https://data.energizer.com/pdfs/l92.pdf} [cit.~2022-05-19]
+
+	\bibitem{vaisala_foto}\textit{Nun ein wenig Information zu der Sonde RS41-SG
+	}\url{https://www.qsl.net/oe1ffs/Sondenpage/RS41/RS41.html} [cit.~2022-05-19]
+
+	\bibitem{dsh_vaisala}\textit{Vaisala RS41 Datasheet}\url{https://www.vaisala.com/sites/default/files/documents/WEA-MET-RS41SGP-Datasheet-B211444EN.pdf} [cit.~2022-05-19]
+
+	%\bibitem{dsh_}\textit{Datasheet}\url{} [cit.~2022-05-19]
+
 
 
 \end{thebibliography}
