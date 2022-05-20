@@ -243,7 +243,7 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 
 
 		\subsection{Rádiový spoj}
-		Před samotným návrhem elektroniky je potřeba navrhnout rádiovou linku a ověřit výkonovou bilanci rádiového spoje. Antény použité pro vysílání i příjem jsou kvadrifilární šroubovité antény s levotočivou polarizací. 
+		Před samotným návrhem elektroniky je potřeba navrhnout rádiovou linku a ověřit výkonovou bilanci rádiového spoje. Antény použité pro vysílání i příjem jsou kvadrifilární šroubovité antény s levotočivou polarizací. Parametry antény jsou uvedeny v kapitole XX TODO
 
 		Výkonová bilance spoje lze zapsat jako
 		\begin{align}
@@ -457,6 +457,16 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 			\subsubsection{Radiový vysílač/přijímač}
 			Pro přenos dat vyl využit readiový vysílač Telit LE70 - 868. Jdná se o téměř \textit{\&play} zařízení. Data jsou do modulu posílána přes sériovou linku UART, odkud jsou následně přeposlána dál. Modul pracuje v režimu Half Diplex a tedy stejný typ modulu lze využít na příjem i vysílání dat bez nutnosti měnit nastavení. 
 
+			\subsubsection{Antény}
+			Antény využité v rámci této práce byly kvadrifilární šroubovicové antény (Quadrifilar Helix Antenna (QHA)). Jedná se o kruhově polarizované antény v tomto případě s levotočivou polarizací. Anténa byla sestavena z předohýbaných drátů a po kompletaci byla proměřena její charakteristika na vektorovém analyzátoru. Dále byla měřena směrová charakteristika vysílací antény (obr. \ref{graph:radiation:char}). Ta byla měřena i spolu s krytem sondy, aby se do dat přenesl útlum plastu. 
+
+			\begin{figure}[hbtp]
+				\centering
+				\includegraphics[width=.5\textwidth]{Graphs/radiation_plot.pdf}
+				\caption{Směrové charakteristiky antény pro různá natočení kolem její osy}
+				\label{graph:radiation:char}
+			\end{figure}
+
 			Pro přehlednost a optimální model krytu bylo potřeba vymodelovat i jednotlivé moduly. Kolem přesného 3D modelu elektroniky mohl být poté vymodelován kryt bez nutnosti čekat na výrobu DPS.
 			\begin{figure}[hbtp]
 				\centering
@@ -544,7 +554,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 
 
 	\section{Mechanická zástavba}
-	%Součástí práce je i mechanická zástavba kryt pro elektroniku. 
+	Součástí práce je i mechanická zástavba krytu pro elektroniku. 
 	Díky jednotlivým modelům bylo možné vytvořit kompletní model elektronické části, kolem kterého byl poté vymodelován kryt (obr. \ref{fig:all:rez}). Kryt byl modelován s ohledem na anténu umístěnou ve spodní části. Stěny kolem antény jsou ztenčené, aby co nejméně ovlivnily ladění antény na 868~MHz. Malá mechanická odolnost stěn je kompenzována čtyřmi výztužemi vedoucí po obvodu stěny.
 	\begin{figure}[hbtp]
 		\centering
@@ -997,12 +1007,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 
 	Měření směrové charakteristiky proběhlo na katedře elektromagnetického pole v bezodrazné komoře. Sonda připevněna na pohyblivou osu byla otáčena motorem a byl měřen přijatý výkon anténou umístěné naproti sondě. Díky tomu byla změřena vyzařovací charakteristika antény v rozsahu 360~°. Celkem byly měřeny 4 směrové charakteristiky a to pro různá natočení sondy kolem své vlastní osy. Směrové charakteristiky antény jsou zaneseny na obr. \ref{graph:radiation:char}.
 
-	\begin{figure}[hbtp]
-		\centering
-		\includegraphics[width=.5\textwidth]{Graphs/radiation_plot.pdf}
-		\caption{Směrové charakteristiky antény pro různá natočení kolem její osy}
-		\label{graph:radiation:char}
-	\end{figure}
+	
 
 
 	Dále byla měřena polarizace antény. V tomto případě byla sonda pevně umístěna na podstavci a otáčeno bylo přijímací anténou v její ose. Pro ideální kruhově polarizovanou anténu by nezáleželo na natočení přijímací antény. V případně antény umístěné v sondě je přenos znárorněn na obr. xxx.
@@ -1222,7 +1227,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 
 	Jelikož v tomto případě není přijatý výkon téměř vůbec závislý na vzdálenosti sondy a pozemního segmentu, nebudou takto data ani interpretována. 
 
-	TODO:POLOMĚR OHYBU V ZÁVISLOSTI NA REFRAKTIVITĚ poloměr na str. 79
+	TODO:POLOMĚR OHYBU V ZÁVISLOSTI NA REFRAKTIVITĚ poloměr na str. 79 - jen zmínit, že se to děje a ukázat ilustraci
 	TODO:do grafu hodit závislot FLS na vzdálenosti (má to vůbec smysl?)
 
 
@@ -1247,29 +1252,29 @@ Tato kapitola se zabývá samotnou realizací sondy. V textu jsou uvedeny jednot
 \chapter{Závěr}
 	\section{Shrnutí experimentu}
 	%co se povedlo, co se nepovedlo. Vyrobil jsem sondu a sw, přestala vysílat - proč? 
-	V rámci práce vznikla sonda schopná měřit podmínky ve stratosféře a vybraná data posílat na zem. Bylo zařízeno její vypuštění pod záštitou ČHMÚ a po dopadu byla sonda opět nalezena. Dále vzniky podpůrné jednotky určené pro příjem dat ze sondy a jejich zpracování v reálném čase.
+	V rámci práce vznikla sonda schopná měřit podmínky ve stratosféře a vybraná data posílat na pozemní stanici. Bylo zařízeno její vypuštění pod záštitou ČHMÚ a po dopadu byla sonda opět nalezena. Dále vzniky podpůrné jednotky určené pro příjem dat ze sondy a jejich zpracování v reálném čase.
 
-	I přes testování sondy v nízkých teplotách, panujících ve vyšších vrstvách zemské atmosféry, bylo posílání a zapiování dat zastaveno. Nicméně naměřená data do 10~km stačila pro vytvoření modelu šíření radiového signálu.
+	I přes testování sondy v nízkých teplotách, panujících ve vyšších vrstvách zemské atmosféry, bylo posílání a zapiování dat zastaveno. Nicméně naměřená data do 10~km stačila pro vytvoření modelu refraktivity využitelného při plánování radiového spoje.
 
-	Anténní sledovač, použitý pro sledování sondy ze střechy FEL v Dejvicích bohužel znehodnotil měřená data. Vinou rušení mezi řídicím boxem a elektronikou zodpovědnou za otáčení antény, došlo k náhodným otáčením antény a příjem signálu v nespecifikovaném bodě směrové charakteristiky. 
+	Anténní sledovač, použitý pro sledování sondy ze střechy FEL v Dejvicích bohužel znehodnotil měřená data (spektrum přijímaného signálu). Vinou rušení mezi řídicím boxem a elektronikou zodpovědnou za otáčení antény, došlo k náhodným otáčením antény a příjem signálu v nespecifikovaném bodě směrové charakteristiky. 
 
-	Data naměřena sondou byla využita při tvorbě výškového gradientu refraktivity a ten byl porovnán s doporučeným exponenciálním modelem podle \cite{ITU:refrac}. Koeficienty doporučeného modelu byly porovnány s koeficienty exponenciálního proložení modelu vznikým v rámci této práce. 
+	Data naměřena sondou byla využita při tvorbě výškového gradientu refraktivity a ten byl porovnán s doporučeným exponenciálním modelem podle \cite{ITU:refrac}. Koeficienty doporučeného modelu byly porovnány s koeficienty exponenciálního proložení modelu vznikým v rámci této práce. Odchylka od standar
 
 
 
 	\section{Možná vylepšení}
 	%malé DPS bez modulů, optimalizace sw, nepoužívat HAL, programovat přes registry, měření náklonu sondy, častější posílání dat, nezávislost na GPS.
-	Hlavním problémem po elektronické stránce bylo využití senzorů ve formě modulů a ne jako čipů samotných. Nemožnost zkrátit zbytečné dlouhé napájecí přívody k čipům a dlouhé komunikační cesty mohly mít za následek celkovou nefunkčnost sondy. Jsou to nicméně problémy, keré se mohou objevit jen za velmi specifických podmínek a testování je nemusí odhalit. V dalším vývoji je proto zcela logické již dělat samotné DPS, které bude obsahovat všechny komponenty potřebné pro správné fungování sondy.
+	Hlavním problémem po elektronické stránce bylo využití senzorů ve formě modulů a ne jako čipů samotných. Nemožnost zkrátit zbytečně dlouhé napájecí přívody k integrované obvody a dlouhé komunikační cesty mohly mít za následek celkovou nefunkčnost sondy. Jsou to nicméně problémy, keré se mohou objevit jen za velmi specifických podmínek a testování je nemusí odhalit. V dalším vývoji je proto zcela logické již dělat samotné DPS, které bude obsahovat všechny komponenty potřebné pro správné fungování sondy a zároveň provést důkladnější testování celé elektroniky.
 
-	Software byl založen na HAL knihovnách od firmy \textit{STMicroelectronics}. Ty jsou dobré pro jednoduché programy, nicméně jejich omezená dokumetace znemožňuje tvorbu bezpečného kódu. Psaní kódu na úrovni registrů je tedy jedna z cest, jak zajistit bezpečný kód s předvídatelným chováním. Takový kód nicméně vyžaduje hlubší povědomí o programování mikroprocesorů.
+	Software byl založen na HAL knihovnách od firmy \textit{STMicroelectronics}. Ty jsou dobré pro jednoduché programy, nicméně jejich omezená dokumetace znemožňuje tvorbu bezpečného kódu. Psaní kódu na úrovni registrů je tedy jedna z cest, jak zajistit bezpečný kód s předvídatelným chováním. Takový kód nicméně vyžaduje hlubší povědomí o programování mikroprocesorů. Jedná se o možné vylepšení další verze sony.
 
 	Pro přesné určení bodu, kterým anténa směřovala na pozemní segment je potřeba kombinace dat z akcelerometru, gyroskopu a magnetometru. Byla zmíněna metoda \textit{Kalmánova filtru}. Díky tomu by se nemuselo počítat s typickým rozkmitem, ale v daný moment relativně přesně určit směřování sondy. \textit{Kalmánův filtr} se běžne využívá napřáklad v dronech a některé řídící algorytmy mají otevřený kód, který lze použít pro inspiraci.
 
-	Jak je kód napsán, spoléhá na přicházející data z GPS přijímače a každou sekundu s jejich příchodem provede odečtení dat, jejich zpracování a poslání a uložení na SD kartu. V případě, že odpojíme GPS přijímač, nebudou odečítány žádné hodnoty. Zlepšení vidím v nezávislosti posílání dat na GPS přijímači.
+	Vstup řídícího softwaru sondy spoléhá na přicházející data z GPS přijímače a každou sekundu s jejich příchodem provede odečtení dat, jejich zpracování a poslání a uložení na SD kartu. V případě, že odpojíme GPS přijímač, nebudou odečítány žádné hodnoty. Zlepšení vidím v nezávislosti posílání dat na GPS přijímači.
 
-	Jako poslední místo na zlepšení vidím vyřazení dosavadního anténního sledovače z pozemního segmentu a využití všesměrové antény s fixním úchytem.
+	Jako poslední místo na zlepšení vidím vyřazení dosavadního anténního sledovače z pozemního segmentu a využití všesměrové antény s fixním úchytem. To ale pouze za předpokladu přítomnosti úzkopásmového 
 
-	Všechna tato vylepšení mají své místo v další revizi sondy a jednotek kolem ní. Jsou ideálním začtkem při navazování na tuto práci ať už autorem a nebo nadšeným čtenářem.
+	Všechna tato vylepšení mají své místo v další revizi sondy a její periferií kolem ní. Jsou ideálním začátkem pro další práci v tomto oboru.
 	
 
 

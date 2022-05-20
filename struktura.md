@@ -107,32 +107,25 @@ jaká anténa byla použita pro měření zisku, nějaké hodnoty z měření?
 
 
 Render platformy
-účinnost zdroje
-rozdíl díry nedíry na hmotnosti
-obrázek připojení sondy
 balíky dat na log. analyzátoru
 
-Graf závislosti výkonu (barevně) na vzdálenosti a výšce
-**FAKIN DONE** SMAZAT "NAD RÁMEC PRÁCE"
-Jak to lze řeši numericyk - parabolická rce. na str 93
-do grafu hodit závislot FLS na vzdálenosti a Reálnýho přijatýho výkonu/ztrát na vzdálenosti.
+(((Graf závislosti výkonu (barevně) na vzdálenosti a výšce)))
+(((Jak to lze řeši numericyk - parabolická rce. na str 93)))
+
+(((do grafu hodit závislot FLS na vzdálenosti a Reálnýho přijatýho výkonu/ztrát na vzdálenosti.)))
+
 Napočítat úhel ohybu na danou vzdálenost - poloměr na str. 79
 
 - výstup z experimentu
-**FAKIN DONE** - vizualizace vyparsovaných dat
 - odkázat se na experiment
-**FAKIN DONE** - vytahat data 
-**FAKIN DONE asi?** - proložit data polynomomem + chyba 
 - napsat, že to není 100% model.
-- popsat, co bylo špatně, kriticky se podívat na práci, co tam vstupuje za nedostatky - moduly jsou nepřesné atd.
 
-do grafu hodit závislot FLS na vzdálenosti a Reálnýho přijatýho výkonu/ztrát na vzdálenosti.
-Napočítat úhel ohybu na danou vzdálenost - poloměr na str. 79
 
 - gradient refraktivity - závislost N na Km a pak určit přímky se směrnicí  N/Km - tečny.
-- závislost útlumu na gradient refraktivity
+- závislost útlumu na gradient refraktivity<<----
 
 - útlum kdyz bude sonda nade monou
+
 - profil refraktivity je stejný pro nás a pro Libuš - předpoklad pro zjednodušení stejně tak pro vektor mag. pole. 
 
 úvod, závěr, smetí kolem
@@ -141,3 +134,8 @@ Napočítat úhel ohybu na danou vzdálenost - poloměr na str. 79
 zdroje jako subfigure
 
 idk, dát k tabulce s dvěma druhy validních dat popisky, ale fakt jen když zbyde čas
+
+
+
+
+útlum v závislosti na refraktivitě?
