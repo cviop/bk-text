@@ -12,7 +12,11 @@
 \usepackage{longtable}
 \usepackage{svg}
 \usepackage{color,soul}
-\usepackage{hyperref}
+\usepackage{pdfpages}
+\usepackage{tabularx, array, booktabs}
+
+%\usepackage{hyperref}
+
 %\usepackage[backend=bibtex]{biblatex}
 
 \clubpenalty 10000                      %kontrolovat sirotky
@@ -401,7 +405,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 			U-Blox moduly nabízí široké množství pracovních módů podle charakter použití. Pro běžné použití se využívá mód \textit{Portable}. Jedná se o kompromis mezi rozsahem a~přesností určení pozice. Další módy jsou zobrazeny v~tabulce \ref{tab:ublox:modes}. V~případě sondy byl zvolen mód Airborne \textless{}1g. Při letu sondy není očekáváno zrychlení přesahující 1~g a~rychlosti nad 100~m/s (360~km/h). 
 			\begin{table}[]
 				\centering
-				\caption{Módy GPS přijímačů u-blox, převzato z \cite{tab:ublox:modes}}
+				\caption{Módy GPS přijímačů u-blox, převzato z \cite{ublox_modes}}
 				\label{tab:ublox:modes}
 				\begin{tabular}{|l|c|c|c|c|}
 					\hline
@@ -1191,6 +1195,8 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 		\label{eq:refr:approx}
 	\end{align}
 	kde $h$ je výška nad zemí, $N_\mt{0}$ hodnota refraktivity v~0~km a~$h_\mt{0}$ výškové měřítko v~km. ITU udává globální světový průměr $N_\mt{0} = 315 \mt{ N}$ a~$h_\text{0} = 7{,}35 \mt{ km}$ \cite{zaklady:sireni:vln}.
+
+	V grafu na obrázku \ref{graph:refr} je vynesen model vypočtený z měřených dat, doporučený exponenciální model a lineární model podle \cite{zaklady:sireni:vln}.
 	\begin{figure}[hbtp]
 		\centering
 		\includegraphics[width=.7\textwidth]{Graphs/refractivity_exp_lin_meas_hum.pdf}
@@ -1223,8 +1229,8 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 
 	\begin{figure}
 		\centering
-		\includegraphics[width=.7\textwidth]{Graphs/ref2km.png}
-		\caption{Profil refraktivity pro první dva kilometry}
+		\includegraphics[width=.7\textwidth]{Graphs/N_gradient.pdf}
+		\caption{Profil refraktivity pro první dva kilometry a proložení lineárními přímkami}
 		\label{graf:refr:2km}
 	\end{figure}
 
@@ -1388,8 +1394,26 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 
 
 \end{thebibliography}
+
+
 %\bibliographystyle{amsalpha}
 %\bibliography{bibb}
+\appendix
+\chapter*{Seznam použitých zkratek}
+\pagenumbering{gobble}
+\noindent
+
+
+\begin{tabularx}{\linewidth}
+{ l >{\raggedright\arraybackslash}X }
+\bfseries Skratka & \bfseries Význam skratky \\\Midrule
+LBW &  Laser Beam Writing -- priamy laserový zápis\\
+\end{tabularx}
+
+\appendix
+\includepdf[pages=-]{PDF/Nucleo_shield_power.pdf}
+\includepdf[pages=-]{PDF/Nucleo_shield_strato.pdf}
+
 
 \ctutemplate{specification.as.chapter}
 
