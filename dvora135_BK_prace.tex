@@ -213,7 +213,7 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 	Následující kapitola popisuje teorii využívanou při návrhu experimentu a~výběru senzorů. Nakonec popisuje samotný návrh experimentu, díky kterému je možné vytvořit matematický model přenosu radiového signálu a~následné ověření modelu změřenými daty. 
 	\section{Šíření vln ve troposféře}
 		\subsection{Troposférická refrakce}
-		Při průchodu vlny atmosférou Země je paprsek ovlivněn změnou prostředí, ve kterém se šíří. V~závislosti na teplotě, tlaku a~hustotě se mění i index lomu atmosféry, který má za následek refrakci - lom paprsku. Index lomu troposféry může nabývat hodnot mezi $n=1{,}000325$ při povrchu Země až $n=1{,}000110$ pro vrchní hranici troposféry~\cite{zaklady:sireni:vln}, nacházející se přibližně ve výšce 10~km \cite{web_tropo}.
+		Při průchodu vlny atmosférou Země je paprsek ovlivněn změnou prostředí, ve kterém se šíří. V~závislosti na teplotě, tlaku a~hustotě se mění i~index lomu atmosféry, který má za následek refrakci - lom paprsku. Index lomu troposféry může nabývat hodnot mezi $n=1{,}000325$ při povrchu Země až $n=1{,}000110$ pro vrchní hranici troposféry~\cite{zaklady:sireni:vln}, nacházející se přibližně ve výšce 10~km \cite{web_tropo}.
 
 		Pro přehlednost se zavádí tzv. refraktivita (\textit{refractivity N}), definována jako
 		\begin{align}
@@ -238,7 +238,7 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 
 
 		\subsection{Rádiový spoj}
-		Před samotným návrhem elektroniky je potřeba navrhnout rádiovou linku a~ověřit výkonovou bilanci rádiového spoje. Antény použité pro vysílání i příjem jsou kvadrifilární šroubovité antény s levotočivou polarizací. Parametry antény jsou uvedeny v~kapitole~\ref{sec:anteny}.
+		Před samotným návrhem elektroniky je potřeba navrhnout rádiovou linku a~ověřit výkonovou bilanci rádiového spoje. Antény použité pro vysílání i~příjem jsou kvadrifilární šroubovité antény s levotočivou polarizací. Parametry antény jsou uvedeny v~kapitole~\ref{sec:anteny}.
 
 		Výkonová bilance spoje lze zapsat jako:
 		\begin{align}
@@ -278,7 +278,7 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 		\begin{align}
 			P_\mt{P} = 22{,}3 + 4{,}21 + 4{,}21 - [112{,}16~..~125{,}16] + 40 - 2{,}5 - 3{,}6\mt{ dBm}.
 		\end{align}
-		očekáván v~rozmezí od $P_\mt{Pmax} = -48\mt{ dBm}$ do $P_\mt{Pmin} = -61\mt{ dBm}$. Stejné úrovně výkonu lze díky děliči výkonu očekávat i na vstupu přijímače telemetrických dat. Hodnoty úrovně jsou určeny podle teoretických předpokladů a za ideálních podmínek. 
+		očekáván v~rozmezí od $P_\mt{Pmax} = -48\mt{ dBm}$ do $P_\mt{Pmin} = -61\mt{ dBm}$. Stejné úrovně výkonu lze díky děliči výkonu očekávat i~na vstupu přijímače telemetrických dat. Hodnoty úrovně jsou určeny podle teoretických předpokladů a za ideálních podmínek. 
 
 
 
@@ -380,7 +380,7 @@ Schéma celé sestavy je znázorněno na obr.~\ref{fig:sestava:blokac}.
 
 		\subsection{Pozemní stanice}
 		\label{sec:navrh:pozemni_stanice}
-		Firmware pro mikroprocesor v~pozemní stanici zodpovídá za správné dekódování přijatých telemetrických údajů. Firmware musí určit, která data jsou validní. Přijatá data je poté nutno zformátovat do zprávy určené pro anténní tracker, umístěný na střeše budovy FEL v~Dejvicích. Firmware musí být odolný vůči náhodným chybám způsobených přenosem na velkou vzdálenost. Příjem i posílání dat probíhá přes sériovou linku. 
+		Firmware pro mikroprocesor v~pozemní stanici zodpovídá za správné dekódování přijatých telemetrických údajů. Firmware musí určit, která data jsou validní. Přijatá data je poté nutno zformátovat do zprávy určené pro anténní tracker, umístěný na střeše budovy FEL v~Dejvicích. Firmware musí být odolný vůči náhodným chybám způsobených přenosem na velkou vzdálenost. Příjem i~posílání dat probíhá přes sériovou linku. 
 
 		%Elektronika pozemní stanice není vystavena extrémním podmínkám a~není nutné řešit její odolnost vůči vnějším vlivům. 
 
@@ -460,13 +460,13 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 
 			\subsubsection{Radiový vysílač/přijímač}
 			\label{sec:telit}
-			Pro přenos dat vyl využit rádiový modul Telit LE70 - 868. Jedná se o téměř \textit{plug \& play} zařízení. Data jsou do modulu posílána přes sériovou linku UART, odkud jsou následně přeposlána dál. Modul pracuje v~režimu \textit{half duplex} a~tedy stejný typ modulu lze využít na příjem i vysílání dat bez nutnosti měnit nastavení. 
+			Pro přenos dat vyl využit rádiový modul Telit LE70 - 868. Jedná se o téměř \textit{plug \& play} zařízení. Data jsou do modulu posílána přes sériovou linku UART, odkud jsou následně přeposlána dál. Modul pracuje v~režimu \textit{half duplex} a~tedy stejný typ modulu lze využít na příjem i~vysílání dat bez nutnosti měnit nastavení. 
 
-			Pomocí spektrálního analyzátoru byl změřen výstupní výkon $P_\mt{V} = 22{,}3$~dBm. Do této hodnoty je zahrnut i útlum koaxiálního kabelu mezi konektorem sondy a~anténou. Podle dokumentace rádiového modulu \cite{telit} je citlivost přijímače -111{,}7~dBm.
+			Pomocí spektrálního analyzátoru byl změřen výstupní výkon $P_\mt{V} = 22{,}3$~dBm. Do této hodnoty je zahrnut i~útlum koaxiálního kabelu mezi konektorem sondy a~anténou. Podle dokumentace rádiového modulu \cite{telit} je citlivost přijímače -111{,}7~dBm.
 
 			\subsubsection{Antény}
 			\label{sec:anteny}
-			Antény využité v~rámci této práce byly kvadrifilární šroubovicové antény (Quadrifilar Helix Antenna (QHA)). Jedná se o kruhově polarizované antény v~tomto případě s levotočivou polarizací. Anténa byla sestavena z~předohýbaných drátů a~po kompletaci byla proměřena její charakteristika na vektorovém analyzátoru. Dále byla měřena směrová charakteristika vysílací antény (obr.~\ref{graph:radiation:char}). Ta byla měřena i spolu s krytem sondy, aby se do měřených dat přenesl také útlum plastu. 
+			Antény využité v~rámci této práce byly kvadrifilární šroubovicové antény (Quadrifilar Helix Antenna (QHA)). Jedná se o kruhově polarizované antény v~tomto případě s levotočivou polarizací. Anténa byla sestavena z~předohýbaných drátů a~po kompletaci byla proměřena její charakteristika na vektorovém analyzátoru. Dále byla měřena směrová charakteristika vysílací antény (obr.~\ref{graph:radiation:char}). Ta byla měřena i~spolu s krytem sondy, aby se do měřených dat přenesl také útlum plastu. 
 
 			Měření směrové charakteristiky proběhlo na katedře elektromagnetického pole v~bezodrazné komoře. Sonda byla připevněna na pohyblivou osu, která byla otáčena motorem, a~postupně byl měřen přijatý výkon anténou umístěné naproti sondě. Díky tomu byla změřena vyzařovací charakteristika antény v~rozsahu 360~°. Celkem byly měřeny 4 směrové charakteristiky a~to pro různá natočení sondy kolem své vlastní osy. Směrové charakteristiky antény jsou zaneseny na obr.~\ref{graph:radiation:char}.
 
@@ -483,7 +483,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 			
 
 			\subsubsection{Modely použitých modulů}
-			Pro přehlednost a~optimální model krytu sondy bylo potřeba vymodelovat i jednotlivé moduly. Následně mohl být kolem přesného 3D modelu elektroniky vymodelován kryt bez nutnosti čekat na výrobu DPS.
+			Pro přehlednost a~optimální model krytu sondy bylo potřeba vymodelovat i~jednotlivé moduly. Následně mohl být kolem přesného 3D modelu elektroniky vymodelován kryt bez nutnosti čekat na výrobu DPS.
 			\begin{figure}[hbtp]
 				\centering
 				\includegraphics[width=.7\linewidth]{Figures/modules_assembly.png} 
@@ -565,7 +565,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 
 
 	\section{Mechanická zástavba}
-	Součástí práce je i mechanická zástavba krytu pro elektroniku. 
+	Součástí práce je i~mechanická zástavba krytu pro elektroniku. 
 	Díky jednotlivým modelům bylo možné vytvořit kompletní model elektronické části, kolem kterého byl poté vymodelován kryt (obr.~\ref{fig:all:rez}). Kryt byl modelován s ohledem na anténu umístěnou ve spodní části. Stěny kolem antény jsou ztenčené, aby co nejméně ovlivnily ladění antény na 869{,}63~MHz. Malá mechanická odolnost stěn je kompenzována čtyřmi výztužemi vedoucí po obvodu stěny.
 	\begin{figure}[hbtp]
 		\centering
@@ -581,6 +581,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 			\caption{Řez vrchní částí krytu sondy}
 			\label{fig:all:rez}
 		\end{subfigure}
+		\caption{Kryt sondy}
 		\label{fig:shields}
 	\end{figure}
 
@@ -612,7 +613,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 
 	
 
-	V případě, že by došlo k~delaminaci 3D tisku, byla jak elektronika, tak sonda ČHMÚ přivázána pojistným provázkem uchyceným k~hlavnímu závěsu spolu s padákem a~balónem. Díky tomu by sonda stále zůstala pohromadě i když by došlo k~rozbití/rozlomení krytu.
+	V případě, že by došlo k~delaminaci 3D tisku, byla jak elektronika, tak sonda ČHMÚ přivázána pojistným provázkem uchyceným k~hlavnímu závěsu spolu s padákem a~balónem. Díky tomu by sonda stále zůstala pohromadě i~když by došlo k~rozbití/rozlomení krytu.
 
 	%model DPS, model sondy, iterace, odlehčování, připojení sondy čhmú, bezpečnostní závěsy
 
@@ -712,7 +713,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 		\lstinputlisting[language=C,caption={Callback funkce vyvolaná interruptem}, label={lst:main:callback}]{Code/callback.c}
 		V této funkci se do globální proměnné \lstinline[language=C] |uint16_t DataRecieved | uloží velikost přijatých dat. Pokud je v~hlavní smyčce programu splněna podmínka, že \lstinline[language=C] |  DataRecieved > 0 |, program začne rozebírání přijatých dat funkcí~\ref{lst:main:parse}. Pro rozdělení přijatých dat na jednotlivé NMEA zprávy se využívá znaků <CR> <LF>, které se nacházejí na konci každého řádku. 
 		
-		Součástí vyslaných dat jsou i \$GPGSV zprávy obsahující informace o viditelných satelitech. Zpráv tohoto typu je vysílá několik po sobě a~počet vyslaných zpráv je zanesen v~prvním poli této zprávy. Pro správně rozdělení přijatých dat je informace o počtu \$GPGSV zpráv nutná, jelikož ovlivňuje pořadí dalšách zpráv.
+		Součástí vyslaných dat jsou i~\$GPGSV zprávy obsahující informace o viditelných satelitech. Zpráv tohoto typu je vysílá několik po sobě a~počet vyslaných zpráv je zanesen v~prvním poli této zprávy. Pro správně rozdělení přijatých dat je informace o počtu \$GPGSV zpráv nutná, jelikož ovlivňuje pořadí dalšách zpráv.
 
 		Funkce \lstinline[language=C] |mainParse| v~ukázce~\ref{lst:main:parse} rozdělí a~uloží data do bufferu \lstinline |uint8_t GPSparse[15][200] = {}|   tvořeného 2D polem a~zjistí počet \$GPGSV zpráv.
 
@@ -839,7 +840,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 		\begin{align}
 			\varphi = \text{cos}^{-1}\left(\frac{a_z}{g}\right).
 		\end{align}
-		Pokud se bude sonda kývat kolem pevného bodu, bude na ni působit i odstředivé zrychlení, které se bude přičítat k~$a_z$. V~tomto případě by šlo zjistit velikost odstředivého zrychlení díky gyroskopu, který měří úhlovou rychlost. Pro odstředivé zrychlení $a_\text{o}$ platí
+		Pokud se bude sonda kývat kolem pevného bodu, bude na ni působit i~odstředivé zrychlení, které se bude přičítat k~$a_z$. V~tomto případě by šlo zjistit velikost odstředivého zrychlení díky gyroskopu, který měří úhlovou rychlost. Pro odstředivé zrychlení $a_\text{o}$ platí
 		\begin{align}
 			a_\text{o} = \omega^2 l,
 		\end{align}
@@ -890,7 +891,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 			\label{fig:sonda:mag:rot}
 		\end{figure}
 
-		Pro zjištění náklonu je využita první zmíněna metoda. Jelikož není možné zjistit okamžitou výchylku, ale pouze maximální výchylku za dobu jedné periody GPS přijímače, bylo počítáno se standartním rozkmitem sondy, jehož hodnota je bere jako konstatní po celou dobu letu. 
+		Pro zjištění náklonu je využita první zmíněna metoda. Jelikož není možné zjistit okamžitou výchylku, ale pouze maximální výchylku za dobu jedné periody GPS přijímače, bylo počítáno se standartním rozkmitem sondy, jehož hodnota se bere jako konstatní po celou dobu letu. 
 		
 
 
@@ -984,7 +985,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 
 	\lstinputlisting[language=Python, caption={Převod formátu GPS souřadnic}, label={lst:track:GPS}]{Code/track_coordinates.py}
 
-	Zobrazení souřadnic na mapě je provedeno pomocí modulu \textit{gmplot} (https://github.com/gmplot/gmplot). Ukázka kódu~\ref{lst:track:main} ukazuje způsob inicializace modulu a~zobrazení souřadnic sondy na mapě. Vzniklý soubor \lstinline|my_map.html| lze otevřít v~běžném prohlížeči. Vizualizace přijatých GPS souřadnic je na obr.~\ref{fig:track:map}.
+	Zobrazení souřadnic na mapě je provedeno pomocí modulu \textit{gmplot}~\cite{gmplot_git}. Ukázka kódu~\ref{lst:track:main} ukazuje způsob inicializace modulu a~zobrazení souřadnic sondy na mapě. Vzniklý soubor \lstinline|my_map.html| lze otevřít v~běžném prohlížeči. Vizualizace přijatých GPS souřadnic je na obr.~\ref{fig:track:map}.
 
 	\lstinputlisting[language=Python, caption={Příklad zobrazení GPS souřadnic}, label={lst:track:main}]{Code/track_gnd_displ.py}
 
@@ -1035,7 +1036,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 
 
 
-%popsat i antenu k~modulum
+%popsat i~antenu k~modulum
 %antenu hodit nahoru a~jen napsat, ze jsem j
 %anotace 
 
@@ -1104,7 +1105,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 	\section{Průběh experimentu}
 	Po přichycení sondy ČHMÚ byla sonda zapnuta a~vyčkáno na zjištění GPS pozice. Poté byl pracovníky ústavu napuštěn balón o hmostnosti 1200~g, do kterého byl předem vložen padák. Přesně v~13:15:20 SELČ byl balón se sondami vypuštěn. Ihned po startu byly byly vidět telemetrické údaje o pozici a~výšce a~byla vykreslována trajektorie letu na mapě. Přibližně po patnácti minutách jsme nasedli do automobilu a~vyrazili na místo, kde byl predikován dopad sondy.
 
-	Po 27~minutách letu bylo vysílání telemetrických údajů přerušeno. Podle posledních zaznamenaných údajů se tak stalo v~13:42:53 při teplotě -40~°C v~nadmořské výšce 9650.3~m. Sonda již nezačala po dobu letu vysílat. Pozice dopadu byla následně zjištěna podle pozice, kterou vysílala sonda ČHMÚ. Její vysílaná data jsou dekódována radoamatéry a~zveřejňována na internetu. Po určení pozice sondy ČHMÚ byla nalezena i má sonda a~to o 50~m jihozápadně. Toto bylo dáno 50m provázkem mezi sondami a~směrem větru.
+	Po 27~minutách letu bylo vysílání telemetrických údajů přerušeno. Podle posledních zaznamenaných údajů se tak stalo v~13:42:53 při teplotě -40~°C v~nadmořské výšce 9650.3~m. Sonda již nezačala po dobu letu vysílat. Pozice dopadu byla následně zjištěna podle pozice, kterou vysílala sonda ČHMÚ. Její vysílaná data jsou dekódována radoamatéry a~zveřejňována na internetu. Po určení pozice sondy ČHMÚ byla nalezena i~má sonda a~to o 50~m jihozápadně. Toto bylo dáno 50m provázkem mezi sondami a~směrem větru.
 
 
 	\begin{figure}[hbtp]
@@ -1145,28 +1146,29 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 			4.46;3.46;2.82;8304;-1120;1662;8286;3;233;147;-29;14;45;
 		\end{tabular}
 	\end{table}
-
-	Data ze spektrálního analyzátoru byla ukládána ve formátu \textit{numpy} a~obsahovala časovou značku a~přijatý výkon. Čas byl ve formátu epoch. Ten udává aktuální čas v~sekundách uplynulých od 1. ledna 1970. Například vypuštění v~epoch formátu je 1651662920.0000. Tento formát byl převeden po načtení souboru v~programu Matlab příkazem
+	Data ze spektrálního analyzátoru byla ukládána ve formátu \textit{numpy} a~obsahovala časovou značku a~přijatý výkon. Čas byl ve formátu epoch. Ten udává aktuální čas v~sekundách uplynulých od 1. ledna 1970. Například čas vypuštění v~epoch formátu je 1651662920.0000. Tento formát byl převeden po načtení souboru v~programu Matlab příkazem
 	\begin{lstlisting}[language=Matlab]
 		datetime(powerData(:,[1]),'convertfrom', 'posixtime').\end{lstlisting}
 	\begin{table}
 		\centering
 		\begin{tabular}{l|l}
-			Čas ve formátu epoch &	Přijatý výkon (dBm)\\\hline
-			1651662920.1542&       -77.4421920776\\
-			1651662922.1421 &      -78.0411224365\\
-			1651662924.1554  &     -84.5278778076\\
+			Čas ve formátu epoch (s)&	Přijatý výkon (dBm)\\\hline
+			1651662920.1542		&      	-77.4421920776\\
+			1651662922.1421 	&     	-78.0411224365\\
+			1651662924.1554  	&     	-84.5278778076\\
+			1651662926.1552	 	&		-82.4575865586\\
 			...&...
 		\end{tabular}
 		\caption{Surová data času a~výkonu změřeného spektrálním analyzátorem}
 	\end{table}
+	\vfill
 
 
 
 
 
 \chapter{Výsledky}
-	Tato kapitola se zabývá zpracováním naměřených dat v~programu Matlab. Před samotným zpracováním bylo také potřeba data upravit tak, aby se z~nich daly vykreslovat grafy. Například převést časové údaje ukládané s daty na časový formát Matlabu. Díky nim se z~dat daly vytvořit časové tabulky \textit{timetable}, které šlo posléze spojit dohromady právě na základě časových údajů u jednotlivých měření. 
+	Tato kapitola se věnuje zpracování naměřených dat v~programu Matlab. Před samotným zpracováním bylo také potřeba data upravit tak, aby se z~nich daly vykreslovat grafy. Například převést časové údaje ukládané s daty na časový formát Matlabu. Díky nim se z~dat daly vytvořit časové tabulky \textit{timetable}, které šlo posléze spojit dohromady právě na základě časových údajů u jednotlivých měření. 
 
 	\section{Výstup z~experimentu}
 	%zkombinovat data ze země a~data ze strato, vzorečky, určit refrakci, výkonovou bilanci podle podmínek, vzít v~potaz směrovou charstiku. vyrobit model šíření, grafy
@@ -1193,7 +1195,7 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 	V grafu na obrázku~\ref{graph:refr} je vynesen model vypočtený z~měřených dat, doporučený exponenciální model a lineární model podle \cite{zaklady:sireni:vln}.
 	\begin{figure}[hbtp]
 		\centering
-		\includegraphics[width=.7\textwidth]{Graphs/refractivity_exp_lin_meas_hum.pdf}
+		\includegraphics[width=.8\textwidth]{Graphs/refractivity_exp_lin_meas_hum.pdf}
 		\caption{Výškový profil refraktivity}
 		\label{graph:refr}
 	\end{figure}
@@ -1209,21 +1211,21 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 	\begin{align}
 		\begin{split}
 		-h/h_\mt{0} &= -0{,}000123\,h\\
-		h_\mt{0} &= 1/0{,}000123 \mt{ (m)}\\
+		h_\mt{0} &= 1/0{,}000123 \mt{ m}\\
 		h_\mt{0} &= 8130{,}1 \mt{ m}.
 		\end{split}
 	\end{align}
 	Hodnota výškového měřítka vyšla z~proložení dat $h_\mt{0} = 8{,}13 \mt{ km}$.
 	\begin{figure}[hbtp]
 		\centering
-		\includegraphics[width=.7\textwidth]{Graphs/refractivity_meas_fit_model.pdf}
+		\includegraphics[width=.8\textwidth]{Graphs/refractivity_meas_fit_model.pdf}
 		\caption{Proložené hodnoty refraktivity exponenciální křivkou}
 		\label{graph:refr:fit}
 	\end{figure}
 
 	\begin{figure}
 		\centering
-		\includegraphics[width=.7\textwidth]{Graphs/N_gradient.pdf}
+		\includegraphics[width=.8\textwidth]{Graphs/N_gradient.pdf}
 		\caption{Profil refraktivity pro první dva kilometry a proložení lineárními přímkami}
 		\label{graf:refr:2km}
 	\end{figure}
@@ -1263,11 +1265,11 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 	%co se povedlo, co se nepovedlo. Vyrobil jsem sondu a~sw, přestala vysílat - proč? 
 	V rámci práce vznikla sonda schopná měřit podmínky ve stratosféře a~vybraná data posílat na pozemní stanici. Bylo zařízeno její vypuštění pod záštitou ČHMÚ a~po dopadu byla sonda opět nalezena. Dále vzniky podpůrné jednotky určené pro příjem dat ze sondy a~jejich zpracování v~reálném čase.
 
-	I přes testování sondy v~nízkých teplotách, panujících ve vyšších vrstvách zemské atmosféry, bylo posílání a~zapiování dat zastaveno. Nicméně naměřená data do 10~km stačila pro vytvoření modelu refraktivity využitelného při plánování radiového spoje.
+	I přes testování sondy v~nízkých teplotách, panujících ve vyšších vrstvách zemské atmosféry, bylo posílání a~zapisování dat zastaveno. Nicméně naměřená data do 10~km stačila pro vytvoření modelu refraktivity využitelného při plánování radiového spoje.
 
-	Anténní sledovač, použitý pro sledování sondy ze střechy FEL v~Dejvicích bohužel znehodnotil měřená data (spektrum přijímaného signálu). Vinou rušení mezi řídicím boxem a~elektronikou zodpovědnou za otáčení antény, došlo k~náhodným otáčením antény a~příjem signálu v~nespecifikovaném bodě směrové charakteristiky. 
+	Anténní sledovač použitý pro sledování sondy ze střechy FEL v~Dejvicích bohužel znehodnotil měřená data (spektrum přijímaného signálu). Vinou rušení mezi řídicím boxem a~elektronikou zodpovědnou za otáčení antény, došlo k~náhodným otáčením antény a~příjem signálu v~nespecifikovaném bodě směrové charakteristiky antény. 
 
-	Data naměřena sondou byla využita při tvorbě výškového gradientu refraktivity a~ten byl porovnán s doporučeným exponenciálním modelem podle \cite{ITU:refrac}. Koeficienty doporučeného modelu byly porovnány s koeficienty exponenciálního proložení modelu vznikým v~rámci této práce. Odchylka od standar
+	Data naměřena sondou byla využita při tvorbě výškového gradientu refraktivity a~ten byl porovnán s doporučeným exponenciálním modelem podle \cite{ITU:refrac}. Koeficienty doporučeného modelu byly porovnány s koeficienty exponenciálního proložení modelu vznikým v~rámci této práce. Odchylka od standardně udávaných koeficientů exponenciálního modelu byla 10~\% pro výškové měříto $h_\text{0}$ a 3~\% pro hodnotu refraktivity v 0~km $N_\mt{0}$. 
 
 
 
@@ -1383,6 +1385,8 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 	\bibitem{rozhled}
 	\url{http://www.heywhatsthat.com/} [cit.~2022-05-19]
 
+	\bibitem{gmplot_git} \url{https://github.com/gmplot/gmplot} [cit.~2022-05-19]
+
 	%\bibitem{dsh_}\textit{Datasheet}\url{} [cit.~2022-05-19]
 
 
@@ -1400,17 +1404,22 @@ Tato kapitola se zabývá samotnou realizací sondy. V~textu jsou uvedeny jednot
 
 \begin{tabularx}{\linewidth}
 { l >{\raggedright\arraybackslash}X }
-\bfseries Skratka & \bfseries Význam skratky \\\Midrule
+\bfseries Zkratka & \bfseries Význam zkratky \\\Midrule
 ČHMÚ & Český hydrometeorologický ústav\\
 DPS & Deska plošných spojů\\
 FSL & Free space loss\\
+GPIO & A general-purpose input/output\\
 GPS & Global Positioning System\\
 GSM &Global System for Mobile communication\\
-GNSS &Global Navigation Satellite System\\
+GNSS & Global Navigation Satellite System\\
+HAL & Hardware Abstraction Layer\\
 ITU & International Telecommunication Union\\
 MEMS & Micro-electromechanical system\\
-SD & Secure Digital (SD karta)\\
+PSRR & Power Source Rejection Ratio\\
 QHA & Quadrifilar Helix Antenna\\
+SD & Secure Digital (SD karta)\\
+TVS & Transient voltage suppressor \\
+ESD & Electrostatic discharge\\
 \end{tabularx}
 
 \chapter*{Schémata a desky plošných spojů}
