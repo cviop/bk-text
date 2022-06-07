@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-06-07T23:38:47.205Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15" etag="ERPWMY-60XYsbFMzTaLZ" version="19.0.2" type="github">
+<mxfile host="app.diagrams.net" modified="2022-06-07T23:40:10.132Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15" etag="WSe5Vf63MmhMpsCOtHqi" version="19.0.2" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="1395" dy="906" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="228" dy="148" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
@@ -12,15 +12,13 @@
             <mxPoint x="-2" y="-5" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="vuQaCVZ4aTbE_RIGbEnD-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="vuQaCVZ4aTbE_RIGbEnD-0">
+        <mxCell id="vuQaCVZ4aTbE_RIGbEnD-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="vuQaCVZ4aTbE_RIGbEnD-0" target="vuQaCVZ4aTbE_RIGbEnD-6">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="395" y="820" as="targetPoint" />
+            <mxPoint x="397" y="670" as="targetPoint" />
             <Array as="points">
               <mxPoint x="540" y="330" />
-              <mxPoint x="540" y="780" />
-              <mxPoint x="397" y="780" />
-              <mxPoint x="397" y="850" />
-              <mxPoint x="395" y="850" />
+              <mxPoint x="540" y="660" />
+              <mxPoint x="397" y="660" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -47,7 +45,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="vuQaCVZ4aTbE_RIGbEnD-6" value="Získání inerciálních informací&lt;br&gt;MPU9250" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="340" y="820" width="114" height="60" as="geometry" />
+          <mxGeometry x="340" y="680" width="114" height="60" as="geometry" />
         </mxCell>
         <mxCell id="vuQaCVZ4aTbE_RIGbEnD-7" value="Inicializace watchdogu (5 s)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
           <mxGeometry x="335" y="80" width="120" height="60" as="geometry" />
@@ -56,15 +54,15 @@
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="250" y="260" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="397" y="1140" />
-              <mxPoint x="230" y="1140" />
+              <mxPoint x="397" y="1040" />
+              <mxPoint x="230" y="1040" />
               <mxPoint x="230" y="260" />
               <mxPoint x="395" y="260" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="vuQaCVZ4aTbE_RIGbEnD-8" value="Obnovení watchdogu" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="337" y="1090" width="120" height="30" as="geometry" />
+          <mxGeometry x="337" y="950" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="vuQaCVZ4aTbE_RIGbEnD-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="vuQaCVZ4aTbE_RIGbEnD-9" target="vuQaCVZ4aTbE_RIGbEnD-0">
           <mxGeometry relative="1" as="geometry">
@@ -78,24 +76,24 @@
           <mxGeometry x="334" y="140" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="vuQaCVZ4aTbE_RIGbEnD-13" value="Tvorba TX zprávy" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="334" y="650" width="120" height="40" as="geometry" />
+          <mxGeometry x="334" y="550" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="vuQaCVZ4aTbE_RIGbEnD-16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="vuQaCVZ4aTbE_RIGbEnD-14" target="vuQaCVZ4aTbE_RIGbEnD-6">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="397" y="770" />
-              <mxPoint x="397" y="770" />
+              <mxPoint x="397" y="670" />
+              <mxPoint x="397" y="670" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="vuQaCVZ4aTbE_RIGbEnD-14" value="Tvorba SD zprávy" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="334" y="710" width="120" height="40" as="geometry" />
+          <mxGeometry x="334" y="610" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="vuQaCVZ4aTbE_RIGbEnD-31" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="vuQaCVZ4aTbE_RIGbEnD-22" target="vuQaCVZ4aTbE_RIGbEnD-30">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="vuQaCVZ4aTbE_RIGbEnD-22" value="Filtrace dat" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="337" y="910" width="120" height="30" as="geometry" />
+          <mxGeometry x="337" y="770" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="vuQaCVZ4aTbE_RIGbEnD-34" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="vuQaCVZ4aTbE_RIGbEnD-30" target="vuQaCVZ4aTbE_RIGbEnD-33">
           <mxGeometry relative="1" as="geometry" />
@@ -104,19 +102,19 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="vuQaCVZ4aTbE_RIGbEnD-30" value="Aktuální data acc_z &amp;lt; AccMin" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="282" y="960" width="230" height="80" as="geometry" />
+          <mxGeometry x="282" y="820" width="230" height="80" as="geometry" />
         </mxCell>
         <mxCell id="vuQaCVZ4aTbE_RIGbEnD-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="vuQaCVZ4aTbE_RIGbEnD-33" target="vuQaCVZ4aTbE_RIGbEnD-8">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="590" y="1090" as="targetPoint" />
+            <mxPoint x="590" y="950" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="615" y="1060" />
-              <mxPoint x="397" y="1060" />
+              <mxPoint x="615" y="920" />
+              <mxPoint x="397" y="920" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="vuQaCVZ4aTbE_RIGbEnD-33" value="Aktuální data = AccMin" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="540" y="970" width="150" height="60" as="geometry" />
+          <mxGeometry x="540" y="830" width="150" height="60" as="geometry" />
         </mxCell>
         <mxCell id="vuQaCVZ4aTbE_RIGbEnD-38" value="Inicializace senzorů" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
           <mxGeometry x="335" y="40" width="120" height="40" as="geometry" />
