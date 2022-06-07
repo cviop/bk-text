@@ -1,14 +1,55 @@
-<mxfile host="app.diagrams.net" modified="2022-06-07T23:16:53.617Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15" etag="Y6wAwH-DgDQ_L4IpEIcw" version="19.0.2" type="github">
+<mxfile host="app.diagrams.net" modified="2022-06-07T23:29:05.152Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15" etag="EyHfAvVZhlrJwgsgQWfr" version="19.0.2" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="565" dy="379" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="818" dy="531" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
-        <mxCell id="vuQaCVZ4aTbE_RIGbEnD-0" value="Přijatá data&amp;nbsp;&lt;br&gt;z GNSS?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="360" y="270" width="100" height="100" as="geometry" />
+        <mxCell id="vuQaCVZ4aTbE_RIGbEnD-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="vuQaCVZ4aTbE_RIGbEnD-0" target="vuQaCVZ4aTbE_RIGbEnD-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vuQaCVZ4aTbE_RIGbEnD-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="vuQaCVZ4aTbE_RIGbEnD-0" target="vuQaCVZ4aTbE_RIGbEnD-6">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="540" y="800" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vuQaCVZ4aTbE_RIGbEnD-0" value="Přijatá data&amp;nbsp;&lt;br&gt;z GNSS?&lt;br&gt;DataRecieved &amp;gt; 0" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="300" y="280" width="190" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="vuQaCVZ4aTbE_RIGbEnD-11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="vuQaCVZ4aTbE_RIGbEnD-1" target="vuQaCVZ4aTbE_RIGbEnD-5">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="vuQaCVZ4aTbE_RIGbEnD-1" value="Parsování GPS dat" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="510" y="290" width="120" height="60" as="geometry" />
+          <mxGeometry x="334" y="400" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vuQaCVZ4aTbE_RIGbEnD-2" value="Získání teploty a tlaku&lt;br&gt;AM2320" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="335" y="480" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vuQaCVZ4aTbE_RIGbEnD-15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="vuQaCVZ4aTbE_RIGbEnD-5" target="vuQaCVZ4aTbE_RIGbEnD-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vuQaCVZ4aTbE_RIGbEnD-5" value="Získání teploty a tlaku&lt;br&gt;MS5607" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="324" y="555" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="vuQaCVZ4aTbE_RIGbEnD-6" value="Získání inerciálních informací&lt;br&gt;MPU9250" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="340" y="820" width="114" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="vuQaCVZ4aTbE_RIGbEnD-7" value="Inicializace watchdogu (5 s)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="354" y="120" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="vuQaCVZ4aTbE_RIGbEnD-8" value="Obnovení watchdogu" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="337" y="910" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vuQaCVZ4aTbE_RIGbEnD-9" value="Inicializace přijímání dat přes UART v režimu interrupt" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="354" y="200" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="vuQaCVZ4aTbE_RIGbEnD-13" value="Tvorba TX zprávy" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="337" y="650" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="vuQaCVZ4aTbE_RIGbEnD-16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="vuQaCVZ4aTbE_RIGbEnD-14" target="vuQaCVZ4aTbE_RIGbEnD-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vuQaCVZ4aTbE_RIGbEnD-14" value="Tvorba SD zprávy" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="337" y="710" width="120" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
